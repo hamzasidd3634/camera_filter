@@ -2,6 +2,11 @@
 
 Realtime Camera Filters
 
+
+# Description
+
+Realtime Camera Filters with image crop, text on image , text color and emojis. You can user your own custom color list to change filters
+
 # ScreenShots
 
 
