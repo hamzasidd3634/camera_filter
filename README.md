@@ -7,6 +7,23 @@ Realtime Camera Filters
 
 Realtime Camera Filters with image crop, text on image , text color and emojis. You can user your own custom color list to change filters
 
+# Usage
+
+
+[Example](https://github.com/hamzasidd3634/camera_filter/tree/master/lib/example)
+
+
+To use this package:
+
+* add the dependency to your [pubspec.yaml](https://github.com/hamzasidd3634/camera_filter/blob/master/example/pubspec.yaml) file.
+
+```yaml
+    dependencies:
+        flutter:
+          sdk: flutter
+        camera_filters: <latest-version>
+```
+
 # ScreenShots
 
 ![1](https://user-images.githubusercontent.com/64409533/165637956-d82b2ff0-a570-49be-b48d-25e141b8bb37.png)
@@ -21,10 +38,8 @@ Realtime Camera Filters with image crop, text on image , text color and emojis. 
 
 ![pack](https://user-images.githubusercontent.com/64409533/165578953-cdfa1c9d-fe11-4454-a334-6cef3d85b078.gif)
 
-# Usage
 
-
-[Example](https://github.com/hamzasidd3634/camera_filter/tree/master/lib/example)
+# How to use
 
 
         import 'package:camera_filters/camera_filters.dart';
