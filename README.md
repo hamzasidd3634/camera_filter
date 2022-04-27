@@ -9,14 +9,23 @@ Realtime Camera Filters with image crop, text on image , text color and emojis. 
 
 # ScreenShots
 
+![1](https://user-images.githubusercontent.com/64409533/165637956-d82b2ff0-a570-49be-b48d-25e141b8bb37.png)
+![4](https://user-images.githubusercontent.com/64409533/165637976-fb2df8c4-614b-4330-a136-1dc7043d87c0.png)
 
-![Screenshot_1651076763](https://user-images.githubusercontent.com/64409533/165566964-570c898d-2aa8-4de0-a471-4e09e68835d1.png)![Screenshot_1651076769](https://user-images.githubusercontent.com/64409533/165567013-9232c056-ba5c-443a-8fe3-8ace24e50a20.png)![Screenshot_1651076772](https://user-images.githubusercontent.com/64409533/165567026-c590b226-ab32-499a-a22e-3215fbd049d3.png)![Screenshot_1651076795](https://user-images.githubusercontent.com/64409533/165567031-04511bba-9db4-4f69-a684-de584d2bd7b0.png)
+
+![2](https://user-images.githubusercontent.com/64409533/165637109-4a1bdf46-8e09-4dcd-88d5-989f48c4f650.png)
+![3](https://user-images.githubusercontent.com/64409533/165637989-03d84eb5-2bd8-42c8-8525-9e7553d6d974.png)
+
 
 # Video
 
 ![pack](https://user-images.githubusercontent.com/64409533/165578953-cdfa1c9d-fe11-4454-a334-6cef3d85b078.gif)
 
 # Usage
+
+
+[Example](https://github.com/hamzasidd3634/camera_filter/tree/master/lib/example)
+
 
         import 'package:camera_filters/camera_filters.dart';
         import 'package:flutter/material.dart';
