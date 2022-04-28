@@ -5,7 +5,7 @@ Realtime Camera Filters
 
 # Description
 
-Realtime Camera Filters with image crop, text on image , text color and emojis. You can user your own custom color list to change filters
+This package will use camera with dynamic color list of filters, crop your image, text on image , change the text color and you can also use emojis. You can use your own custom color list to change filters. In the end it will provide you an edited image in onDone listener
 
 # Usage
 

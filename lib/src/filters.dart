@@ -193,11 +193,11 @@ class CarouselFlowDelegate extends FlowDelegate {
 
     // Index of the first item we need to paint at this moment.
     // At most, we paint 3 items to the left of the active item.
-    final min = math.max(0, active.floor() - 3).toInt();
+    final int min = math.max(0, active.floor() - 3);
 
     // Index of the last item we need to paint at this moment.
     // At most, we paint 3 items to the right of the active item.
-    final max = math.min(count - 1, active.ceil() + 3).toInt();
+    final int max = math.min(count - 1, active.ceil() + 3);
 
     // Generate transforms for the visible items and sort by distance.
     for (var index = min; index <= max; index++) {

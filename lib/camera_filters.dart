@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 library camera_filters;
 
 import 'dart:io';
@@ -167,10 +169,10 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
                         onPressed: () {
                           if (_controller.description.lensDirection ==
                               CameraLensDirection.front) {
-                            CameraDescription selectedCamera = cameras[0];
+                            final CameraDescription selectedCamera = cameras[0];
                             _initCameraController(selectedCamera);
                           } else {
-                            CameraDescription selectedCamera = cameras[1];
+                            final CameraDescription selectedCamera = cameras[1];
                             _initCameraController(selectedCamera);
                           }
                         },
@@ -205,22 +207,21 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
   }
 
   Future<String> compressFile(File file, {takePicture = false}) async {
-    File compressedFile = await FlutterNativeImage.compressImage(
+    final File compressedFile = await FlutterNativeImage.compressImage(
       file.path,
       quality: 100,
     );
-    List<int> imageBytes = await file.readAsBytes();
+    final List<int> imageBytes = await file.readAsBytes();
 
     imglib.Image? originalImage = imglib.decodeImage(imageBytes);
 
-    imglib.Image? fixedImage;
     if (_controller.description.lensDirection == CameraLensDirection.front) {
-      fixedImage = imglib.flipHorizontal(originalImage!);
+      originalImage = imglib.flipHorizontal(originalImage!);
     }
 
-    File files = File(compressedFile.path);
+    final File files = File(compressedFile.path);
 
-    File fixedFile = await files.writeAsBytes(
+    final File fixedFile = await files.writeAsBytes(
       imglib.encodeJpg(originalImage!),
       flush: true,
     );
@@ -265,10 +266,6 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
   }
 
   Future _initCameraController(CameraDescription cameraDescription) async {
-    if (_controller != null) {
-      await _controller.dispose();
-    }
-
     // 3
     _controller = CameraController(cameraDescription, ResolutionPreset.high);
 

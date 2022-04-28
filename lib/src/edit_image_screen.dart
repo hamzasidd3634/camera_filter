@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -408,7 +407,7 @@ class EditImageScreen extends StatelessWidget {
   }
 
   Future _cropImage() async {
-    File? croppedFile = await ImageCropper().cropImage(
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: resource!,
         aspectRatioPresets: Platform.isAndroid
             ? [
@@ -428,15 +427,17 @@ class EditImageScreen extends StatelessWidget {
                 CropAspectRatioPreset.ratio7x5,
                 CropAspectRatioPreset.ratio16x9
               ],
-        androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Crop',
-            toolbarColor: Colors.red,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        iosUiSettings: IOSUiSettings(
-          title: 'Crop',
-        ));
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Crop',
+              toolbarColor: Colors.red,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Crop',
+          )
+        ]);
     if (croppedFile != null) {
       resource = croppedFile.path;
       update(!update.value);

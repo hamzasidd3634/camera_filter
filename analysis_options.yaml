@@ -7,7 +7,6 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
-include: package:flutter_lints/flutter.yaml
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -26,9 +25,8 @@ linter:
     prefer_const_constructors: false
     prefer_const_constructors_in_immutables: false
     prefer_const_literals_to_create_immutables: false
-
     use_key_in_widget_constructors: false
-
+    include_file_not_found: false
     file_names: false
     prefer_single_quotes: false  # Uncomment to enable the `prefer_single_quotes` rule
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
