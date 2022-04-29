@@ -287,16 +287,3 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     setState(() {});
   }
 }
-// enum FlashMode {
-//   /// Do not use the flash when taking a picture.
-//   off,
-//
-//   /// Let the device decide whether to flash the camera when taking a picture.
-//   auto,
-//
-//   /// Always use the flash when taking a picture.
-//   always,
-//
-//   /// Turns on the flash light and keeps it on until switched off.
-//   torch,
-// }

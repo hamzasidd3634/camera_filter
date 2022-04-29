@@ -5,14 +5,14 @@
         <entry key="_fe_analyzer_shared">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-39.0.0/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-39.0.0/lib" />
             </list>
           </value>
         </entry>
         <entry key="analyzer">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-4.0.0/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/analyzer-4.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -20,7 +20,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/archive-3.3.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.3.0/lib" />
             </list>
           </value>
         </entry>
@@ -28,7 +27,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/lib" />
             </list>
           </value>
         </entry>
@@ -36,7 +34,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -44,7 +41,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera-0.9.4+21/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/camera-0.9.4+21/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="camera_filters">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera_filters-0.0.4/lib" />
             </list>
           </value>
         </entry>
@@ -52,7 +55,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera_platform_interface-2.1.6/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/camera_platform_interface-2.1.6/lib" />
             </list>
           </value>
         </entry>
@@ -60,7 +62,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera_web-0.2.1+3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/camera_web-0.2.1+3/lib" />
             </list>
           </value>
         </entry>
@@ -68,7 +69,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/characters-1.2.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/characters-1.2.0/lib" />
             </list>
           </value>
         </entry>
@@ -76,7 +76,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/charcode-1.3.1/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/charcode-1.3.1/lib" />
             </list>
           </value>
         </entry>
@@ -84,7 +83,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -92,14 +90,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0/lib" />
             </list>
           </value>
         </entry>
         <entry key="convert">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/convert-3.0.1/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/convert-3.0.1/lib" />
             </list>
           </value>
         </entry>
@@ -107,7 +104,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/cross_file-0.3.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/cross_file-0.3.2/lib" />
             </list>
           </value>
         </entry>
@@ -115,7 +111,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.2/lib" />
             </list>
           </value>
         </entry>
@@ -130,7 +125,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/emoji_picker_flutter-1.1.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/emoji_picker_flutter-1.1.2/lib" />
             </list>
           </value>
         </entry>
@@ -138,7 +132,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
             </list>
           </value>
         </entry>
@@ -146,7 +139,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.2/lib" />
             </list>
           </value>
         </entry>
@@ -154,7 +146,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />
             </list>
           </value>
         </entry>
@@ -162,7 +153,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/packages/flutter/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/packages/flutter/lib" />
             </list>
           </value>
         </entry>
@@ -170,14 +160,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-1.0.3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-1.0.3/lib" />
             </list>
           </value>
         </entry>
         <entry key="flutter_lints">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib" />
             </list>
           </value>
         </entry>
@@ -185,7 +174,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_native_image-0.0.6+1/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_native_image-0.0.6+1/lib" />
             </list>
           </value>
         </entry>
@@ -193,7 +181,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/lib" />
             </list>
           </value>
         </entry>
@@ -201,7 +188,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/packages/flutter_test/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/packages/flutter_test/lib" />
             </list>
           </value>
         </entry>
@@ -209,7 +195,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/packages/flutter_web_plugins/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/packages/flutter_web_plugins/lib" />
             </list>
           </value>
         </entry>
@@ -217,7 +202,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/get-4.6.1/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/get-4.6.1/lib" />
             </list>
           </value>
         </entry>
@@ -225,14 +209,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/get_storage-2.0.3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/get_storage-2.0.3/lib" />
             </list>
           </value>
         </entry>
         <entry key="glob">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/glob-2.0.2/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/glob-2.0.2/lib" />
             </list>
           </value>
         </entry>
@@ -240,7 +223,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/http-0.13.4/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4/lib" />
             </list>
           </value>
         </entry>
@@ -248,7 +230,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -256,7 +237,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/image-3.1.3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image-3.1.3/lib" />
             </list>
           </value>
         </entry>
@@ -264,7 +244,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/image_cropper-2.0.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper-2.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -272,7 +251,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/image_cropper_for_web-0.0.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper_for_web-0.0.2/lib" />
             </list>
           </value>
         </entry>
@@ -280,7 +258,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/image_cropper_platform_interface-2.0.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper_platform_interface-2.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -288,14 +265,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/js-0.6.3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.3/lib" />
             </list>
           </value>
         </entry>
         <entry key="lints">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1/lib" />
             </list>
           </value>
         </entry>
@@ -303,7 +279,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.11/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.11/lib" />
             </list>
           </value>
         </entry>
@@ -311,7 +286,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/material_color_utilities-0.1.3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/material_color_utilities-0.1.3/lib" />
             </list>
           </value>
         </entry>
@@ -319,14 +293,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/lib" />
             </list>
           </value>
         </entry>
         <entry key="package_config">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/package_config-2.0.2/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/package_config-2.0.2/lib" />
             </list>
           </value>
         </entry>
@@ -334,7 +307,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path-1.8.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0/lib" />
             </list>
           </value>
         </entry>
@@ -342,7 +314,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.9/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.9/lib" />
             </list>
           </value>
         </entry>
@@ -350,7 +321,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.13/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.13/lib" />
             </list>
           </value>
         </entry>
@@ -358,7 +328,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.8/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.8/lib" />
             </list>
           </value>
         </entry>
@@ -366,7 +335,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5/lib" />
             </list>
           </value>
         </entry>
@@ -374,7 +342,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5/lib" />
             </list>
           </value>
         </entry>
@@ -382,7 +349,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.3/lib" />
             </list>
           </value>
         </entry>
@@ -390,7 +356,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5/lib" />
             </list>
           </value>
         </entry>
@@ -398,7 +363,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/petitparser-4.4.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-4.4.0/lib" />
             </list>
           </value>
         </entry>
@@ -406,7 +370,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -414,7 +377,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2/lib" />
             </list>
           </value>
         </entry>
@@ -422,14 +384,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib" />
             </list>
           </value>
         </entry>
         <entry key="pub_semver">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-2.1.1/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/pub_semver-2.1.1/lib" />
             </list>
           </value>
         </entry>
@@ -437,7 +398,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1+1/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1+1/lib" />
             </list>
           </value>
         </entry>
@@ -445,7 +405,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.13/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.13/lib" />
             </list>
           </value>
         </entry>
@@ -453,7 +412,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.11/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.11/lib" />
             </list>
           </value>
         </entry>
@@ -461,7 +419,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.1.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -469,7 +426,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-2.1.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-2.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -477,7 +433,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-2.0.3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-2.0.3/lib" />
             </list>
           </value>
         </entry>
@@ -485,7 +440,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-2.0.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-2.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -493,7 +447,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-2.0.3/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-2.0.3/lib" />
             </list>
           </value>
         </entry>
@@ -501,7 +454,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.1.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -509,7 +461,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/bin/cache/pkg/sky_engine/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/bin/cache/pkg/sky_engine/lib" />
             </list>
           </value>
         </entry>
@@ -517,7 +468,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.1/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.1/lib" />
             </list>
           </value>
         </entry>
@@ -525,7 +475,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
             </list>
           </value>
         </entry>
@@ -533,7 +482,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -541,7 +489,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/stream_transform-2.0.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/stream_transform-2.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -549,7 +496,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -557,7 +503,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0/lib" />
             </list>
           </value>
         </entry>
@@ -565,7 +510,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.8/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.8/lib" />
             </list>
           </value>
         </entry>
@@ -573,7 +517,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/typed_data-1.3.0/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/typed_data-1.3.0/lib" />
             </list>
           </value>
         </entry>
@@ -581,14 +524,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.1/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.1/lib" />
             </list>
           </value>
         </entry>
         <entry key="watcher">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/watcher-1.0.1/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/watcher-1.0.1/lib" />
             </list>
           </value>
         </entry>
@@ -596,7 +538,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/win32-2.5.2/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.5.2/lib" />
             </list>
           </value>
         </entry>
@@ -604,7 +545,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+1/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+1/lib" />
             </list>
           </value>
         </entry>
@@ -612,30 +552,33 @@
           <value>
             <list>
               <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/xml-5.3.1/lib" />
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/xml-5.3.1/lib" />
             </list>
           </value>
         </entry>
         <entry key="yaml">
           <value>
             <list>
-              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/yaml-3.1.0/lib" />
+              <option value="$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/yaml-3.1.0/lib" />
             </list>
           </value>
         </entry>
       </option>
     </properties>
     <CLASSES>
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-39.0.0/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/analyzer-4.0.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/archive-3.3.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera-0.9.4+21/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera_filters-0.0.4/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera_platform_interface-2.1.6/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera_web-0.2.1+3/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/characters-1.2.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/charcode-1.3.1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/convert-3.0.1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/cross_file-0.3.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.4/lib" />
@@ -644,10 +587,12 @@
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-1.0.3/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_native_image-0.0.6+1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/get-4.6.1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/get_storage-2.0.3/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/glob-2.0.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/http-0.13.4/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/image-3.1.3/lib" />
@@ -655,9 +600,11 @@
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/image_cropper_for_web-0.0.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/image_cropper_platform_interface-2.0.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/js-0.6.3/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.11/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/material_color_utilities-0.1.3/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/package_config-2.0.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path-1.8.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.9/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.13/lib" />
@@ -670,6 +617,7 @@
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/pub_semver-2.1.1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1+1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.13/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.11/lib" />
@@ -688,91 +636,15 @@
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.8/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/typed_data-1.3.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.1/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/watcher-1.0.1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/win32-2.5.2/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+1/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/xml-5.3.1/lib" />
+      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/yaml-3.1.0/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/bin/cache/pkg/sky_engine/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/packages/flutter/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/packages/flutter_test/lib" />
       <root url="file://$USER_HOME$/Downloads/flutter 2/packages/flutter_web_plugins/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-39.0.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-4.0.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.3.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/camera-0.9.4+21/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/camera_platform_interface-2.1.6/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/camera_web-0.2.1+3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/characters-1.2.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/charcode-1.3.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/convert-3.0.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/cross_file-0.3.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/emoji_picker_flutter-1.1.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-1.0.3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_native_image-0.0.6+1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/get-4.6.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/get_storage-2.0.3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/glob-2.0.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image-3.1.3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper-2.0.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper_for_web-0.0.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper_platform_interface-2.0.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.11/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/material_color_utilities-0.1.3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/package_config-2.0.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.9/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.13/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.8/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-4.4.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-2.1.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1+1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.13/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.11/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-2.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-2.0.3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-2.0.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-2.0.3/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/stream_transform-2.0.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.8/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/typed_data-1.3.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/watcher-1.0.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.5.2/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/xml-5.3.1/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/yaml-3.1.0/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/bin/cache/pkg/sky_engine/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/packages/flutter/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/packages/flutter_test/lib" />
-      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/packages/flutter_web_plugins/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
