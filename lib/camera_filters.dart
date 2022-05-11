@@ -15,10 +15,18 @@ import 'package:image/image.dart' as imglib;
 import 'package:path_provider/path_provider.dart';
 
 class CameraScreenPlugin extends StatefulWidget {
+  /// this function will return the path of edited picture
   Function(dynamic)? onDone;
+
+  /// list of filters
   List<Color>? filters;
+
+  /// notify color to change
   ValueNotifier<Color>? filterColor;
+
+  /// profile widget if you want to use profile widget on camera
   Widget? profileIconWidget;
+
   CameraScreenPlugin(
       {Key? key,
       this.onDone,
@@ -32,21 +40,37 @@ class CameraScreenPlugin extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreenPlugin> {
+  /// Camera Controller
   late CameraController _controller;
+
+  /// initializer of controller
   Future<void>? _initializeControllerFuture;
+
+  /// local storage for mobile
   GetStorage sp = GetStorage();
+
+  /// flash mode changer
   RxInt flashCount = 0.obs;
+
+  /// condition check that picture is taken or not
   bool capture = false;
+
+  /// camera list, this list will tell user that he/she is on front camera or back
   List<CameraDescription> cameras = [];
+
+  ///list of filters color
   final _filters = [
     Colors.transparent,
     ...List.generate(
       Colors.primaries.length,
-      (index) => Colors.primaries[(index * 4) % Colors.primaries.length],
+      (index) => Colors.primaries[(index) % Colors.primaries.length],
     )
   ];
+
+  ///filter color notifier
   final _filterColor = ValueNotifier<Color>(Colors.transparent);
 
+  ///filter color change function
   void _onFilterChanged(Color value) {
     widget.filterColor == null
         ? _filterColor.value = value
@@ -65,15 +89,21 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     initCamera();
   }
 
+  ///this function will initialize camera
   initCamera() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    /// this condition check that camera is available on your device
     cameras = await availableCameras();
+
+    ///put camera in camera controller
     _controller = CameraController(
       cameras[0],
       ResolutionPreset.high,
     );
-
     _initializeControllerFuture = _controller.initialize();
+
+    ///set flash mode off by default
     _controller.setFlashMode(FlashMode.off);
     print(_initializeControllerFuture);
     setState(() {});
@@ -89,11 +119,14 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.black,
+
+      /// if controller not initialized loader will show
       child: _initializeControllerFuture == null
           ? Center(child: CircularProgressIndicator())
           : Stack(
               children: [
                 Positioned.fill(
+                  /// future builder for filters
                   child: FutureBuilder<void>(
                     future: _initializeControllerFuture,
                     builder: (context, snapshot) {
@@ -134,16 +167,23 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
                   top: 30.0,
                   child: Row(
                     children: [
+                      /// icon for flash modes
                       IconButton(onPressed: () {
+                        /// if flash count is zero flash will off
                         if (flashCount.value == 0) {
                           flashCount.value = 1;
                           sp.write("flashCount", 1);
                           _controller.setFlashMode(FlashMode.torch);
+
+                          /// if flash count is one flash will on
                         } else if (flashCount.value == 1) {
                           flashCount.value = 2;
                           sp.write("flashCount", 2);
                           _controller.setFlashMode(FlashMode.auto);
-                        } else {
+                        }
+
+                        /// if flash count is two flash will auto
+                        else {
                           flashCount.value = 0;
                           sp.write("flashCount", 0);
                           _controller.setFlashMode(FlashMode.off);
@@ -161,6 +201,8 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
                       SizedBox(
                         width: 5,
                       ),
+
+                      /// camera change to front or back
                       IconButton(
                         icon: Icon(
                           Icons.cameraswitch,
@@ -185,13 +227,14 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     );
   }
 
+  /// function will call when user tap on picture button
   void onTakePictureButtonPressed(context) {
     takePicture(context).then((String? filePath) async {
       if (_controller.value.isInitialized) {
         if (filePath != null) {
           Get.to(
             EditImageScreen(
-              resource: filePath,
+              path: filePath,
               filter: ColorFilter.mode(
                   widget.filterColor == null
                       ? _filterColor.value
@@ -206,6 +249,7 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     });
   }
 
+  /// compress the picture from bigger size to smaller
   Future<String> compressFile(File file, {takePicture = false}) async {
     final File compressedFile = await FlutterNativeImage.compressImage(
       file.path,
@@ -228,6 +272,7 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     return fixedFile.path;
   }
 
+  /// function will call when user take picture
   Future<String> takePicture(context) async {
     if (!_controller.value.isInitialized) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -247,8 +292,10 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     return filePath;
   }
 
+  /// timestamp for image creation date
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
+  /// widget will build the filter selector
   Widget _buildFilterSelector() {
     return FilterSelector(
       onFilterChanged: _onFilterChanged,
@@ -265,20 +312,21 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     );
   }
 
+  /// function initialize camera controller
   Future _initCameraController(CameraDescription cameraDescription) async {
-    // 3
+    /// 1
     _controller = CameraController(cameraDescription, ResolutionPreset.high);
 
-    // If the controller is updated then update the UI.
-    // 4
+    /// If the controller is updated then update the UI.
+    /// 2
     _controller.addListener(() {
-      // 5
+      /// 3
       if (_controller.value.hasError) {
         print('Camera error ${_controller.value.errorDescription}');
       }
     });
 
-    // 6
+    /// 4
     try {
       await _controller.initialize();
     } on CameraException catch (e) {

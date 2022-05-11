@@ -13,9 +13,15 @@ class FilterSelector extends StatefulWidget {
     this.padding = const EdgeInsets.symmetric(vertical: 24.0),
   }) : super(key: key);
 
+  ///List of filters Color
   final List<Color> filters;
+
+  /// function will call when a user changes the filter
   final void Function(Color selectedColor) onFilterChanged;
+
   final EdgeInsets padding;
+
+  /// when you tap on filter this on tap will call
   final GestureTapCallback? onTap;
 
   @override
@@ -23,12 +29,19 @@ class FilterSelector extends StatefulWidget {
 }
 
 class _FilterSelectorState extends State<FilterSelector> {
+  /// filter per screen is by default five
   static const _filtersPerScreen = 5;
+
+  /// screen responsiveness with filters
   static const _viewportFractionPerItem = 1.0 / _filtersPerScreen;
 
+  ///initializer of page controller
   late final PageController _controller;
+
+  ///page number
   late int _page;
 
+  /// filter count form filter list
   int get filterCount => widget.filters.length;
 
   Color itemColor(int index) => widget.filters[index % filterCount];
@@ -44,6 +57,7 @@ class _FilterSelectorState extends State<FilterSelector> {
     _controller.addListener(_onPageChanged);
   }
 
+  /// call when filter changes
   void _onPageChanged() {
     final page = (_controller.page ?? 0).round();
     if (page != _page) {
@@ -52,6 +66,7 @@ class _FilterSelectorState extends State<FilterSelector> {
     }
   }
 
+  ///call when tap on filters
   void _onFilterTapped(int index) {
     _controller.animateToPage(
       index,
@@ -116,6 +131,7 @@ class _FilterSelectorState extends State<FilterSelector> {
     );
   }
 
+  ///carousel slider of filters
   Widget _buildCarousel({
     required ViewportOffset viewportOffset,
     required double itemSize,
@@ -139,6 +155,7 @@ class _FilterSelectorState extends State<FilterSelector> {
     );
   }
 
+  /// filters ui
   Widget _buildSelectionRing(double itemSize) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -177,29 +194,29 @@ class CarouselFlowDelegate extends FlowDelegate {
   void paintChildren(FlowPaintingContext context) {
     final count = context.childCount;
 
-    // All available painting width
+    /// All available painting width
     final size = context.size.width;
 
-    // The distance that a single item "page" takes up from the perspective
-    // of the scroll paging system. We also use this size for the width and
-    // height of a single item.
+    /// The distance that a single item "page" takes up from the perspective
+    /// of the scroll paging system. We also use this size for the width and
+    /// height of a single item.
     final itemExtent = size / filtersPerScreen;
 
-    // The current scroll position expressed as an item fraction, e.g., 0.0,
-    // or 1.0, or 1.3, or 2.9, etc. A value of 1.3 indicates that item at
-    // index 1 is active, and the user has scrolled 30% towards the item at
-    // index 2.
+    /// The current scroll position expressed as an item fraction, e.g., 0.0,
+    /// or 1.0, or 1.3, or 2.9, etc. A value of 1.3 indicates that item at
+    /// index 1 is active, and the user has scrolled 30% towards the item at
+    /// index 2.
     final active = viewportOffset.pixels / itemExtent;
 
-    // Index of the first item we need to paint at this moment.
-    // At most, we paint 3 items to the left of the active item.
+    /// Index of the first item we need to paint at this moment.
+    /// At most, we paint 3 items to the left of the active item.
     final int min = math.max(0, active.floor() - 3);
 
-    // Index of the last item we need to paint at this moment.
-    // At most, we paint 3 items to the right of the active item.
+    /// Index of the last item we need to paint at this moment.
+    /// At most, we paint 3 items to the right of the active item.
     final int max = math.min(count - 1, active.ceil() + 3);
 
-    // Generate transforms for the visible items and sort by distance.
+    /// Generate transforms for the visible items and sort by distance.
     for (var index = min; index <= max; index++) {
       final itemXFromCenter = itemExtent * index - viewportOffset.pixels;
       final percentFromCenter = 1.0 - (itemXFromCenter / (size / 2)).abs();

@@ -10,9 +10,17 @@ class TextDialog extends StatelessWidget {
       required this.color,
       required this.textDelegate})
       : super(key: key);
+
+  /// text editing controller of text put on image
   final TextEditingController controller;
+
+  /// font size of text put on image
   final double fontSize;
+
+  /// call when you done
   final VoidCallback onFinished;
+
+  /// color of text put on image
   final Color color;
   final TextDelegate textDelegate;
   static void show(BuildContext context, TextEditingController controller,

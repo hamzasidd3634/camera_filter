@@ -19,6 +19,13 @@ import 'widgets/_range_slider.dart';
 import 'widgets/_text_dialog.dart';
 
 ///[ImagePainter] widget.
+///this widget could call on any image
+///you can use this widget for image editing purpose
+///draw some paint on your image
+///write some text on your image
+///crop your image
+///font size increase or decrease
+///stroke with increase or decrease
 class ImagePainter extends StatefulWidget {
   ImagePainter._(
       {Key? key,
@@ -52,24 +59,77 @@ class ImagePainter extends StatefulWidget {
 
   ///Constructor for loading image from network url.
   factory ImagePainter.network(
+    ///url or image
+
     String url, {
     required Key key,
+
+    ///image height
+
     double? height,
+
+    ///image width
+
     double? width,
+
+    /// placeholder
+
     Widget? placeholderWidget,
+
+    /// scalable condition
+
     bool? scalable,
+
+    ///list of colors
+
     List<Color>? colors,
+
+    /// brush icon widget
+
     Widget? brushIcon,
+
+    ///undo icon widget
+
     Widget? undoIcon,
+
+    ///clear all icon
+
     Widget? clearAllIcon,
+
+    /// clear icon
+
     Widget? colorIcon,
+
+    ///initial paint mode
+
     PaintMode? initialPaintMode,
+
+    ///initial stroke width
+
     double? initialStrokeWidth,
+
+    ///initial color
+
     Color? initialColor,
+
+    ///paint mode notifier
+
     ValueChanged<PaintMode>? onPaintModeChanged,
+
+    ///color change notifier
+
     ValueChanged<Color>? onColorChanged,
+
+    ///stroke width notifier
+
     ValueChanged<double>? onStrokeWidthChanged,
+
+    ///font size change notifier
+
     ValueChanged<double>? onFontSizeChanged,
+
+    ///text delegate
+
     TextDelegate? textDelegate,
   }) {
     return ImagePainter._(
@@ -97,24 +157,59 @@ class ImagePainter extends StatefulWidget {
 
   ///Constructor for loading image from assetPath.
   factory ImagePainter.asset(
+    ///url or image
     String path, {
     required Key key,
+
+    ///image height
     double? height,
+
+    ///image width
     double? width,
+
+    /// placeholder
     bool? scalable,
+
+    /// scalable condition
     Widget? placeholderWidget,
+
+    ///list of colors
     List<Color>? colors,
+
+    /// brush icon widget
     Widget? brushIcon,
+
+    ///undo icon widget
     Widget? undoIcon,
+
+    ///clear all icon
     Widget? clearAllIcon,
+
+    /// clear icon
     Widget? colorIcon,
+
+    ///initial paint mode
     PaintMode? initialPaintMode,
+
+    ///initial stroke width
     double? initialStrokeWidth,
+
+    ///initial color
     Color? initialColor,
+
+    ///paint mode notifier
     ValueChanged<PaintMode>? onPaintModeChanged,
+
+    ///color change notifier
     ValueChanged<Color>? onColorChanged,
+
+    ///stroke width notifier
     ValueChanged<double>? onStrokeWidthChanged,
+
+    ///font size change notifier
     ValueChanged<double>? onFontSizeChanged,
+
+    ///text delegate
     TextDelegate? textDelegate,
   }) {
     return ImagePainter._(
@@ -326,20 +421,25 @@ class ImagePainter extends StatefulWidget {
   ///Initial PaintMode.
   final PaintMode? initialPaintMode;
 
-  //the initial stroke width
+  ///the initial stroke width
   final double? initialStrokeWidth;
 
-  //the initial color
+  ///the initial color
   final Color? initialColor;
 
+  /// change color listener
   final ValueChanged<Color>? onColorChanged;
 
+  /// stroke width listener
   final ValueChanged<double>? onStrokeWidthChanged;
+
+  /// font size change listener
   final ValueChanged<double>? onFontSizeChanged;
 
+  /// paint mode change listener
   final ValueChanged<PaintMode>? onPaintModeChanged;
 
-  //the text delegate
+  ///the text delegate
   final TextDelegate? textDelegate;
 
   @override
@@ -782,7 +882,6 @@ class ImagePainterState extends State<ImagePainter> {
               },
             ),
             Spacer(),
-
             PopupMenuButton(
               tooltip: textDelegate.changeBrushSize,
               shape: ContinuousRectangleBorder(
@@ -803,21 +902,6 @@ class ImagePainterState extends State<ImagePainter> {
                       colorPicker(controller);
                     },
                   );
-
-                  //   PopupMenuButton(
-                  //   padding: const EdgeInsets.symmetric(vertical: 10),
-                  //   shape: ContinuousRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(20),
-                  //   ),
-                  //   tooltip: textDelegate.changeColor,
-                  //   icon: Icon(
-                  //     Icons.color_lens,
-                  //     color: Colors.white,
-                  //   ),
-                  //   itemBuilder: (BuildContext context) {
-                  //     return colorPicker(controller);
-                  //   },
-                  // );
                 }),
             PopupMenuButton(
               tooltip: textDelegate.changeBrushSize,
@@ -833,25 +917,6 @@ class ImagePainterState extends State<ImagePainter> {
                   color: Colors.white,
                 ),
                 onPressed: _openTextDialog),
-            // const Spacer(),
-            // Obx(
-            //       () => deleteButton.value == false
-            //       ? Container()
-            //       : IconButton(
-            //     icon: Icon(
-            //       Icons.delete_forever,
-            //       color: Colors.white,
-            //     ),
-            //     onPressed: () {
-            //       text = '';
-            //       deleteButton.value = false;
-            //       textFieldBool.value = false;
-            //       emojisEditingController.clear();
-            //       _textEditingController.clear();
-            //       dragText(!dragText.value);
-            //     },
-            //   ),
-            // ),
             IconButton(
               icon: Icon(
                 Icons.crop_rotate,
@@ -861,16 +926,6 @@ class ImagePainterState extends State<ImagePainter> {
                 _cropImage();
               },
             ),
-            // IconButton(
-            //   icon: Icon(
-            //     Icons.insert_emoticon,
-            //     color: Colors.white,
-            //   ),
-            //   onPressed: () {
-            //     // emojiShowing(!emojiShowing.value);
-            //   },
-            // ),
-
             IconButton(
               tooltip: textDelegate.clearAllProgress,
               icon:

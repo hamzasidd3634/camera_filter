@@ -16,8 +16,9 @@ class ImagePainterTransformer extends StatefulWidget {
     this.alignPanAxis = false,
     this.boundaryMargin = EdgeInsets.zero,
     this.constrained = true,
-    // These default scale values were eyeballed as reasonable limits for common
-    // use cases.
+
+    /// These default scale values were eyeballed as reasonable limits for common
+    /// use cases.
     this.maxScale = 2.5,
     this.minScale = 0.8,
     this.onInteractionEnd,
@@ -32,8 +33,9 @@ class ImagePainterTransformer extends StatefulWidget {
         assert(maxScale > 0),
         assert(!maxScale.isNaN),
         assert(maxScale >= minScale),
-        // boundaryMargin must be either fully infinite or fully finite, but not
-        // a mix of both.
+
+        /// boundaryMargin must be either fully infinite or fully finite, but not
+        /// a mix of both.
         assert((boundaryMargin.horizontal.isInfinite &&
                 boundaryMargin.vertical.isInfinite) ||
             (boundaryMargin.top.isFinite &&
@@ -321,13 +323,13 @@ class ImagePainterTransformer extends StatefulWidget {
     final lengthSquared = math.pow(l2.x - l1.x, 2.0).toDouble() +
         math.pow(l2.y - l1.y, 2.0).toDouble();
 
-    // In this case, l1 == l2.
+    /// In this case, l1 == l2.
     if (lengthSquared == 0) {
       return l1;
     }
 
-    // Calculate how far down the line segment the closest point is and return
-    // the point.
+    /// Calculate how far down the line segment the closest point is and return
+    /// the point.
     final l1P = point - l1;
     final l1L2 = l2 - l1;
     final fraction = (l1P.dot(l1L2) / lengthSquared).clamp(0.0, 1.0).toDouble();
@@ -406,8 +408,8 @@ class ImagePainterTransformer extends StatefulWidget {
   /// given Vector3.
   @visibleForTesting
   static Vector3? getNearestPointInside(Vector3 point, Quad quad) {
-    // If the point is inside the axis aligned bounding box, then it's ok where
-    // it is.
+    /// If the point is inside the axis aligned bounding box, then it's ok where
+    /// it is.
     if (pointIsInside(point, quad)) {
       return point;
     }
@@ -451,21 +453,31 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
   final GlobalKey _parentKey = GlobalKey();
   Animation<Offset>? _animation;
   late AnimationController _controller;
-  Axis? _panAxis; // Used with alignPanAxis.
-  Offset? _referenceFocalPoint; // Point where the current gesture began.
-  double? _scaleStart; // Scale value at start of scaling gesture.
-  double? _rotationStart = 0.0; // Rotation at start of rotation gesture.
-  double _currentRotation = 0.0; // Rotation of _transformationController.value.
+  Axis? _panAxis;
+
+  /// Used with alignPanAxis.
+  Offset? _referenceFocalPoint;
+
+  /// Point where the current gesture began.
+  double? _scaleStart;
+
+  /// Scale value at start of scaling gesture.
+  double? _rotationStart = 0.0;
+
+  /// Rotation at start of rotation gesture.
+  double _currentRotation = 0.0;
+
+  /// Rotation of _transformationController.value.
   _GestureType? _gestureType;
 
   final bool _rotateEnabled = false;
 
-  // Used as the coefficient of friction in the inertial translation animation.
-  // This value was eyeballed to give a feel similar to Google Photos.
+  /// Used as the coefficient of friction in the inertial translation animation.
+  /// This value was eyeballed to give a feel similar to Google Photos.
   static const double _kDrag = 0.0000135;
 
-  // The _boundaryRect is calculated by adding the boundaryMargin to the size of
-  // the child.
+  /// The _boundaryRect is calculated by adding the boundaryMargin to the size of
+  /// the child.
   Rect get _boundaryRect {
     assert(_childKey.currentContext != null);
     assert(!widget.boundaryMargin.left.isNaN);
@@ -478,8 +490,9 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     final childSize = childRenderBox.size;
     final boundaryRect =
         widget.boundaryMargin.inflateRect(Offset.zero & childSize);
-    // Boundaries that are partially infinite are not allowed because Matrix4's
-    // rotation and translation methods don't handle infinites well.
+
+    /// Boundaries that are partially infinite are not allowed because Matrix4's
+    /// rotation and translation methods don't handle infinites well.
     assert(
         boundaryRect.isFinite ||
             (boundaryRect.left.isInfinite &&
@@ -490,7 +503,7 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     return boundaryRect;
   }
 
-  // The Rect representing the child's parent.
+  /// The Rect representing the child's parent.
   Rect get _viewport {
     assert(_parentKey.currentContext != null);
     final parentRenderBox =
@@ -498,8 +511,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     return Offset.zero & parentRenderBox.size;
   }
 
-  // Return a new matrix representing the given matrix after applying the given
-  // translation.
+  /// Return a new matrix representing the given matrix after applying the given
+  /// translation.
   Matrix4 _matrixTranslate(Matrix4 matrix, Offset translation) {
     if (translation == Offset.zero) {
       return matrix.clone();
@@ -515,33 +528,33 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
         alignedTranslation.dy,
       );
 
-    // Transform the viewport to determine where its four corners will be after
-    // the child has been transformed.
+    /// Transform the viewport to determine where its four corners will be after
+    /// the child has been transformed.
     final nextViewport = _transformViewport(nextMatrix, _viewport);
 
-    // If the boundaries are infinite, then no need to check if the translation
-    // fits within them.
+    /// If the boundaries are infinite, then no need to check if the translation
+    /// fits within them.
     if (_boundaryRect.isInfinite) {
       return nextMatrix;
     }
 
-    // Expand the boundaries with rotation. This prevents the problem where a
-    // mismatch in orientation between the viewport and boundaries effectively
-    // limits translation. With this approach, all points that are visible with
-    // no rotation are visible after rotation.
+    /// Expand the boundaries with rotation. This prevents the problem where a
+    /// mismatch in orientation between the viewport and boundaries effectively
+    /// limits translation. With this approach, all points that are visible with
+    /// no rotation are visible after rotation.
     final boundariesAabbQuad = _getAxisAlignedBoundingBoxWithRotation(
       _boundaryRect,
       _currentRotation,
     );
 
-    // If the given translation fits completely within the boundaries, allow it.
+    /// If the given translation fits completely within the boundaries, allow it.
     final offendingDistance = _exceedsBy(boundariesAabbQuad, nextViewport);
     if (offendingDistance == Offset.zero) {
       return nextMatrix;
     }
 
-    // Desired translation goes out of bounds, so translate to the nearest
-    // in-bounds point instead.
+    /// Desired translation goes out of bounds, so translate to the nearest
+    /// in-bounds point instead.
     final nextTotalTranslation = _getMatrixTranslation(nextMatrix);
     final currentScale = matrix.getMaxScaleOnAxis();
     final correctedTotalTranslation = Offset(
@@ -556,7 +569,7 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
         0.0,
       ));
 
-    // Double check that the corrected translation fits.
+    /// Double check that the corrected translation fits.
     final correctedViewport = _transformViewport(correctedMatrix, _viewport);
     final offendingCorrectedDistance =
         _exceedsBy(boundariesAabbQuad, correctedViewport);
@@ -564,16 +577,16 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
       return correctedMatrix;
     }
 
-    // If the corrected translation doesn't fit in either direction, don't allow
-    // any translation at all. This happens when the viewport is larger than the
-    // entire boundary.
+    /// If the corrected translation doesn't fit in either direction, don't allow
+    /// any translation at all. This happens when the viewport is larger than the
+    /// entire boundary.
     if (offendingCorrectedDistance.dx != 0.0 &&
         offendingCorrectedDistance.dy != 0.0) {
       return matrix.clone();
     }
 
-    // Otherwise, allow translation in only the direction that fits. This
-    // happens when the viewport is larger than the boundary in one direction.
+    /// Otherwise, allow translation in only the direction that fits. This
+    /// happens when the viewport is larger than the boundary in one direction.
     final unidirectionalCorrectedTotalTranslation = Offset(
       offendingCorrectedDistance.dx == 0.0 ? correctedTotalTranslation.dx : 0.0,
       offendingCorrectedDistance.dy == 0.0 ? correctedTotalTranslation.dy : 0.0,
@@ -586,16 +599,16 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
       ));
   }
 
-  // Return a new matrix representing the given matrix after applying the given
-  // scale.
+  /// Return a new matrix representing the given matrix after applying the given
+  /// scale.
   Matrix4 _matrixScale(Matrix4 matrix, double scale) {
     if (scale == 1.0) {
       return matrix.clone();
     }
     assert(scale != 0.0);
 
-    // Don't allow a scale that results in an overall scale beyond min/max
-    // scale.
+    /// Don't allow a scale that results in an overall scale beyond min/max
+    /// scale.
     final currentScale = _transformationController!.value.getMaxScaleOnAxis();
     final totalScale = currentScale * scale;
     final clampedTotalScale = totalScale.clamp(
@@ -605,8 +618,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     final clampedScale = clampedTotalScale / currentScale;
     final nextMatrix = matrix.clone()..scale(clampedScale);
 
-    // Ensure that the scale cannot make the child so big that it can't fit
-    // inside the boundaries (in either direction).
+    /// Ensure that the scale cannot make the child so big that it can't fit
+    /// inside the boundaries (in either direction).
     final minScale = math.max(
       _viewport.width / _boundaryRect.width,
       _viewport.height / _boundaryRect.height,
@@ -619,8 +632,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     return nextMatrix;
   }
 
-  // Return a new matrix representing the given matrix after applying the given
-  // rotation.
+  /// Return a new matrix representing the given matrix after applying the given
+  /// rotation.
   Matrix4 _matrixRotate(Matrix4 matrix, double rotation, Offset focalPoint) {
     if (rotation == 0) {
       return matrix.clone();
@@ -634,7 +647,7 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
       ..translate(-focalPointScene.dx, -focalPointScene.dy);
   }
 
-  // Returns true iff the given _GestureType is enabled.
+  /// Returns true iff the given _GestureType is enabled.
   bool _gestureIsSupported(_GestureType? gestureType) {
     switch (gestureType) {
       case _GestureType.rotate:
@@ -649,10 +662,10 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     }
   }
 
-  // Decide which type of gesture this is by comparing the amount of scale
-  // and rotation in the gesture, if any. Scale starts at 1 and rotation
-  // starts at 0. Pan will have no scale and no rotation because it uses only one
-  // finger.
+  /// Decide which type of gesture this is by comparing the amount of scale
+  /// and rotation in the gesture, if any. Scale starts at 1 and rotation
+  /// starts at 0. Pan will have no scale and no rotation because it uses only one
+  /// finger.
   _GestureType _getGestureType(ScaleUpdateDetails details) {
     final scale = !widget.scaleEnabled ? 1.0 : details.scale;
     final rotation = !_rotateEnabled ? 0.0 : details.rotation;
@@ -665,8 +678,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     }
   }
 
-  // Handle the start of a gesture. All of pan, scale, and rotate are handled
-  // with GestureDetector's scale gesture.
+  /// Handle the start of a gesture. All of pan, scale, and rotate are handled
+  /// with GestureDetector's scale gesture.
   void _onScaleStart(ScaleStartDetails details) {
     if (widget.onInteractionStart != null) {
       widget.onInteractionStart!(details);
@@ -688,8 +701,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     _rotationStart = _currentRotation;
   }
 
-  // Handle an update to an ongoing gesture. All of pan, scale, and rotate are
-  // handled with GestureDetector's scale gesture.
+  /// Handle an update to an ongoing gesture. All of pan, scale, and rotate are
+  /// handled with GestureDetector's scale gesture.
   void _onScaleUpdate(ScaleUpdateDetails details) {
     final scale = _transformationController!.value.getMaxScaleOnAxis();
     if (widget.onInteractionUpdate != null) {
@@ -706,10 +719,10 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     );
 
     if (_gestureType == _GestureType.pan) {
-      // When a gesture first starts, it sometimes has no change in scale and
-      // rotation despite being a two-finger gesture. Here the gesture is
-      // allowed to be reinterpreted as its correct type after originally
-      // being marked as a pan.
+      /// When a gesture first starts, it sometimes has no change in scale and
+      /// rotation despite being a two-finger gesture. Here the gesture is
+      /// allowed to be reinterpreted as its correct type after originally
+      /// being marked as a pan.
       _gestureType = _getGestureType(details);
     } else {
       _gestureType ??= _getGestureType(details);
@@ -721,9 +734,10 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     switch (_gestureType!) {
       case _GestureType.scale:
         assert(_scaleStart != null);
-        // details.scale gives us the amount to change the scale as of the
-        // start of this gesture, so calculate the amount to scale as of the
-        // previous call to _onScaleUpdate.
+
+        /// details.scale gives us the amount to change the scale as of the
+        /// start of this gesture, so calculate the amount to scale as of the
+        /// previous call to _onScaleUpdate.
         final desiredScale = _scaleStart! * details.scale;
         final scaleChange = desiredScale / scale;
         _transformationController!.value = _matrixScale(
@@ -731,10 +745,10 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
           scaleChange,
         );
 
-        // While scaling, translate such that the user's two fingers stay on
-        // the same places in the scene. That means that the focal point of
-        // the scale should be on the same place in the scene before and after
-        // the scale.
+        /// While scaling, translate such that the user's two fingers stay on
+        /// the same places in the scene. That means that the focal point of
+        /// the scale should be on the same place in the scene before and after
+        /// the scale.
         final focalPointSceneScaled = _transformationController!.toScene(
           details.localFocalPoint,
         );
@@ -743,11 +757,11 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
           focalPointSceneScaled - _referenceFocalPoint!,
         );
 
-        // details.localFocalPoint should now be at the same location as the
-        // original _referenceFocalPoint point. If it's not, that's because
-        // the translate came in contact with a boundary. In that case, update
-        // _referenceFocalPoint so subsequent updates happen in relation to
-        // the new effective focal point.
+        /// details.localFocalPoint should now be at the same location as the
+        /// original _referenceFocalPoint point. If it's not, that's because
+        /// the translate came in contact with a boundary. In that case, update
+        /// _referenceFocalPoint so subsequent updates happen in relation to
+        /// the new effective focal point.
         final focalPointSceneCheck = _transformationController!.toScene(
           details.localFocalPoint,
         );
@@ -771,15 +785,17 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
 
       case _GestureType.pan:
         assert(_referenceFocalPoint != null);
-        // details may have a change in scale here when scaleEnabled is false.
-        // In an effort to keep the behavior similar whether or not scaleEnabled
-        // is true, these gestures are thrown away.
+
+        /// details may have a change in scale here when scaleEnabled is false.
+        /// In an effort to keep the behavior similar whether or not scaleEnabled
+        /// is true, these gestures are thrown away.
         if (details.scale != 1.0) {
           return;
         }
         _panAxis ??= _getPanAxis(_referenceFocalPoint, focalPointScene);
-        // Translate so that the same point in the scene is underneath the
-        // focal point before and after the movement.
+
+        /// Translate so that the same point in the scene is underneath the
+        /// focal point before and after the movement.
         final translationChange = focalPointScene - _referenceFocalPoint!;
         _transformationController!.value = _matrixTranslate(
           _transformationController!.value,
@@ -792,8 +808,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     }
   }
 
-  // Handle the end of a gesture of _GestureType. All of pan, scale, and rotate
-  // are handled with GestureDetector's scale gesture.
+  /// Handle the end of a gesture of _GestureType. All of pan, scale, and rotate
+  /// are handled with GestureDetector's scale gesture.
   void _onScaleEnd(ScaleEndDetails details) {
     if (widget.onInteractionEnd != null) {
       widget.onInteractionEnd!(details);
@@ -810,7 +826,7 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
       return;
     }
 
-    // If the scale ended with enough velocity, animate inertial movement.
+    /// If the scale ended with enough velocity, animate inertial movement.
     if (_gestureType != _GestureType.pan ||
         details.velocity.pixelsPerSecond.distance < kMinFlingVelocity) {
       _panAxis = null;
@@ -845,7 +861,7 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     _controller.forward();
   }
 
-  // Handle mousewheel scroll events.
+  /// Handle mousewheel scroll events.
   void _receivedPointerSignal(PointerSignalEvent event) {
     if (!_gestureIsSupported(_GestureType.scale)) {
       return;
@@ -866,8 +882,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
         scaleChange,
       );
 
-      // After scaling, translate such that the event's position is at the
-      // same scene point before and after the scale.
+      /// After scaling, translate such that the event's position is at the
+      /// same scene point before and after the scale.
       final focalPointSceneScaled = _transformationController!.toScene(
         event.localPosition,
       );
@@ -878,7 +894,7 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
     }
   }
 
-  // Handle inertia drag animation.
+  /// Handle inertia drag animation.
   void _onAnimate() {
     if (!_controller.isAnimating) {
       _panAxis = null;
@@ -887,7 +903,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
       _controller.reset();
       return;
     }
-    // Translate such that the resulting translation is _animation.value.
+
+    /// Translate such that the resulting translation is _animation.value.
     final translationVector = _transformationController!.value.getTranslation();
     final translation = Offset(translationVector.x, translationVector.y);
     final translationScene = _transformationController!.toScene(
@@ -904,8 +921,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
   }
 
   void _onTransformationControllerChange() {
-    // A change to the TransformationController's value is a change to the
-    // state.
+    /// A change to the TransformationController's value is a change to the
+    /// state.
     setState(() {});
   }
 
@@ -924,8 +941,9 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
   @override
   void didUpdateWidget(ImagePainterTransformer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Handle all cases of needing to dispose and initialize
-    // transformationControllers.
+
+    /// Handle all cases of needing to dispose and initialize
+    /// transformationControllers.
     if (oldWidget.transformationController == null) {
       if (widget.transformationController != null) {
         _transformationController!
@@ -987,8 +1005,8 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
       );
     }
 
-    // A GestureDetector allows the detection of panning and zooming gestures on
-    // the child.
+    /// A GestureDetector allows the detection of panning and zooming gestures on
+    /// the child.
     return Listener(
       key: _parentKey,
       onPointerSignal: _receivedPointerSignal,
@@ -1052,8 +1070,8 @@ class TransformationController extends ValueNotifier<Matrix4> {
   /// }
   /// ```
   Offset toScene(Offset viewportPoint) {
-    // On viewportPoint, perform the inverse transformation of the scene to get
-    // where the point would be in the scene before the transformation.
+    /// On viewportPoint, perform the inverse transformation of the scene to get
+    /// where the point would be in the scene before the transformation.
     final inverseMatrix = Matrix4.inverted(value);
     final untransformed = inverseMatrix.transform3(Vector3(
       viewportPoint.dx,
@@ -1064,31 +1082,31 @@ class TransformationController extends ValueNotifier<Matrix4> {
   }
 }
 
-// A classification of relevant user gestures. Each contiguous user gesture is
-// represented by exactly one _GestureType.
+/// A classification of relevant user gestures. Each contiguous user gesture is
+/// represented by exactly one _GestureType.
 enum _GestureType {
   pan,
   scale,
   rotate,
 }
 
-// Given a velocity and drag, calculate the time at which motion will come to
-// a stop, within the margin of effectivelyMotionless.
+/// Given a velocity and drag, calculate the time at which motion will come to
+/// a stop, within the margin of effectivelyMotionless.
 double _getFinalTime(double velocity, double drag) {
   const effectivelyMotionless = 10.0;
   return math.log(effectivelyMotionless / velocity) / math.log(drag / 100);
 }
 
-// Return the translation from the given Matrix4 as an Offset.
+/// Return the translation from the given Matrix4 as an Offset.
 Offset _getMatrixTranslation(Matrix4 matrix) {
   final nextTranslation = matrix.getTranslation();
   return Offset(nextTranslation.x, nextTranslation.y);
 }
 
-// Transform the four corners of the viewport by the inverse of the given
-// matrix. This gives the viewport after the child has been transformed by the
-// given matrix. The viewport transforms as the inverse of the child (i.e.
-// moving the child left is equivalent to moving the viewport right).
+/// Transform the four corners of the viewport by the inverse of the given
+/// matrix. This gives the viewport after the child has been transformed by the
+/// given matrix. The viewport transforms as the inverse of the child (i.e.
+/// moving the child left is equivalent to moving the viewport right).
 Quad _transformViewport(Matrix4 matrix, Rect viewport) {
   final inverseMatrix = matrix.clone()..invert();
   return Quad.points(
@@ -1115,8 +1133,8 @@ Quad _transformViewport(Matrix4 matrix, Rect viewport) {
   );
 }
 
-// Find the axis aligned bounding box for the rect rotated about its center by
-// the given amount.
+/// Find the axis aligned bounding box for the rect rotated about its center by
+/// the given amount.
 Quad _getAxisAlignedBoundingBoxWithRotation(Rect rect, double rotation) {
   final rotationMatrix = Matrix4.identity()
     ..translate(rect.size.width / 2, rect.size.height / 2)
@@ -1131,9 +1149,9 @@ Quad _getAxisAlignedBoundingBoxWithRotation(Rect rect, double rotation) {
   return ImagePainterTransformer.getAxisAlignedBoundingBox(boundariesRotated);
 }
 
-// Return the amount that viewport lies outside of boundary. If the viewport
-// is completely contained within the boundary (inclusively), then returns
-// Offset.zero.
+/// Return the amount that viewport lies outside of boundary. If the viewport
+/// is completely contained within the boundary (inclusively), then returns
+/// Offset.zero.
 Offset _exceedsBy(Quad boundary, Quad viewport) {
   final viewportPoints = <Vector3>[
     viewport.point0,
@@ -1160,8 +1178,8 @@ Offset _exceedsBy(Quad boundary, Quad viewport) {
   return _round(largestExcess);
 }
 
-// Round the output values. This works around a precision problem where
-// values that should have been zero were given as within 10^-10 of zero.
+/// Round the output values. This works around a precision problem where
+/// values that should have been zero were given as within 10^-10 of zero.
 Offset _round(Offset offset) {
   return Offset(
     double.parse(offset.dx.toStringAsFixed(9)),
@@ -1169,8 +1187,8 @@ Offset _round(Offset offset) {
   );
 }
 
-// Align the given offset to the given axis by allowing movement only in the
-// axis direction.
+/// Align the given offset to the given axis by allowing movement only in the
+/// axis direction.
 Offset _alignAxis(Offset offset, Axis? axis) {
   switch (axis) {
     case Axis.horizontal:
@@ -1181,8 +1199,8 @@ Offset _alignAxis(Offset offset, Axis? axis) {
   }
 }
 
-// Given two points, return the axis where the distance between the points is
-// greatest. If they are equal, return null.
+/// Given two points, return the axis where the distance between the points is
+/// greatest. If they are equal, return null.
 Axis? _getPanAxis(Offset? point1, Offset point2) {
   if (point1 == point2) {
     return null;

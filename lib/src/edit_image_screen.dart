@@ -3,16 +3,19 @@ import 'dart:io';
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/painter.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class EditImageScreen extends StatefulWidget {
-  dynamic id;
-  String? resource;
+  ///path of image
+  String? path;
+
+  /// color filter
   ColorFilter? filter;
+
+  ///function return the edited image path
   Function(dynamic)? onDone;
 
-  EditImageScreen({Key? key, this.id, this.resource, this.filter, this.onDone})
+  EditImageScreen({Key? key, this.path, this.filter, this.onDone})
       : super(key: key);
 
   @override
@@ -20,7 +23,7 @@ class EditImageScreen extends StatefulWidget {
 }
 
 class _EditImageScreenState extends State<EditImageScreen> {
-  RxBool update = false.obs;
+  /// image key
   final _imageKey = GlobalKey<ImagePainterState>();
 
   @override
@@ -29,15 +32,13 @@ class _EditImageScreenState extends State<EditImageScreen> {
       child: Scaffold(
         backgroundColor: Colors.black,
         body: ImagePainter.file(
-          File(widget.resource!),
+          File(widget.path!),
           key: _imageKey,
           scalable: true,
           filter: widget.filter,
           initialStrokeWidth: 2,
           onDone: widget.onDone,
           width: MediaQuery.of(context).size.width,
-
-          // textDelegate: DutchTextDelegate(),
           initialColor: Colors.green,
           initialPaintMode: PaintMode.freeStyle,
         ),

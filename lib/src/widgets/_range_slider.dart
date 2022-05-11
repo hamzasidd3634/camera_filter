@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 ///
 class RangedSlider extends StatelessWidget {
-  ///Range Slider widget for strokeWidth
+  ///Range Slider widget for stroke Width
   const RangedSlider({Key? key, this.value, this.onChanged}) : super(key: key);
 
-  ///Default value of strokewidth.
+  ///Default value of stroke width.
   final double? value;
 
   /// Callback for value change.
@@ -25,11 +25,11 @@ class RangedSlider extends StatelessWidget {
 
 ///
 class FontRangedSlider extends StatelessWidget {
-  ///Range Slider widget for strokeWidth
+  ///Range Slider widget for font size
   const FontRangedSlider({Key? key, this.value, this.onChanged})
       : super(key: key);
 
-  ///Default value of strokewidth.
+  ///Default value of font size.
   final double? value;
 
   /// Callback for value change.
