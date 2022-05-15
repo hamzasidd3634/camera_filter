@@ -7,3 +7,5 @@
 ## [0.0.4] - Bug Fixes
 
 ## [0.0.5] - Major Fixes and drawing add
+
+## [0.0.6] - Minor Bug Fixes
