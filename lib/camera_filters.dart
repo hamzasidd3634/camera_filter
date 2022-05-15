@@ -236,7 +236,7 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
               context,
               MaterialPageRoute(builder: (context) =>
             EditImageScreen(
-              resource: filePath,
+              path: filePath,
               filter: ColorFilter.mode(
                   widget.filterColor == null
                       ? _filterColor.value

@@ -263,7 +263,7 @@ class FilterItem extends StatelessWidget {
         aspectRatio: 1.0,
         child: ClipOval(
           child: Image.network(
-            'https://github.com/hamzasidd3634/camera_filter/blob/master/assets/grey.jpeg',
+            'https://github.com/hamzasidd3634/camera_filter/blob/master/assets/grey.jpeg?raw=true',
             color: color.withOpacity(0.5),
             fit: BoxFit.fill,
             colorBlendMode: BlendMode.hardLight,
