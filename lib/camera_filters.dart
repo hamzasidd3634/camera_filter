@@ -230,17 +230,17 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
       if (_controller.value.isInitialized) {
         if (filePath != null) {
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) =>
-            EditImageScreen(
-              path: filePath,
-              filter: ColorFilter.mode(
-                  widget.filterColor == null
-                      ? _filterColor.value
-                      : widget.filterColor!.value,
-                  BlendMode.softLight),
-              onDone: widget.onDone,
-            )),
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditImageScreen(
+                      path: filePath,
+                      filter: ColorFilter.mode(
+                          widget.filterColor == null
+                              ? _filterColor.value
+                              : widget.filterColor!.value,
+                          BlendMode.softLight),
+                      onDone: widget.onDone,
+                    )),
           );
         }
       }
