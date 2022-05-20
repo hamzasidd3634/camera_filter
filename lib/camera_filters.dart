@@ -119,19 +119,16 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.black,
-
-      /// if controller not initialized loader will show
       child: _initializeControllerFuture == null
           ? Center(child: CircularProgressIndicator())
           : Stack(
               children: [
                 Positioned.fill(
-                  /// future builder for filters
                   child: FutureBuilder<void>(
                     future: _initializeControllerFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        // If the Future is complete, display the preview.
+                        /// If the Future is complete, display the preview.
                         return ValueListenableBuilder(
                             valueListenable: widget.filterColor ?? _filterColor,
                             builder: (context, value, child) {
@@ -145,7 +142,7 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
                               );
                             });
                       } else {
-                        // Otherwise, display a loading indicator.
+                        /// Otherwise, display a loading indicator.
                         return const Center(child: CircularProgressIndicator());
                       }
                     },
@@ -244,7 +241,6 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
             ),
           );
         }
-        // });
       }
     });
   }
@@ -317,8 +313,8 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     /// 1
     _controller = CameraController(cameraDescription, ResolutionPreset.high);
 
-    /// If the controller is updated then update the UI.
     /// 2
+    /// If the controller is updated then update the UI.
     _controller.addListener(() {
       /// 3
       if (_controller.value.hasError) {

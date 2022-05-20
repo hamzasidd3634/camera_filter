@@ -42,7 +42,6 @@ class ImagePainter extends StatefulWidget {
       this.colorIcon,
       this.undoIcon,
       this.isSignature = false,
-      this.controlsAtTop = true,
       this.signatureBackgroundColor,
       this.colors,
       this.initialPaintMode,
@@ -413,10 +412,6 @@ class ImagePainter extends StatefulWidget {
 
   ///Widget for clearing all actions on control bar.
   final Widget? clearAllIcon;
-
-  ///Define where the controls is located.
-  ///`true` represents top.
-  final bool controlsAtTop;
 
   ///Initial PaintMode.
   final PaintMode? initialPaintMode;
