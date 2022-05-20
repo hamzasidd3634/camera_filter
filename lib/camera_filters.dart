@@ -229,7 +229,9 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
     takePicture(context).then((String? filePath) async {
       if (_controller.value.isInitialized) {
         if (filePath != null) {
-          Get.to(
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) =>
             EditImageScreen(
               path: filePath,
               filter: ColorFilter.mode(
@@ -238,7 +240,7 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
                       : widget.filterColor!.value,
                   BlendMode.softLight),
               onDone: widget.onDone,
-            ),
+            )),
           );
         }
       }
