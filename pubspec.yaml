@@ -25,6 +25,7 @@ dependencies:
   tapioca:
     path: ../camera_filters/package/tapioca-master
   video_trimmer: ^1.1.3
+  ffmpeg_kit_flutter: ^4.5.1
 
 
 dev_dependencies:

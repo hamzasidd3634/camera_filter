@@ -1062,62 +1062,119 @@ class TextDelegate {
   final String clearAllProgress = "Clear All Progress";
 }
 
-class GradientCircularProgressPainter extends CustomPainter {
-  GradientCircularProgressPainter({
+class GradientCircularProgressIndicator extends StatelessWidget {
+  final double? strokeWidth;
+  final bool? strokeRound;
+  final double? value;
+  final Color? backgroundColor;
+  final List<Color>? gradientColors;
+  final List<double>? gradientStops;
+  final double? radius;
+
+  /// Constructor require progress [radius] & gradient color range [gradientColors]
+  /// , option includes: circle width [strokeWidth], round support [strokeRound]
+  /// , progress background [backgroundColor].
+  ///
+  /// set progress with [value], 0.0 to 1.0.
+  GradientCircularProgressIndicator({
+    this.strokeWidth = 10.0,
+    this.strokeRound = false,
     required this.radius,
     required this.gradientColors,
-    required this.strokeWidth,
-    required this.value,
+    this.gradientStops,
+    this.backgroundColor = Colors.transparent,
+    this.value,
   });
-  final double radius;
-  final List<Color> gradientColors;
-  final double strokeWidth;
-  double value = 0.0;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var _colors = gradientColors;
+    if (_colors == null) {
+      Color color = Theme.of(context).primaryColor;
+      _colors = [color, color];
+    }
+
+    return Transform.rotate(
+      angle: -pi / 2,
+      child: CustomPaint(
+        size: Size.fromRadius(radius!),
+        painter: _GradientCircularProgressPainter(
+            strokeWidth: strokeWidth!,
+            strokeRound: strokeRound!,
+            backgroundColor: backgroundColor!,
+            gradientColors: _colors,
+            value: value!,
+            gradientStops: gradientStops,
+            radius: radius!),
+      ),
+    );
+  }
+}
+
+class _GradientCircularProgressPainter extends CustomPainter {
+  _GradientCircularProgressPainter({
+    this.strokeWidth,
+    this.strokeRound,
+    this.value,
+    this.backgroundColor = Colors.transparent,
+    this.gradientColors,
+    this.gradientStops,
+    this.radius,
+  });
+
+  final double? strokeWidth;
+  final bool? strokeRound;
+  final double? value;
+  final Color? backgroundColor;
+  final List<Color>? gradientColors;
+  final double? radius;
+
+  List<double>? gradientStops;
+  double? total = 2 * pi;
 
   @override
   void paint(Canvas canvas, Size size) {
-    size = Size.fromRadius(radius);
-    double offset = strokeWidth / 2;
-    Rect rect = Offset(offset, offset) &
-        Size(size.width - strokeWidth, size.height - strokeWidth);
+    if (radius != null) {
+      size = Size.fromRadius(radius!);
+    }
+
+    double _value = (value ?? .0);
+    _value = _value.clamp(.0, 1.0) * total!;
+    double _start = .0;
+
+    double _offset = strokeWidth! / 2;
+    Rect rect = Offset(_offset, _offset) &
+        Size(size.width - strokeWidth!, size.height - strokeWidth!);
+
     var paint = Paint()
+      ..strokeWidth = strokeWidth!
       ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth;
-    paint.shader =
-        SweepGradient(colors: gradientColors, startAngle: 0.0, endAngle: 2 * pi)
-            .createShader(rect);
-    canvas.drawArc(rect, value, 2 * pi, false, paint);
+      ..isAntiAlias = true;
+
+    if (backgroundColor != Colors.transparent) {
+      paint.color = backgroundColor!;
+      canvas.drawArc(rect, _start, total!, false, paint);
+    }
+
+    if (_value > 0) {
+      paint.shader = SweepGradient(
+              colors: gradientColors!,
+              startAngle: 0.0,
+              endAngle: _value,
+              stops: gradientStops)
+          .createShader(rect);
+
+      canvas.drawArc(rect, _start, _value, false, paint);
+    }
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
-  }
-}
-
-class GradientCircularProgressIndicator extends StatelessWidget {
-  final double radius;
-  final List<Color> gradientColors;
-  final double strokeWidth;
-  final double value;
-
-  GradientCircularProgressIndicator({
-    required this.radius,
-    required this.gradientColors,
-    required this.value,
-    this.strokeWidth = 10.0,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size.fromRadius(radius),
-      painter: GradientCircularProgressPainter(
-        radius: radius,
-        gradientColors: gradientColors,
-        strokeWidth: strokeWidth,
-        value: value,
-      ),
-    );
   }
 }

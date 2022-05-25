@@ -7,7 +7,9 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:camera_filters/src/edit_image_screen.dart';
 import 'package:camera_filters/src/filters.dart';
-import 'package:camera_filters/src/painter.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/ffprobe_kit.dart';
+import 'package:ffmpeg_kit_flutter/return_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -26,6 +28,9 @@ class CameraScreenPlugin extends StatefulWidget {
   /// notify color to change
   ValueNotifier<Color>? filterColor;
 
+  ///circular gradient color
+  List<Color>? gradientColors;
+
   /// profile widget if you want to use profile widget on camera
   Widget? profileIconWidget;
 
@@ -34,6 +39,7 @@ class CameraScreenPlugin extends StatefulWidget {
       this.onDone,
       this.filters,
       this.profileIconWidget,
+      this.gradientColors,
       this.filterColor})
       : super(key: key);
 
@@ -90,12 +96,12 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   void initState() {
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 30),
+      duration: const Duration(seconds: 5),
     )..addListener(() async {
         if (controller.value == 1) {
-          await videoRecording(context);
+          // await videoRecording(context);
           controller.reset();
-          await _controller.startVideoRecording();
+          // await _controller.startVideoRecording();
           controller.forward();
         }
         setState(() {});
@@ -403,36 +409,25 @@ class _CameraScreenState extends State<CameraScreenPlugin>
           alignment: Alignment.center,
           children: [
             Container(
-              width: 85,
-              height: 85,
+                width: 75,
+                height: 75,
+                child: CircularProgressIndicator(
+                  color: Colors.grey,
+                  value: 1,
+                  strokeWidth: 5,
+                )),
+            Container(
+              width: 75,
+              height: 75,
               child: CircularProgressIndicator(
-                color: Colors.grey,
-                value: 1,
-                strokeWidth: 10,
+                color: Colors.white,
+                value: controller.value,
+                strokeWidth: 5,
               ),
             ),
             Container(
-                width: 85,
-                height: 85,
-                child: GradientCircularProgressIndicator(
-                  gradientColors: [
-                    Color(0xD51820FF),
-                    Color(0xff4e0e11),
-                  ],
-                  value: controller.value,
-                  strokeWidth: 10,
-                  radius: 50,
-                )
-
-                // CircularProgressIndicator(
-                //   color: Colors.white,
-                //   value: controller.value,
-                //   strokeWidth: 10,
-                // ),
-                ),
-            Container(
-              width: 80,
-              height: 80,
+              width: 70,
+              height: 70,
               decoration: BoxDecoration(
                   color: Color(0xffd51820),
                   borderRadius: BorderRadius.circular(100)),
@@ -451,12 +446,46 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     }
     final String dirPath = getTemporaryDirectory().toString();
     String filePath = '$dirPath/${timestamp()}.jpg';
-
+    String? duration;
     try {
       final file = await _controller.stopVideoRecording();
-      GallerySaver.saveVideo(file.path).then((bool? success) {
-        print(success.toString());
+      FFprobeKit.getMediaInformation(file.path).then((sessions) async {
+        final information = await sessions.getMediaInformation();
+
+        if (information != null) {
+          duration = information.getDuration();
+          final dirPath = await getTemporaryDirectory();
+          String test = '${dirPath.path}/${timestamp()}.mp4';
+
+          var video =
+              FFmpegKit.execute("-i ${file.path} -ss 0 -c:v mpeg4 -t 5 $test")
+                  .then((session) async {
+            final returnCode = await session.getReturnCode();
+            final output = await session.getOutput();
+            print(output);
+            if (ReturnCode.isSuccess(returnCode)) {
+              File files = File(test);
+              GallerySaver.saveVideo(files.path).then((bool? success) {
+                print(success.toString());
+              });
+            } else if (ReturnCode.isCancel(returnCode)) {
+              print("cancel");
+            } else {
+              print("error");
+            }
+          }).catchError((error) {
+            print('Error');
+          });
+          print(video);
+        }
       });
+
+      // GallerySaver.saveVideo(file.path).then((bool? success) {
+      //   print(success.toString());
+      // });
+
+      //for(int i == 0; i < duration; i+=5){}
+
       return file.path;
       // filePath = await compressFile(File(file), takePicture: true);
       // Navigator.push(

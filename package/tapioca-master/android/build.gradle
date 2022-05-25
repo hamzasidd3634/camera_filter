@@ -1,5 +1,3 @@
-package android
-
 group 'me.anharu.video_editor'
 version '1.0-SNAPSHOT'
 
