@@ -1067,10 +1067,12 @@ class GradientCircularProgressPainter extends CustomPainter {
     required this.radius,
     required this.gradientColors,
     required this.strokeWidth,
+    required this.value,
   });
   final double radius;
   final List<Color> gradientColors;
   final double strokeWidth;
+  double value = 0.0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1084,11 +1086,38 @@ class GradientCircularProgressPainter extends CustomPainter {
     paint.shader =
         SweepGradient(colors: gradientColors, startAngle: 0.0, endAngle: 2 * pi)
             .createShader(rect);
-    canvas.drawArc(rect, 0.0, 2 * pi, false, paint);
+    canvas.drawArc(rect, value, 2 * pi, false, paint);
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class GradientCircularProgressIndicator extends StatelessWidget {
+  final double radius;
+  final List<Color> gradientColors;
+  final double strokeWidth;
+  final double value;
+
+  GradientCircularProgressIndicator({
+    required this.radius,
+    required this.gradientColors,
+    required this.value,
+    this.strokeWidth = 10.0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size.fromRadius(radius),
+      painter: GradientCircularProgressPainter(
+        radius: radius,
+        gradientColors: gradientColors,
+        strokeWidth: strokeWidth,
+        value: value,
+      ),
+    );
   }
 }

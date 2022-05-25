@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:camera_filters/src/edit_image_screen.dart';
 import 'package:camera_filters/src/filters.dart';
+import 'package:camera_filters/src/painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -411,14 +412,24 @@ class _CameraScreenState extends State<CameraScreenPlugin>
               ),
             ),
             Container(
-              width: 85,
-              height: 85,
-              child: CircularProgressIndicator(
-                color: Colors.white,
-                value: controller.value,
-                strokeWidth: 10,
-              ),
-            ),
+                width: 85,
+                height: 85,
+                child: GradientCircularProgressIndicator(
+                  gradientColors: [
+                    Color(0xD51820FF),
+                    Color(0xff4e0e11),
+                  ],
+                  value: controller.value,
+                  strokeWidth: 10,
+                  radius: 50,
+                )
+
+                // CircularProgressIndicator(
+                //   color: Colors.white,
+                //   value: controller.value,
+                //   strokeWidth: 10,
+                // ),
+                ),
             Container(
               width: 80,
               height: 80,
