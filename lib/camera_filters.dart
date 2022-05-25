@@ -3,6 +3,8 @@
 library camera_filters;
 
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
 import 'package:camera_filters/src/edit_image_screen.dart';
@@ -11,6 +13,7 @@ import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter/ffprobe_kit.dart';
 import 'package:ffmpeg_kit_flutter/return_code.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
@@ -73,6 +76,13 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   /// bool to change picture to video or video to picture
   RxBool? cameraChange = false.obs;
 
+  ///imageList
+  List<String>? imageList = [];
+
+  GlobalKey _globalKey = GlobalKey();
+
+  RxBool imageListUpdate = false.obs;
+
   ///list of filters color
   final _filters = [
     Colors.transparent,
@@ -101,6 +111,10 @@ class _CameraScreenState extends State<CameraScreenPlugin>
         if (controller.value == 1) {
           // await videoRecording(context);
           controller.reset();
+          takePicture(context).then((value) {
+            imageList!.add(value);
+            imageListUpdate(!imageListUpdate.value);
+          });
           // await _controller.startVideoRecording();
           controller.forward();
         }
@@ -165,7 +179,9 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                         ? _filterColor.value
                                         : widget.filterColor!.value,
                                     BlendMode.softLight),
-                                child: CameraPreview(_controller),
+                                child: RepaintBoundary(
+                                    key: _globalKey,
+                                    child: CameraPreview(_controller)),
                               );
                             });
                       } else {
@@ -392,48 +408,89 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   Widget videoRecordingWidget() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: GestureDetector(
-        onLongPress: () async {
-          // if(controller.value ){
+      child: Column(
+        children: [
+          SizedBox(
+            height: 30,
+            child: Obx(() {
+              return imageListUpdate.value == false
+                  ? ListView.builder(
+                      itemCount: imageList!.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3),
+                              border: Border.all(color: Colors.white),
+                              image: DecorationImage(
+                                image: FileImage(File(imageList![index])),
+                              )),
+                        );
+                      })
+                  : ListView.builder(
+                      itemCount: imageList!.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3),
+                              border: Border.all(color: Colors.white),
+                              image: DecorationImage(
+                                image: FileImage(File(imageList![index])),
+                              )),
+                        );
+                      });
+            }),
+          ),
+          SizedBox(
+            height: 3,
+          ),
+          GestureDetector(
+            onLongPress: () async {
+              // if(controller.value ){
 
-          await _controller.prepareForVideoRecording();
-          await _controller.startVideoRecording();
-          controller.forward();
-          // }
-        },
-        onLongPressEnd: (v) {
-          controller.reset();
-          videoRecording(context);
-        },
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-                width: 75,
-                height: 75,
-                child: CircularProgressIndicator(
-                  color: Colors.grey,
-                  value: 1,
-                  strokeWidth: 5,
-                )),
-            Container(
-              width: 75,
-              height: 75,
-              child: CircularProgressIndicator(
-                color: Colors.white,
-                value: controller.value,
-                strokeWidth: 5,
-              ),
+              await _controller.prepareForVideoRecording();
+              await _controller.startVideoRecording();
+              controller.forward();
+              // }
+            },
+            onLongPressEnd: (v) {
+              controller.reset();
+              videoRecording(context);
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                    width: 75,
+                    height: 75,
+                    child: CircularProgressIndicator(
+                      color: Colors.grey,
+                      value: 1,
+                      strokeWidth: 5,
+                    )),
+                Container(
+                  width: 75,
+                  height: 75,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    value: controller.value,
+                    strokeWidth: 5,
+                  ),
+                ),
+                Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                      color: Color(0xffd51820),
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              ],
             ),
-            Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                  color: Color(0xffd51820),
-                  borderRadius: BorderRadius.circular(100)),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -446,14 +503,14 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     }
     final String dirPath = getTemporaryDirectory().toString();
     String filePath = '$dirPath/${timestamp()}.jpg';
-    String? duration;
+
     try {
       final file = await _controller.stopVideoRecording();
       FFprobeKit.getMediaInformation(file.path).then((sessions) async {
         final information = await sessions.getMediaInformation();
 
         if (information != null) {
-          duration = information.getDuration();
+          String? duration = information.getDuration();
           final dirPath = await getTemporaryDirectory();
           String test = '${dirPath.path}/${timestamp()}.mp4';
 
@@ -497,5 +554,26 @@ class _CameraScreenState extends State<CameraScreenPlugin>
           .showSnackBar(SnackBar(content: Text('Error: ${e.description}')));
     }
     return filePath;
+  }
+
+  convertImage() async {
+    RenderRepaintBoundary boundary =
+        _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+    //create file
+    // String dir = (await getApplicationDocumentsDirectory()).path;
+    // String fullPath = '$dir/${DateTime.now().millisecond}.png';
+    // capturedFile = File(fullPath);
+    // await capturedFile!.writeAsBytes(pngBytes);
+    // print("path is " + capturedFile!.path.toString());
+    // BotToast.showText(text: "Image is converted");
+    //
+    // controller.isConverted = true;
+    // controller.isLoader = false;
+    //
+    // controller.update();
   }
 }
