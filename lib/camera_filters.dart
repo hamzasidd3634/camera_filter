@@ -9,6 +9,7 @@ import 'package:camera_filters/src/edit_image_screen.dart';
 import 'package:camera_filters/src/filters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image/image.dart' as imglib;
@@ -39,7 +40,11 @@ class CameraScreenPlugin extends StatefulWidget {
   _CameraScreenState createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreenPlugin> {
+class _CameraScreenState extends State<CameraScreenPlugin>
+    with TickerProviderStateMixin {
+  ///animation controller for circular progress indicator
+  late AnimationController controller;
+
   /// Camera Controller
   late CameraController _controller;
 
@@ -57,6 +62,9 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
 
   /// camera list, this list will tell user that he/she is on front camera or back
   List<CameraDescription> cameras = [];
+
+  /// bool to change picture to video or video to picture
+  RxBool? cameraChange = false.obs;
 
   ///list of filters color
   final _filters = [
@@ -79,6 +87,18 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
 
   @override
   void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 30),
+    )..addListener(() async {
+        if (controller.value == 1) {
+          await videoRecording(context);
+          controller.reset();
+          await _controller.startVideoRecording();
+          controller.forward();
+        }
+        setState(() {});
+      });
     super.initState();
     if (sp.read("flashCount") != null) {
       flashCount.value = sp.read("flashCount");
@@ -152,7 +172,13 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
                   left: 0.0,
                   right: 0.0,
                   bottom: 0.0,
-                  child: _buildFilterSelector(),
+                  child: Obx(() {
+                    if (cameraChange!.value == false) {
+                      return _buildFilterSelector();
+                    } else {
+                      return videoRecordingWidget();
+                    }
+                  }),
                 ),
                 Positioned(
                   right: 10.0,
@@ -215,7 +241,29 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
                             _initCameraController(selectedCamera);
                           }
                         },
-                      )
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+
+                      Obx(() {
+                        return IconButton(
+                          icon: Icon(
+                            cameraChange!.value == false
+                                ? Icons.videocam
+                                : Icons.camera,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (cameraChange!.value == false) {
+                              cameraChange!(true);
+                              _controller.prepareForVideoRecording();
+                            } else {
+                              cameraChange!(false);
+                            }
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -331,5 +379,83 @@ class _CameraScreenState extends State<CameraScreenPlugin> {
       print(e);
     }
     setState(() {});
+  }
+
+  ///video recording function
+  Widget videoRecordingWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: GestureDetector(
+        onLongPress: () async {
+          // if(controller.value ){
+
+          await _controller.prepareForVideoRecording();
+          await _controller.startVideoRecording();
+          controller.forward();
+          // }
+        },
+        onLongPressEnd: (v) {
+          controller.reset();
+          videoRecording(context);
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: 85,
+              height: 85,
+              child: CircularProgressIndicator(
+                color: Colors.grey,
+                value: 1,
+                strokeWidth: 10,
+              ),
+            ),
+            Container(
+              width: 85,
+              height: 85,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                value: controller.value,
+                strokeWidth: 10,
+              ),
+            ),
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                  color: Color(0xffd51820),
+                  borderRadius: BorderRadius.circular(100)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// function will call when user take picture
+  Future<String> videoRecording(context) async {
+    if (!_controller.value.isInitialized) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: camera is not initialized')));
+    }
+    final String dirPath = getTemporaryDirectory().toString();
+    String filePath = '$dirPath/${timestamp()}.jpg';
+
+    try {
+      final file = await _controller.stopVideoRecording();
+      GallerySaver.saveVideo(file.path).then((bool? success) {
+        print(success.toString());
+      });
+      return file.path;
+      // filePath = await compressFile(File(file), takePicture: true);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => VideoPlayer(file.path)),
+      // );
+    } on CameraException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error: ${e.description}')));
+    }
+    return filePath;
   }
 }
