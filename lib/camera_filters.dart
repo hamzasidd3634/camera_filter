@@ -111,10 +111,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
         if (controller.value == 1) {
           // await videoRecording(context);
           controller.reset();
-          takePicture(context).then((value) {
-            imageList!.add(value);
-            imageListUpdate(!imageListUpdate.value);
-          });
+          convertImage();
           // await _controller.startVideoRecording();
           controller.forward();
         }
@@ -411,7 +408,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
       child: Column(
         children: [
           SizedBox(
-            height: 30,
+            height: 32,
             child: Obx(() {
               return imageListUpdate.value == false
                   ? ListView.builder(
@@ -419,13 +416,32 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(3),
-                              border: Border.all(color: Colors.white),
-                              image: DecorationImage(
-                                image: FileImage(File(imageList![index])),
-                              )),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditImageScreen(
+                                        path: imageList![index],
+                                        filter: ColorFilter.mode(
+                                            widget.filterColor == null
+                                                ? _filterColor.value
+                                                : widget.filterColor!.value,
+                                            BlendMode.softLight),
+                                        onDone: widget.onDone,
+                                      )),
+                            );
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3),
+                                border: Border.all(color: Colors.white),
+                                image: DecorationImage(
+                                  image: FileImage(File(imageList![index])),
+                                )),
+                          ),
                         );
                       })
                   : ListView.builder(
@@ -433,13 +449,32 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(3),
-                              border: Border.all(color: Colors.white),
-                              image: DecorationImage(
-                                image: FileImage(File(imageList![index])),
-                              )),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditImageScreen(
+                                        path: imageList![index],
+                                        filter: ColorFilter.mode(
+                                            widget.filterColor == null
+                                                ? _filterColor.value
+                                                : widget.filterColor!.value,
+                                            BlendMode.softLight),
+                                        onDone: widget.onDone,
+                                      )),
+                            );
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3),
+                                border: Border.all(color: Colors.white),
+                                image: DecorationImage(
+                                  image: FileImage(File(imageList![index])),
+                                )),
+                          ),
                         );
                       });
             }),
@@ -512,10 +547,10 @@ class _CameraScreenState extends State<CameraScreenPlugin>
         if (information != null) {
           String? duration = information.getDuration();
           final dirPath = await getTemporaryDirectory();
-          String test = '${dirPath.path}/${timestamp()}.mp4';
+          String test = '${dirPath.path}/${timestamp()}.png';
 
           var video =
-              FFmpegKit.execute("-i ${file.path} -ss 0 -c:v mpeg4 -t 5 $test")
+              FFmpegKit.execute("-i ${file.path} -ss 0 -c:v mjpeg4 $test")
                   .then((session) async {
             final returnCode = await session.getReturnCode();
             final output = await session.getOutput();
@@ -564,16 +599,12 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     Uint8List pngBytes = byteData!.buffer.asUint8List();
 
     //create file
-    // String dir = (await getApplicationDocumentsDirectory()).path;
-    // String fullPath = '$dir/${DateTime.now().millisecond}.png';
-    // capturedFile = File(fullPath);
-    // await capturedFile!.writeAsBytes(pngBytes);
-    // print("path is " + capturedFile!.path.toString());
-    // BotToast.showText(text: "Image is converted");
-    //
-    // controller.isConverted = true;
-    // controller.isLoader = false;
-    //
-    // controller.update();
+    File? capturedFile;
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    String fullPath = '$dir/${DateTime.now().millisecond}.png';
+    capturedFile = File(fullPath);
+    await capturedFile.writeAsBytes(pngBytes);
+    imageList!.add(capturedFile.path);
+    imageListUpdate(!imageListUpdate.value);
   }
 }
