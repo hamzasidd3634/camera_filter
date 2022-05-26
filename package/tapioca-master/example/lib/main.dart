@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:tapioca/tapioca.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:tapioca/tapioca.dart';
 import 'package:video_player/video_player.dart';
 
 void main() => runApp(MyApp());
@@ -26,15 +27,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   _pickVideo() async {
-
     try {
       final ImagePicker _picker = ImagePicker();
       XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
       if (video != null) {
-      setState(() {
-      _video = video;
-      isLoading = true;
-      });
+        setState(() {
+          _video = video;
+          isLoading = true;
+        });
       }
     } catch (error) {
       print(error);
@@ -45,56 +45,78 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
+      theme: ThemeData(
+        brightness: Brightness.light,
+      ),
+      builder: (context, child) {
+        child = ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: child!,
+        );
+
+        return child;
+      },
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
         body: Center(
-            child: isLoading ? CircularProgressIndicator() : ElevatedButton(
-          child: Text("Pick a video and Edit it"),
-          onPressed: () async {
-            print("clicked!");
-            await _pickVideo();
-            var tempDir = await getTemporaryDirectory();
-            final path = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
-            print(tempDir);
-            final imageBitmap =
-                (await rootBundle.load("assets/tapioca_drink.png"))
-                    .buffer
-                    .asUint8List();
-            try {
-              final tapiocaBalls = [
-                TapiocaBall.filter(Filters.pink),
-                TapiocaBall.imageOverlay(imageBitmap, 300, 300),
-                TapiocaBall.textOverlay(
-                    "text", 100, 10, 100, Color(0xffffc0cb)),
-              ];
-                final cup = Cup(Content(_video.path), tapiocaBalls);
-                cup.suckUp(path).then((_) async {
-                  print("finished");
-                  print(path);
-                  GallerySaver.saveVideo(path).then((bool? success) {
-                    print(success.toString());
-                  });
-                  final currentState = navigatorKey.currentState;
-                  if (currentState != null) {
-                    currentState.push(
-                      MaterialPageRoute(builder: (context) =>
-                          VideoScreen(path)),
-                    );
-                  }
+            child: isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    child: Text("Pick a video and Edit it"),
+                    onPressed: () async {
+                      print("clicked!");
+                      await _pickVideo();
+                      var tempDir = await getTemporaryDirectory();
+                      final path =
+                          '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
+                      print(tempDir);
+                      final imageBitmap =
+                          (await rootBundle.load("assets/tapioca_drink.png"))
+                              .buffer
+                              .asUint8List();
+                      try {
+                        final tapiocaBalls = [
+                          TapiocaBall.filter(Filters.pink),
+                          TapiocaBall.imageOverlay(imageBitmap, 300, 300),
+                          TapiocaBall.textOverlay(
+                              "text", 100, 10, 100, Color(0xffffc0cb)),
+                        ];
+                        final cup = Cup(Content(_video.path), tapiocaBalls);
+                        cup.suckUp(path).then((_) async {
+                          print("finished");
+                          print(path);
+                          GallerySaver.saveVideo(path).then((bool? success) {
+                            print(success.toString());
+                          });
+                          final currentState = navigatorKey.currentState;
+                          if (currentState != null) {
+                            currentState.push(
+                              MaterialPageRoute(
+                                  builder: (context) => VideoScreen(path)),
+                            );
+                          }
 
-                  setState(() {
-                    isLoading = false;
-                  });
-                });
-            } on PlatformException {
-              print("error!!!!");
-            }
-          },
-        )),
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
+                      } on PlatformException {
+                        print("error!!!!");
+                      }
+                    },
+                  )),
       ),
     );
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }
 

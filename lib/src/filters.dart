@@ -10,6 +10,7 @@ class FilterSelector extends StatefulWidget {
     required this.filters,
     required this.onFilterChanged,
     required this.onTap,
+    this.onVideoFilter = false,
     this.padding = const EdgeInsets.symmetric(vertical: 24.0),
   }) : super(key: key);
 
@@ -23,6 +24,9 @@ class FilterSelector extends StatefulWidget {
 
   /// when you tap on filter this on tap will call
   final GestureTapCallback? onTap;
+
+  /// filter for camera or video condition
+  final bool? onVideoFilter;
 
   @override
   _FilterSelectorState createState() => _FilterSelectorState();
@@ -100,10 +104,13 @@ class _FilterSelectorState extends State<FilterSelector> {
               children: [
                 _buildShadowGradient(itemSize),
                 _buildCarousel(
+                  onVideoFilter: widget.onVideoFilter!,
                   viewportOffset: viewportOffset,
                   itemSize: itemSize,
                 ),
-                _buildSelectionRing(itemSize),
+                widget.onVideoFilter == true
+                    ? Container()
+                    : _buildSelectionRing(itemSize),
               ],
             );
           },
@@ -135,6 +142,7 @@ class _FilterSelectorState extends State<FilterSelector> {
   Widget _buildCarousel({
     required ViewportOffset viewportOffset,
     required double itemSize,
+    required bool onVideoFilter,
   }) {
     return Container(
       height: itemSize,
@@ -147,6 +155,7 @@ class _FilterSelectorState extends State<FilterSelector> {
         children: [
           for (int i = 0; i < filterCount; i++)
             FilterItem(
+              onVideoFilter: onVideoFilter,
               onFilterSelected: () => _onFilterTapped(i),
               color: itemColor(i),
             ),
@@ -249,27 +258,31 @@ class FilterItem extends StatelessWidget {
   const FilterItem({
     Key? key,
     required this.color,
+    required this.onVideoFilter,
     this.onFilterSelected,
   }) : super(key: key);
 
   final Color color;
+  final bool onVideoFilter;
   final VoidCallback? onFilterSelected;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onFilterSelected,
-      child: AspectRatio(
-        aspectRatio: 1.0,
-        child: ClipOval(
-          child: Image.network(
-            'https://github.com/hamzasidd3634/camera_filter/blob/master/assets/grey.jpeg?raw=true',
-            color: color.withOpacity(0.5),
-            fit: BoxFit.fill,
-            colorBlendMode: BlendMode.hardLight,
-          ),
-        ),
-      ),
+      child: onVideoFilter == true
+          ? Container()
+          : AspectRatio(
+              aspectRatio: 1.0,
+              child: ClipOval(
+                child: Image.network(
+                  'https://github.com/hamzasidd3634/camera_filter/blob/master/assets/grey.jpeg?raw=true',
+                  color: color.withOpacity(0.5),
+                  fit: BoxFit.fill,
+                  colorBlendMode: BlendMode.hardLight,
+                ),
+              ),
+            ),
     );
   }
 }
