@@ -813,31 +813,35 @@ class ImagePainterState extends State<ImagePainter> {
   }
 
   colorPicker(controller) {
-    return Get.dialog(AlertDialog(
-      title: const Text('Pick a color!'),
-      content: SingleChildScrollView(
-        child: ColorPicker(
-          pickerColor: Color(controller.color.value),
-          onColorChanged: (color) {
-            _controller.value = controller.copyWith(color: color);
-            if (widget.onColorChanged != null) {
-              widget.onColorChanged!(color);
-            }
-            fontColor = color;
-            setState(() {});
-            // Navigator.pop(context);
-          },
-        ),
-      ),
-      actions: <Widget>[
-        ElevatedButton(
-          child: const Text('Ok'),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ],
-    ));
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Pick a color!'),
+            content: SingleChildScrollView(
+              child: ColorPicker(
+                pickerColor: Color(controller.color.value),
+                onColorChanged: (color) {
+                  _controller.value = controller.copyWith(color: color);
+                  if (widget.onColorChanged != null) {
+                    widget.onColorChanged!(color);
+                  }
+                  fontColor = color;
+                  setState(() {});
+                  // Navigator.pop(context);
+                },
+              ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text('Ok'),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   void _openTextDialog() {

@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:ui';
+
 import 'package:better_player/better_player.dart';
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/filters.dart';
@@ -18,6 +20,7 @@ import 'package:tapioca/tapioca.dart';
 class VideoPlayer extends StatefulWidget {
   String? video;
   Function(dynamic)? onVideoDone;
+
   VideoPlayer(this.video, {this.onVideoDone});
 
   @override
@@ -31,11 +34,15 @@ class _VideoPlayersState extends State<VideoPlayer> {
   late TextDelegate textDelegate;
   late final ValueNotifier<Controller> _controller;
   final TextEditingController _textEditingController = TextEditingController();
-
+  double new_x = 0.0;
+  double new_y = 0.0;
   double fontSize = 28;
   RxBool dragText = false.obs;
   RxBool textFieldBool = false.obs;
   Offset offset = Offset.zero;
+  int? x;
+  int? y;
+
   String text = '';
   RxInt colorValue = 0xff443a49.obs;
   Color fontColor = Colors.green;
@@ -203,24 +210,33 @@ class _VideoPlayersState extends State<VideoPlayer> {
                           : (offset.dy +
                                   (MediaQuery.of(context).size.height / 100))
                               .floor();
-                      print(dy);
-                      print(dx);
+                      print(xPos);
+                      print(yPos);
+                      print("maakichu");
+                      print(_filterColor.value.value);
                       String command =
                           "-y, -i, ${widget.video!}, -filter_complex, [0:v][1:v]overlay=main_w-overlay_w-5:5,drawtext=fontsize=${fontSize.floor()}:x=${offset.dx}:y=${offset.dy}:text=$text:enable='between(t\,1\,2)', -crf, 27, -preset, veryfast, -c:v, libx264, -r, 30, $path";
                       try {
+                        var a = 1.5 * int.parse(xPos.toString().split(".")[0]);
+                        var b = 1.5 * int.parse(yPos.toString().split(".")[0]);
                         final tapiocaBalls = [
-                          TapiocaBall.filterFromColor(
-                              Color(_filterColor.value.value)),
-                          TapiocaBall.textOverlay(text, 300, 700,
-                              fontSize.floor(), Color(colorValue.value)),
+                          // TapiocaBall.filterFromColor(
+                          //     Color(_filterColor.value.value)),
+                          TapiocaBall.textOverlay(
+                              text,
+                              int.parse(a.toString().split(".")[0]),
+                              int.parse(b.toString().split(".")[0]),
+                              60,
+                              Colors.white),
                         ];
+
                         final cup = Cup(Content(widget.video!), tapiocaBalls);
                         cup.suckUp(path).then((_) async {
                           print("finished");
                           GallerySaver.saveVideo(path).then((bool? success) {
                             print(success.toString());
                           });
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Player(
@@ -337,35 +353,183 @@ class _VideoPlayersState extends State<VideoPlayer> {
     );
   }
 
+  var xPos = 30.0;
+  var yPos = 30.0;
+  final width = 100.0;
+  final height = 100.0;
+  bool _dragging = false;
+
+  /// Is the point (x, y) inside the rect?
+  bool _insideRect(double x, double y) =>
+      x >= xPos && x <= xPos + width && y >= yPos && y <= yPos + height;
   Widget positionedText() {
-    return Positioned(
-      left: offset.dx,
-      top: offset.dy,
-      child: GestureDetector(
-          onPanUpdate: (details) {
-            offset = Offset(
-                offset.dx + details.delta.dx, offset.dy + details.delta.dy);
-            // print(offset.dx.isNegative ? offset.dx * -2 : offset.dx * 2);
-            print(offset.dy.isNegative
-                ? -offset.dy + (MediaQuery.of(context).size.height / 100)
-                : offset.dy + (MediaQuery.of(context).size.height / 100));
-            dragText(!dragText.value);
-          },
-          child: SizedBox(
-            width: 300,
-            height: 300,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Obx(() => Text(text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize,
-                        color: Color(colorValue.value)))),
-              ),
-            ),
-          )),
+    double baseWidth = window.physicalSize.width;
+    double baseHeight = window.physicalSize.height;
+
+    double newWidth = MediaQuery.of(context).size.width;
+    double newHeight = MediaQuery.of(context).size.height;
+
+    return GestureDetector(
+      onPanStart: (details) => _dragging = _insideRect(
+        details.globalPosition.dx,
+        details.globalPosition.dy,
+      ),
+      onPanEnd: (details) {
+        _dragging = false;
+      },
+      onPanUpdate: (details) {
+        if (_dragging) {
+          setState(() {
+            xPos += details.delta.dx;
+            yPos += details.delta.dy;
+          });
+        }
+      },
+      child: CustomPaint(
+        painter: MyPainter(xPos, yPos, text),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(8.0),
+          //     child: Center(
+          //       child: Obx(() => Text(text,
+          //           textAlign: TextAlign.center,
+          //           style: TextStyle(
+          //               fontWeight: FontWeight.bold,
+          //               fontSize: fontSize,
+          //               color: Color(colorValue.value)))),
+          //     ),
+          //   ),
+        ),
+      ),
     );
+  }
+}
+// Positioned(
+//   left: offset.dx,
+//   top: offset.dy,
+//   child: GestureDetector(
+//     onPanUpdate: (details) {
+//       offset = Offset(
+//           offset.dx + details.delta.dx, offset.dy + details.delta.dy);
+//       new_x = offset.dx *
+//           (baseWidth / newWidth); //(baseWidth * offset.dx) / 480;
+//       new_y = offset.dy *
+//           (baseHeight / newHeight); //(baseWidth * offset.dy) / 960;
+//       print("new x ${offset.distance}");
+//       print("new y ${offset.dx / offset.direction}");
+//       print(MediaQueryData.fromWindow(window).size.width);
+//       print(MediaQueryData.fromWindow(window).size.height);
+//
+//       var xcan = ((MediaQueryData.fromWindow(window).size.width));
+//       var ycan = (MediaQueryData.fromWindow(window).size.height);
+//       // offset = details.delta;
+//       // var A = Offset.fromDirection(offset.direction);
+//       var xDistance =
+//           sqrt(((xcan - details.delta.dx) * (xcan - details.delta.dx)));
+//       var yDistance =
+//           sqrt(((ycan - details.delta.dy) * (ycan - details.delta.dy)));
+//       var distance = sqrt(
+//           ((xcan - details.delta.dx) * (xcan - details.delta.dx)) +
+//               ((ycan - details.delta.dy) * (ycan - details.delta.dy)));
+//       print(details.delta);
+//       print(distance);
+//       print(xDistance);
+//       print(yDistance);
+//       var y = (sin(pi / 180) * distance);
+//       var x = (cos(pi / 180) * distance);
+//       print(x);
+//       print(y);
+//       // this.x = x;
+//       // this.y = y;
+//       // offset = Offset(y.toDouble(), x.toDouble());
+//       print("asdasdads");
+//
+//       dragText(!dragText.value);
+//       // print("new x ${new_x}");
+//       // print("new y ${new_y}");
+//       // print(
+//       //     "new x ${window.physicalSize.width / window.}");
+//       // print("new y ${new_y}");
+//       // print(offset.dx.isNegative ? offset.dx * -2 : offset.dx * 2);
+//       dragText(!dragText.value);
+//     },
+//     // child:
+//     //   Draggable(
+//     // onDragEnd: (details) {
+//     //
+//     // },
+//     // feedback: SizedBox(
+//     //   width: MediaQuery.of(context).size.width,
+//     //   height: MediaQuery.of(context).size.height,
+//     //   child: Padding(
+//     //     padding: const EdgeInsets.all(8.0),
+//     //     child: Center(
+//     //       child: Obx(() => Text(text,
+//     //           textAlign: TextAlign.center,
+//     //           style: TextStyle(
+//     //               fontWeight: FontWeight.bold,
+//     //               fontSize: fontSize,
+//     //               color: Color(colorValue.value)))),
+//     //     ),
+//     //   ),
+//     // ),
+//     child: SizedBox(
+//       width: MediaQuery.of(context).size.width,
+//       height: MediaQuery.of(context).size.height,
+//       child: Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Center(
+//           child: Obx(() => Text(text,
+//               textAlign: TextAlign.center,
+//               style: TextStyle(
+//                   fontWeight: FontWeight.bold,
+//                   fontSize: fontSize,
+//                   color: Color(colorValue.value)))),
+//         ),
+//       ),
+//     ),
+//   )
+//   // ),
+//   );
+// }
+// }
+
+class MyPainter extends CustomPainter {
+  //         <-- CustomPainter class
+
+  MyPainter(this.xPos, this.yPos, this.text);
+  final double xPos;
+  final double yPos;
+  final String text;
+  @override
+  void paint(Canvas canvas, Size size) {
+    //                                             <-- Insert your painting code here.
+    final textStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 30,
+    );
+    final textSpan = TextSpan(
+      text: '$text',
+      style: textStyle,
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout(
+      minWidth: 0,
+      maxWidth: size.width,
+    );
+    final xCenter = (size.width - textPainter.width) / 2;
+    final yCenter = (size.height - textPainter.height) / 2;
+    final offset = Offset(xPos, yPos);
+    textPainter.paint(canvas, offset);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    return false;
   }
 }
