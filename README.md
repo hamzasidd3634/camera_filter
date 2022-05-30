@@ -17,17 +17,17 @@ Add two rows to the ios/Runner/Info.plist:
 * one with the key Privacy - Camera Usage Description and a usage description.
 * and one with the key Privacy - Microphone Usage Description and a usage description.
 If editing Info.plist as text, add:
-
+```yaml
     <key>NSCameraUsageDescription</key>
     <string>your usage description here</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>your usage description here</string>
-
+```
 # Android
 * Change the minimum Android sdk version to 21 (or higher) in your android/app/build.gradle file.
-
+```yaml
     minSdkVersion 21
-
+```
 # Usage
 
 
