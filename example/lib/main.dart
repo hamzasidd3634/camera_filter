@@ -16,9 +16,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Camera'),
-        ),
         body: CameraScreenPlugin(onDone: (value) {
           /// value returns the picture path you can save here or navigate to some screen
           print(value);

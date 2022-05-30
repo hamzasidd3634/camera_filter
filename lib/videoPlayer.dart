@@ -4,6 +4,7 @@ import 'package:better_player/better_player.dart';
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/painter.dart';
 import 'package:camera_filters/src/widgets/_range_slider.dart';
+import 'package:camera_filters/src/widgets/progressDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -56,6 +57,8 @@ class _VideoPlayersState extends State<VideoPlayer> {
   void _onFilterChanged(Color value) {
     _filterColor.value = value;
   }
+
+  ProgressDialog? progressDialog;
 
   /// widget will build the filter selector
   Widget _buildFilterSelector() {
@@ -119,6 +122,7 @@ class _VideoPlayersState extends State<VideoPlayer> {
 
   @override
   void initState() {
+    progressDialog = ProgressDialog(context);
     _controller = ValueNotifier(const Controller().copyWith(
         mode: PaintMode.freeStyle, strokeWidth: 2, color: Colors.white));
     textDelegate = TextDelegate();
@@ -322,9 +326,11 @@ class _VideoPlayersState extends State<VideoPlayer> {
   }
 
   makeVideo(tapiocaBalls, path) {
+    progressDialog!.show();
     final cup = Cup(Content(widget.video!), tapiocaBalls);
     cup.suckUp(path).then((_) async {
       print("finished");
+      progressDialog!.hide();
       widget.onVideoDone!.call(path);
       // GallerySaver.saveVideo(path).then((bool? success) {
       //   print(success.toString());
