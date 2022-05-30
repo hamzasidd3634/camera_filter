@@ -81,7 +81,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   List<CameraDescription> cameras = [];
 
   /// bool to change picture to video or video to picture
-  RxBool? cameraChange = true.obs;
+  RxBool? cameraChange = false.obs;
 
   AnimationController? _rotationController;
   double _rotation = 0;
@@ -124,13 +124,6 @@ class _CameraScreenState extends State<CameraScreenPlugin>
       vsync: this,
       duration: const Duration(seconds: 3500),
     )..addListener(() async {
-        // if (controller.value == 1) {
-        //   // await videoRecording(context);
-        //   controller.reset();
-        //   // convertImage();
-        //   // await _controller.startVideoRecording();
-        //   controller.forward();
-        // }
         setState(_updateScale);
       });
     _rotationController =
@@ -362,11 +355,18 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     );
   }
 
+  flashCheck() {
+    if (sp.read("flashCount") == 1) {
+      _controller.setFlashMode(FlashMode.off);
+    }
+  }
+
   /// function will call when user tap on picture button
   void onTakePictureButtonPressed(context) {
     takePicture(context).then((String? filePath) async {
       if (_controller.value.isInitialized) {
         if (filePath != null) {
+          flashCheck();
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -379,7 +379,11 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                           BlendMode.softLight),
                       onDone: widget.onDone,
                     )),
-          );
+          ).then((value) {
+            if (sp.read("flashCount") == 1) {
+              _controller.setFlashMode(FlashMode.torch);
+            }
+          });
         }
       }
     });
@@ -492,6 +496,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
           controller.reset();
           _rotationController!.reset();
           final file = await _controller.stopVideoRecording();
+          flashCheck();
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -499,7 +504,11 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       file.path,
                       onVideoDone: widget.onVideoDone,
                     )),
-          );
+          ).then((value) {
+            if (sp.read("flashCount") == 1) {
+              _controller.setFlashMode(FlashMode.torch);
+            }
+          });
         },
         child: Container(
           width: 70,
@@ -544,130 +553,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
             ),
           ),
         ),
-
-        // Stack(
-        //   alignment: Alignment.center,
-        //   children: [
-        //     Container(
-        //         width: 75,
-        //         height: 75,
-        //         child: CircularProgressIndicator(
-        //           color: Colors.grey,
-        //           value: 1,
-        //           strokeWidth: 5,
-        //         )),
-        //     Container(
-        //       width: 75,
-        //       height: 75,
-        //       child: CircularProgressIndicator(
-        //         color: Colors.white,
-        //         value: controller.value,
-        //         strokeWidth: 5,
-        //       ),
-        //     ),
-        //     Container(
-        //       width: 70,
-        //       height: 70,
-        //       decoration: BoxDecoration(
-        //           color: Color(0xffd51820),
-        //           borderRadius: BorderRadius.circular(100)),
-        //     ),
-        //   ],
-        // ),
       ),
     );
   }
-
-  // /// function will call when user take picture
-  // Future<String> videoRecording(context) async {
-  //   String videoCommand = "";
-  //   for (int i = 0; i < videoList!.length; i++) {
-  //     videoCommand = videoCommand + videoList![i];
-  //   }
-  //   if (!_controller.value.isInitialized) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Error: camera is not initialized')));
-  //   }
-  //
-  //   try {
-  //     final file = await _controller.stopVideoRecording();
-  //     FFprobeKit.getMediaInformation(file.path).then((sessions) async {
-  //       final information = await sessions.getMediaInformation();
-  //
-  //       if (information != null) {
-  //         String? duration = information.getDuration();
-  //         final dirPath = await getTemporaryDirectory();
-  //         String test = '${dirPath.path}/${timestamp()}.mp4';
-  //         // String command = "select='not(mod(n,300))',setpts='N/(30*TB)'";
-  //         // String ssEvery10Sec = "-i ${file.path} -vf $command -f image2$test";
-  //         String commandToExecute =
-  //             '${videoCommand} -filter_complex -filter_complex "concat=n=${videoList!.length}:v=0:a=1" -vn -y $test';
-  //         var video = FFmpegKit.execute(commandToExecute
-  //                 // "-i ${file.path} -ss 0 -c:v mpeg4 -t 5 $test"
-  //                 // "-i ${file.path} -ss 1 -frames:v 1 $test"
-  //                 )
-  //             .then((session) async {
-  //           final returnCode = await session.getReturnCode();
-  //           final output = await session.getOutput();
-  //           print(output);
-  //           if (ReturnCode.isSuccess(returnCode)) {
-  //             File files = File(test);
-  //             GallerySaver.saveVideo(files.path).then((bool? success) {
-  //               Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                     builder: (context) => VideoPlayer(files.path)),
-  //               );
-  //             });
-  //           } else if (ReturnCode.isCancel(returnCode)) {
-  //             print("cancel");
-  //           } else {
-  //             print("error");
-  //           }
-  //         }).catchError((error) {
-  //           print('Error');
-  //         });
-  //         print(video);
-  //       }
-  //     });
-  //
-  //     // GallerySaver.saveVideo(file.path).then((bool? success) {
-  //     //   print(success.toString());
-  //     // });
-  //
-  //     //for(int i == 0; i < duration; i+=5){}
-  //
-  //     return file.path;
-  //     // filePath = await compressFile(File(file), takePicture: true);
-  //
-  //   } on CameraException catch (e) {
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(SnackBar(content: Text('Error: ${e.description}')));
-  //   }
-  //   return "";
-  // }
-
-  // convertImage() async {
-  //   if (!_controller.value.isInitialized) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Error: camera is not initialized')));
-  //   }
-  //   final String dirPath = getTemporaryDirectory().toString();
-  //   String filePath = '$dirPath/${timestamp()}.jpg';
-  //   //
-  //
-  //   try {
-  //     final file = await _controller.stopVideoRecording();
-  //     videoList!.add("-i " + file.path + " ");
-  //     await _controller.takePicture().then((file) async {
-  //       await _controller.startVideoRecording();
-  //       imageList!.add(file.path);
-  //       imageListUpdate(!imageListUpdate.value);
-  //     });
-  //   } on CameraException catch (e) {
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(SnackBar(content: Text('Error: ${e.description}')));
-  //   }
-  //   return filePath;
-  // }
 }

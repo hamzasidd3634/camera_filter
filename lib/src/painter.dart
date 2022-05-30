@@ -12,7 +12,6 @@ import 'package:flutter/material.dart' hide Image;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -836,7 +835,7 @@ class ImagePainterState extends State<ImagePainter> {
               ElevatedButton(
                 child: const Text('Ok'),
                 onPressed: () {
-                  Get.back();
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -878,7 +877,7 @@ class ImagePainterState extends State<ImagePainter> {
               color: Colors.white,
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Get.back();
+                Navigator.pop(context);
               },
             ),
             Spacer(),

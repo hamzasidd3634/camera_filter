@@ -46,3 +46,27 @@ class FontRangedSlider extends StatelessWidget {
     );
   }
 }
+
+///
+class FontVideoRangedSlider extends StatelessWidget {
+  ///Range Slider widget for font size
+  const FontVideoRangedSlider({Key? key, this.value, this.onChanged})
+      : super(key: key);
+
+  ///Default value of font size.
+  final double? value;
+
+  /// Callback for value change.
+  final ValueChanged<double>? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Slider.adaptive(
+      max: 50,
+      min: 18,
+      divisions: 19,
+      value: value!,
+      onChanged: onChanged,
+    );
+  }
+}
