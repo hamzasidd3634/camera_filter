@@ -516,6 +516,13 @@
             </list>
           </value>
         </entry>
+        <entry key="tapioca">
+          <value>
+            <list>
+              <option value="/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/git/tapioca-master-0ae5f37a7c7e5e76f55a13ce1ba05d79ce084a31//lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="term_glyph">
           <value>
             <list>
@@ -661,6 +668,7 @@
       </option>
     </properties>
     <CLASSES>
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/git/tapioca-master-0ae5f37a7c7e5e76f55a13ce1ba05d79ce084a31//lib" />
       <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-39.0.0/lib" />
       <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-4.0.0/lib" />
       <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.3.0/lib" />

@@ -23,7 +23,9 @@ dependencies:
   better_player: ^0.0.82
   gallery_saver:
   tapioca:
-    path: ../camera_filters/package/tapioca-master
+    git:
+      url: https://github.com/hamzasidd3634/tapioca-master.git
+      repo: master
 
 
 
