@@ -26,7 +26,7 @@ If editing Info.plist as text, add:
 # Android
 * Change the minimum Android sdk version to 21 (or higher) in your android/app/build.gradle file.
 ```yaml
-    minSdkVersion 21
+    minSdkVersion 24
 ```
 # Usage
 
