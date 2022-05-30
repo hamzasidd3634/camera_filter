@@ -158,169 +158,158 @@ class _VideoPlayersState extends State<VideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: Material(
-        color: Colors.black,
-        child: Stack(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: AspectRatio(
-                  aspectRatio: 0.5,
-                  child: ValueListenableBuilder(
-                      valueListenable: _filterColor,
-                      builder: (context, value, child) {
-                        return ColorFiltered(
-                            colorFilter: ColorFilter.mode(
-                                _filterColor.value, BlendMode.softLight),
-                            child: BetterPlayer(
-                                controller: _betterPlayerController));
-                      })),
-            ),
-            Obx(() {
-              if (dragText.isFalse) {
-                return Container();
-              } else {
-                return positionedText();
-              }
-            }),
-            _buildFilterSelector(),
-            // Obx(() {
-            //   if (textFieldBool.isFalse) {
-            //     return Container();
-            //   } else {
-            //     return textField(context);
-            //   }
-            // }),
-            Positioned(
-                top: 40,
-                right: 10,
-                child: Column(
-                  children: [
-                    PopupMenuButton(
-                      tooltip: textDelegate.changeBrushSize,
-                      shape: ContinuousRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      icon: Icon(Icons.format_size, color: Colors.white),
-                      itemBuilder: (_) => [_showTextSlider()],
+    return Material(
+      color: Colors.black,
+      child: Stack(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: AspectRatio(
+                aspectRatio: 0.5,
+                child: ValueListenableBuilder(
+                    valueListenable: _filterColor,
+                    builder: (context, value, child) {
+                      return ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                              _filterColor.value, BlendMode.softLight),
+                          child: BetterPlayer(
+                              controller: _betterPlayerController));
+                    })),
+          ),
+          Obx(() {
+            if (dragText.isFalse) {
+              return Container();
+            } else {
+              return positionedText();
+            }
+          }),
+          _buildFilterSelector(),
+          // Obx(() {
+          //   if (textFieldBool.isFalse) {
+          //     return Container();
+          //   } else {
+          //     return textField(context);
+          //   }
+          // }),
+          Positioned(
+              top: 40,
+              right: 10,
+              child: Column(
+                children: [
+                  PopupMenuButton(
+                    tooltip: textDelegate.changeBrushSize,
+                    shape: ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    ValueListenableBuilder<Controller>(
-                        valueListenable: _controller,
-                        builder: (_, controller, __) {
-                          return IconButton(
-                            icon: Icon(
-                              Icons.color_lens_rounded,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              colorPicker(controller);
-                            },
-                          );
-                        }),
-                    IconButton(
-                        icon: const Icon(
-                          Icons.text_format,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          Get.bottomSheet(textField(context),
-                              isScrollControlled: true,
-                              enableDrag: true,
-                              isDismissible: true,
-                              persistent: true);
-                          // showModalBottomSheet(
-                          //     context: context,
-                          //     isScrollControlled: true,
-                          //
-                          //     enableDrag: true,
-                          //     isDismissible: true,
-                          //     builder: (builder) {
-                          //       return textField(context);
-                          //     });
-                          // textFieldBool(!textFieldBool.value);
-                        }),
-                  ],
-                )),
-            Positioned(
-                bottom: 10,
-                right: 10,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  child: Material(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () async {
-                        var tempDir = await getTemporaryDirectory();
-                        final path =
-                            '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
+                    icon: Icon(Icons.format_size, color: Colors.white),
+                    itemBuilder: (_) => [_showTextSlider()],
+                  ),
+                  ValueListenableBuilder<Controller>(
+                      valueListenable: _controller,
+                      builder: (_, controller, __) {
+                        return IconButton(
+                          icon: Icon(
+                            Icons.color_lens_rounded,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            colorPicker(controller);
+                          },
+                        );
+                      }),
+                  IconButton(
+                      icon: const Icon(
+                        Icons.text_format,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            enableDrag: true,
+                            isDismissible: true,
+                            builder: (builder) {
+                              return textField(context);
+                            });
+                      }),
+                ],
+              )),
+          Positioned(
+              bottom: 10,
+              right: 10,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(60),
+                child: Material(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () async {
+                      var tempDir = await getTemporaryDirectory();
+                      final path =
+                          '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
 
-                        try {
-                          var a =
-                              1.7 * int.parse(xPos.toString().split(".")[0]);
-                          var b =
-                              1.7 * int.parse(yPos.toString().split(".")[0]);
+                      try {
+                        var a = 1.7 * int.parse(xPos.toString().split(".")[0]);
+                        var b = 1.7 * int.parse(yPos.toString().split(".")[0]);
 
-                          if (text == "" && _filterColor.value.value == 0) {
-                            widget.onVideoDone!.call(widget.video);
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => Player(
-                            //             widget.video,
-                            //           )),
-                            // );
-                          } else if (text == "" &&
-                              _filterColor.value.value != 0) {
-                            final tapiocaBalls = [
-                              TapiocaBall.filterFromColor(
-                                  Color(_filterColor.value.value)),
-                            ];
-                            makeVideo(tapiocaBalls, path);
-                          } else if (text != "" &&
-                              _filterColor.value.value == 0) {
-                            final tapiocaBalls = [
-                              TapiocaBall.textOverlay(
-                                  text,
-                                  int.parse(a.toString().split(".")[0]),
-                                  int.parse(b.toString().split(".")[0]),
-                                  (fontSize * 2).toInt(),
-                                  Color(colorValue.value))
-                            ];
-                            makeVideo(tapiocaBalls, path);
-                          } else {
-                            final tapiocaBalls = [
-                              TapiocaBall.filterFromColor(
-                                  Color(_filterColor.value.value)),
-                              TapiocaBall.textOverlay(
-                                  text,
-                                  int.parse(a.toString().split(".")[0]),
-                                  int.parse(b.toString().split(".")[0]),
-                                  (fontSize * 2).toInt(),
-                                  Color(colorValue.value))
-                            ];
-                            makeVideo(tapiocaBalls, path);
-                          }
-                        } on PlatformException {
-                          print("error!!!!");
+                        if (text == "" && _filterColor.value.value == 0) {
+                          widget.onVideoDone!.call(widget.video);
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => Player(
+                          //             widget.video,
+                          //           )),
+                          // );
+                        } else if (text == "" &&
+                            _filterColor.value.value != 0) {
+                          final tapiocaBalls = [
+                            TapiocaBall.filterFromColor(
+                                Color(_filterColor.value.value)),
+                          ];
+                          makeVideo(tapiocaBalls, path);
+                        } else if (text != "" &&
+                            _filterColor.value.value == 0) {
+                          final tapiocaBalls = [
+                            TapiocaBall.textOverlay(
+                                text,
+                                int.parse(a.toString().split(".")[0]),
+                                int.parse(b.toString().split(".")[0]),
+                                (fontSize * 2).toInt(),
+                                Color(colorValue.value))
+                          ];
+                          makeVideo(tapiocaBalls, path);
+                        } else {
+                          final tapiocaBalls = [
+                            TapiocaBall.filterFromColor(
+                                Color(_filterColor.value.value)),
+                            TapiocaBall.textOverlay(
+                                text,
+                                int.parse(a.toString().split(".")[0]),
+                                int.parse(b.toString().split(".")[0]),
+                                (fontSize * 2).toInt(),
+                                Color(colorValue.value))
+                          ];
+                          makeVideo(tapiocaBalls, path);
                         }
-                      },
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                            color: Color(0xffd51820),
-                            borderRadius: BorderRadius.circular(60)),
-                        child: Center(
-                          child: Icon(Icons.send),
-                        ),
+                      } on PlatformException {
+                        print("error!!!!");
+                      }
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          color: Color(0xffd51820),
+                          borderRadius: BorderRadius.circular(60)),
+                      child: Center(
+                        child: Icon(Icons.send),
                       ),
                     ),
                   ),
-                )),
-          ],
-        ),
+                ),
+              )),
+        ],
       ),
     );
   }
@@ -397,7 +386,10 @@ class _VideoPlayersState extends State<VideoPlayer> {
 
   Widget textField(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 10,
+          right: 10),
       child: Container(
         height: 55,
         alignment: Alignment.bottomCenter,
