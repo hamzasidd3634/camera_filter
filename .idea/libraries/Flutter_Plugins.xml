@@ -1,16 +1,23 @@
 <component name="libraryTable">
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
     <CLASSES>
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.8" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera_web-0.2.1+3" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.13" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/camera-0.9.4+21" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/image_cropper-2.0.0" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.9" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/flutter_native_image-0.0.6+1" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5" />
-      <root url="file://$USER_HOME$/Downloads/flutter 2/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/better_player-0.0.82" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.8" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_macos-0.4.0" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.13" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper-2.0.3" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/gallery_saver-2.3.2" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_web-0.4.0" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/camera-0.9.7" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock-0.6.1+2" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.10" />
+      <root url="file://$PROJECT_DIR$/package/tapioca-master" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_native_image-0.0.6+1" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/camera_web-0.2.1+3" />
+      <root url="file:///usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper_for_web-0.0.4" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

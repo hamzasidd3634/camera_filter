@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart' hide Image;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -812,31 +812,35 @@ class ImagePainterState extends State<ImagePainter> {
   }
 
   colorPicker(controller) {
-    return Get.dialog(AlertDialog(
-      title: const Text('Pick a color!'),
-      content: SingleChildScrollView(
-        child: ColorPicker(
-          pickerColor: Color(controller.color.value),
-          onColorChanged: (color) {
-            _controller.value = controller.copyWith(color: color);
-            if (widget.onColorChanged != null) {
-              widget.onColorChanged!(color);
-            }
-            fontColor = color;
-            setState(() {});
-            // Navigator.pop(context);
-          },
-        ),
-      ),
-      actions: <Widget>[
-        ElevatedButton(
-          child: const Text('Ok'),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ],
-    ));
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Pick a color!'),
+            content: SingleChildScrollView(
+              child: ColorPicker(
+                pickerColor: Color(controller.color.value),
+                onColorChanged: (color) {
+                  _controller.value = controller.copyWith(color: color);
+                  if (widget.onColorChanged != null) {
+                    widget.onColorChanged!(color);
+                  }
+                  fontColor = color;
+                  setState(() {});
+                  // Navigator.pop(context);
+                },
+              ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 
   void _openTextDialog() {
@@ -873,7 +877,7 @@ class ImagePainterState extends State<ImagePainter> {
               color: Colors.white,
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Get.back();
+                Navigator.pop(context);
               },
             ),
             Spacer(),
@@ -1059,4 +1063,121 @@ class TextDelegate {
   final String undo = "Undo";
   final String done = "Done";
   final String clearAllProgress = "Clear All Progress";
+}
+
+class GradientCircularProgressIndicator extends StatelessWidget {
+  final double? strokeWidth;
+  final bool? strokeRound;
+  final double? value;
+  final Color? backgroundColor;
+  final List<Color>? gradientColors;
+  final List<double>? gradientStops;
+  final double? radius;
+
+  /// Constructor require progress [radius] & gradient color range [gradientColors]
+  /// , option includes: circle width [strokeWidth], round support [strokeRound]
+  /// , progress background [backgroundColor].
+  ///
+  /// set progress with [value], 0.0 to 1.0.
+  GradientCircularProgressIndicator({
+    this.strokeWidth = 10.0,
+    this.strokeRound = false,
+    required this.radius,
+    required this.gradientColors,
+    this.gradientStops,
+    this.backgroundColor = Colors.transparent,
+    this.value,
+  });
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var _colors = gradientColors;
+    if (_colors == null) {
+      Color color = Theme.of(context).primaryColor;
+      _colors = [color, color];
+    }
+
+    return Transform.rotate(
+      angle: -pi / 2,
+      child: CustomPaint(
+        size: Size.fromRadius(radius!),
+        painter: _GradientCircularProgressPainter(
+            strokeWidth: strokeWidth!,
+            strokeRound: strokeRound!,
+            backgroundColor: backgroundColor!,
+            gradientColors: _colors,
+            value: value!,
+            gradientStops: gradientStops,
+            radius: radius!),
+      ),
+    );
+  }
+}
+
+class _GradientCircularProgressPainter extends CustomPainter {
+  _GradientCircularProgressPainter({
+    this.strokeWidth,
+    this.strokeRound,
+    this.value,
+    this.backgroundColor = Colors.transparent,
+    this.gradientColors,
+    this.gradientStops,
+    this.radius,
+  });
+
+  final double? strokeWidth;
+  final bool? strokeRound;
+  final double? value;
+  final Color? backgroundColor;
+  final List<Color>? gradientColors;
+  final double? radius;
+
+  List<double>? gradientStops;
+  double? total = 2 * pi;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (radius != null) {
+      size = Size.fromRadius(radius!);
+    }
+
+    double _value = (value ?? .0);
+    _value = _value.clamp(.0, 1.0) * total!;
+    double _start = .0;
+
+    double _offset = strokeWidth! / 2;
+    Rect rect = Offset(_offset, _offset) &
+        Size(size.width - strokeWidth!, size.height - strokeWidth!);
+
+    var paint = Paint()
+      ..strokeWidth = strokeWidth!
+      ..style = PaintingStyle.stroke
+      ..isAntiAlias = true;
+
+    if (backgroundColor != Colors.transparent) {
+      paint.color = backgroundColor!;
+      canvas.drawArc(rect, _start, total!, false, paint);
+    }
+
+    if (_value > 0) {
+      paint.shader = SweepGradient(
+              colors: gradientColors!,
+              startAngle: 0.0,
+              endAngle: _value,
+              stops: gradientStops)
+          .createShader(rect);
+
+      canvas.drawArc(rect, _start, _value, false, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
 }
