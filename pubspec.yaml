@@ -19,6 +19,7 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   image: ^3.1.3
   get_storage: ^2.0.3
+  google_fonts:
   vector_math: ^2.1.2
   better_player: ^0.0.82
   gallery_saver:
@@ -56,17 +57,52 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+
+#   fonts:
+#     - family: Cookie
+#       fonts:
+#         - asset: assets/Cookie-Regular.ttf
+#
+#     - family: Courgette
+#       fonts:
+#         - asset: assets/Courgette-Regular.ttf
+#
+#     - family: Montserrat
+#       fonts:
+#         - asset: assets/Montserrat-VariableFont_wght.ttf
+#
+#     - family: NotoSans
+#       fonts:
+#         - asset: assets/NotoSans-Light.ttf
+#
+#     - family: Pacifico
+#       fonts:
+#         - asset: assets/Pacifico-Regular.ttf
+#
+#     - family: PlayfairDisplay
+#       fonts:
+#         - asset: assets/PlayfairDisplay-Italic-VariableFont_wght.ttf
+#
+#     - family: Rajdhani
+#       fonts:
+#         - asset: assets/Rajdhani-Regular.ttf
+#
+#     - family: Raleway
+#       fonts:
+#         - asset: assets/Raleway-VariableFont_wght.ttf
+#
+#     - family: Roboto
+#       fonts:
+#         - asset: assets/Roboto-Light.ttf
+#
+#     - family: SourceCodePro
+#       fonts:
+#         - asset: assets/SourceCodePro-Italic-VariableFont_wght.ttf
+#
+#     - family: TiroDevanagariSanskrit
+#       fonts:
+#         - asset: assets/TiroDevanagariSanskrit-Regular.ttf
+
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
