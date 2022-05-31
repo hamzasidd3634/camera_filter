@@ -19,6 +19,8 @@ class DrawImage extends CustomPainter {
   ///Keeps track whether the paint action is running or not.
   final bool isDragging;
   final double? fontSize;
+  final List<TextStyle>? fontList;
+  final int? index;
 
   ///Flag for triggering signature mode.
   final bool isSignature;
@@ -32,6 +34,8 @@ class DrawImage extends CustomPainter {
       {this.image,
       this.update,
       this.points,
+      this.index = 0,
+      this.fontList,
       this.fontSize = 28,
       this.fontColor,
       this.isDragging = false,
@@ -107,10 +111,8 @@ class DrawImage extends CustomPainter {
         case PaintMode.text:
           final textSpan = TextSpan(
             text: item.text,
-            style: TextStyle(
-                color: fontColor ?? _painter!.color,
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold),
+            style: fontList![index!].copyWith(
+                color: fontColor ?? _painter!.color, fontSize: fontSize),
           );
           final textPainter = TextPainter(
             text: textSpan,

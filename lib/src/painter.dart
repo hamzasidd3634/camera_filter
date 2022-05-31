@@ -12,6 +12,8 @@ import 'package:flutter/material.dart' hide Image;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -455,10 +457,27 @@ class ImagePainterState extends State<ImagePainter> {
   late final TextEditingController _textController;
   Offset? _start, _end;
   File? capturedFile;
+  RxBool fonts = false.obs;
 
   final GlobalKey _globalKey = GlobalKey();
   int _strokeMultiplier = 1;
+  int index = 0;
   late TextDelegate textDelegate;
+  final List<TextStyle> fontTextList = [
+    GoogleFonts.cookie(fontSize: 15, color: Colors.black),
+    GoogleFonts.courgette(fontSize: 15, color: Colors.black),
+    GoogleFonts.montserratSubrayada(fontSize: 15, color: Colors.black),
+    GoogleFonts.notoSans(fontSize: 15, color: Colors.black),
+    GoogleFonts.pacifico(fontSize: 15, color: Colors.black),
+    GoogleFonts.playfairDisplay(fontSize: 15, color: Colors.black),
+    GoogleFonts.rajdhani(fontSize: 15, color: Colors.black),
+    GoogleFonts.roboto(fontSize: 15, color: Colors.black),
+    GoogleFonts.raleway(fontSize: 15, color: Colors.black),
+    GoogleFonts.sourceCodePro(fontSize: 15, color: Colors.black),
+    GoogleFonts.trirong(fontSize: 15, color: Colors.black),
+    GoogleFonts.actor(fontSize: 15, color: Colors.black),
+  ];
+
   void initState() {
     super.initState();
     _isLoaded = ValueNotifier<bool>(false);
@@ -612,6 +631,8 @@ class ImagePainterState extends State<ImagePainter> {
                                 image: _image,
                                 points: _points,
                                 fontSize: fontSize,
+                                fontList: fontTextList,
+                                index: index,
                                 paintHistory: _paintHistory,
                                 isDragging: _inDrag,
                                 fontColor: fontColor,
@@ -629,6 +650,48 @@ class ImagePainterState extends State<ImagePainter> {
                   )),
             ),
           ),
+          Positioned(
+              top: 5,
+              child: Obx(() {
+                if (fonts.value == true) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: SizedBox(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                          itemCount: fontTextList.length,
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemBuilder: (context, i) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 3),
+                              child: GestureDetector(
+                                onTap: () {
+                                  index = i;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Center(
+                                      child: Text(
+                                    "f",
+                                    style: fontTextList[i],
+                                  )),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  );
+                }
+                return Container();
+              })),
           Positioned(
             bottom: 5,
             right: 25,
@@ -881,6 +944,17 @@ class ImagePainterState extends State<ImagePainter> {
               },
             ),
             Spacer(),
+            ValueListenableBuilder<Controller>(
+                valueListenable: _controller,
+                builder: (_, controller, __) {
+                  return IconButton(
+                    icon:
+                        Icon(Icons.font_download_rounded, color: Colors.white),
+                    onPressed: () {
+                      fonts(!fonts.value);
+                    },
+                  );
+                }),
             PopupMenuButton(
               tooltip: textDelegate.changeBrushSize,
               shape: ContinuousRectangleBorder(
