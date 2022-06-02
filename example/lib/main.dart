@@ -19,7 +19,10 @@ class _MyAppState extends State<MyApp> {
         body: CameraScreenPlugin(onDone: (value) {
           /// value returns the picture path you can save here or navigate to some screen
           print(value);
-        }, onVideoDone: (value) {
+        },
+
+            /// value returns the video path you can save here or navigate to some screen
+            onVideoDone: (value) {
           print(value);
         }
 

@@ -3,14 +3,16 @@
 import 'package:better_player/better_player.dart';
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/painter.dart';
+import 'package:camera_filters/src/tapioca/content.dart';
+import 'package:camera_filters/src/tapioca/tapioca_ball.dart';
 import 'package:camera_filters/src/widgets/_range_slider.dart';
 import 'package:camera_filters/src/widgets/progressDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:tapioca/tapioca.dart';
+
+import 'src/tapioca/cup.dart';
 
 class VideoPlayer extends StatefulWidget {
   String? video;
@@ -32,14 +34,14 @@ class _VideoPlayersState extends State<VideoPlayer> {
   double new_x = 0.0;
   double new_y = 0.0;
   double fontSize = 30;
-  RxBool dragText = false.obs;
-  RxBool textFieldBool = false.obs;
+  ValueNotifier<bool> dragText = ValueNotifier(false);
+  ValueNotifier<bool> textFieldBool = ValueNotifier(false);
   Offset offset = Offset.zero;
   int? x;
   int? y;
 
   String text = '';
-  RxInt colorValue = 0xFFFFFFFF.obs;
+  ValueNotifier<int> colorValue = ValueNotifier(0xFFFFFFFF);
 
   ///list of filters color
   final _filters = [
@@ -177,21 +179,16 @@ class _VideoPlayersState extends State<VideoPlayer> {
                               controller: _betterPlayerController));
                     })),
           ),
-          Obx(() {
-            if (dragText.isFalse) {
-              return Container();
-            } else {
-              return positionedText();
-            }
-          }),
+          ValueListenableBuilder(
+              valueListenable: dragText,
+              builder: (context, bool value, Widget? child) {
+                if (value == false) {
+                  return Container();
+                } else {
+                  return positionedText();
+                }
+              }),
           _buildFilterSelector(),
-          // Obx(() {
-          //   if (textFieldBool.isFalse) {
-          //     return Container();
-          //   } else {
-          //     return textField(context);
-          //   }
-          // }),
           Positioned(
               top: 40,
               right: 10,
@@ -414,8 +411,8 @@ class _VideoPlayersState extends State<VideoPlayer> {
                 onPressed: () {
                   if (_textEditingController.text.isNotEmpty) {
                     text = _textEditingController.text;
-                    Get.close(1);
-                    dragText(true);
+                    Navigator.pop(context);
+                    dragText.value = true;
                   }
                 },
                 icon: const Icon(
@@ -447,18 +444,20 @@ class _VideoPlayersState extends State<VideoPlayer> {
           yPos += details.delta.dy;
         });
       },
-      child: Obx(() {
-        return CustomPaint(
-          willChange: true,
-          size: Size(
-            MediaQuery.of(context).size.width,
-            300,
-          ),
-          painter:
-              MyPainter(xPos, yPos, text, Color(colorValue.value), fontSize),
-          child: Container(),
-        );
-      }),
+      child: ValueListenableBuilder(
+          valueListenable: colorValue,
+          builder: (context, int value, Widget? child) {
+            return CustomPaint(
+              willChange: true,
+              size: Size(
+                MediaQuery.of(context).size.width,
+                300,
+              ),
+              painter: MyPainter(
+                  xPos, yPos, text, Color(colorValue.value), fontSize),
+              child: Container(),
+            );
+          }),
     );
   }
 }

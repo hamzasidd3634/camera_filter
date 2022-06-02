@@ -13,7 +13,6 @@ import 'package:camera_filters/src/widgets/circularProgress.dart';
 import 'package:camera_filters/videoPlayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image/image.dart' as imglib;
 import 'package:path_provider/path_provider.dart';
@@ -66,10 +65,10 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   GetStorage sp = GetStorage();
 
   /// flash mode changer
-  RxInt flashCount = 0.obs;
+  ValueNotifier<int> flashCount = ValueNotifier(0);
 
   /// flash mode changer
-  RxString time = "".obs;
+  ValueNotifier<String> time = ValueNotifier("");
 
   /// condition check that picture is taken or not
   bool capture = false;
@@ -81,7 +80,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   List<CameraDescription> cameras = [];
 
   /// bool to change picture to video or video to picture
-  RxBool? cameraChange = false.obs;
+  ValueNotifier<bool> cameraChange = ValueNotifier(false);
 
   AnimationController? _rotationController;
   double _rotation = 0;
@@ -210,25 +209,25 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         /// If the Future is complete, display the preview.
-                        return Obx(() {
-                          if (cameraChange!.value == false) {
-                            return ValueListenableBuilder(
-                                valueListenable:
-                                    widget.filterColor ?? _filterColor,
-                                builder: (context, value, child) {
-                                  return ColorFiltered(
-                                    colorFilter: ColorFilter.mode(
-                                        widget.filterColor == null
-                                            ? _filterColor.value
-                                            : widget.filterColor!.value,
-                                        BlendMode.softLight),
-                                    child: CameraPreview(_controller),
-                                  );
-                                });
-                          } else {
-                            return CameraPreview(_controller);
-                          }
-                        });
+                        return ValueListenableBuilder(
+                            valueListenable: cameraChange,
+                            builder: (context, value, Widget? c) {
+                              return cameraChange.value == false
+                                  ? ValueListenableBuilder(
+                                      valueListenable:
+                                          widget.filterColor ?? _filterColor,
+                                      builder: (context, value, child) {
+                                        return ColorFiltered(
+                                          colorFilter: ColorFilter.mode(
+                                              widget.filterColor == null
+                                                  ? _filterColor.value
+                                                  : widget.filterColor!.value,
+                                              BlendMode.softLight),
+                                          child: CameraPreview(_controller),
+                                        );
+                                      })
+                                  : CameraPreview(_controller);
+                            });
                       } else {
                         /// Otherwise, display a loading indicator.
                         return const Center(child: CircularProgressIndicator());
@@ -239,29 +238,33 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                 Positioned(
                   top: 50.0,
                   right: 10.0,
-                  child: Obx(() => cameraChange!.value == false
-                      ? Container()
-                      : Text(
-                          time.value == ""
-                              ? ""
-                              : formatHHMMSS(int.parse(time.value)),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        )),
+                  child: ValueListenableBuilder(
+                      valueListenable: cameraChange,
+                      builder: (context, value, Widget? c) {
+                        return cameraChange.value == false
+                            ? Container()
+                            : Text(
+                                time.value == ""
+                                    ? ""
+                                    : formatHHMMSS(int.parse(time.value)),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              );
+                      }),
                 ),
                 Positioned(
                   left: 0.0,
                   right: 0.0,
                   bottom: 0.0,
-                  child: Obx(() {
-                    if (cameraChange!.value == false) {
-                      return _buildFilterSelector();
-                    } else {
-                      return videoRecordingWidget();
-                    }
-                  }),
+                  child: ValueListenableBuilder(
+                      valueListenable: cameraChange,
+                      builder: (context, value, Widget? c) {
+                        return cameraChange.value == false
+                            ? _buildFilterSelector()
+                            : videoRecordingWidget();
+                      }),
                 ),
                 Positioned(
                   right: 10.0,
@@ -274,36 +277,41 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                   child: Row(
                     children: [
                       /// icon for flash modes
-                      IconButton(onPressed: () {
-                        /// if flash count is zero flash will off
-                        if (flashCount.value == 0) {
-                          flashCount.value = 1;
-                          sp.write("flashCount", 1);
-                          _controller.setFlashMode(FlashMode.torch);
+                      IconButton(
+                        onPressed: () {
+                          /// if flash count is zero flash will off
+                          if (flashCount.value == 0) {
+                            flashCount.value = 1;
+                            sp.write("flashCount", 1);
+                            _controller.setFlashMode(FlashMode.torch);
 
-                          /// if flash count is one flash will on
-                        } else if (flashCount.value == 1) {
-                          flashCount.value = 2;
-                          sp.write("flashCount", 2);
-                          _controller.setFlashMode(FlashMode.auto);
-                        }
+                            /// if flash count is one flash will on
+                          } else if (flashCount.value == 1) {
+                            flashCount.value = 2;
+                            sp.write("flashCount", 2);
+                            _controller.setFlashMode(FlashMode.auto);
+                          }
 
-                        /// if flash count is two flash will auto
-                        else {
-                          flashCount.value = 0;
-                          sp.write("flashCount", 0);
-                          _controller.setFlashMode(FlashMode.off);
-                        }
-                      }, icon: Obx(() {
-                        return Icon(
-                          flashCount.value == 0
-                              ? Icons.flash_off
-                              : flashCount.value == 1
-                                  ? Icons.flash_on
-                                  : Icons.flash_auto,
-                          color: Colors.white,
-                        );
-                      })),
+                          /// if flash count is two flash will auto
+                          else {
+                            flashCount.value = 0;
+                            sp.write("flashCount", 0);
+                            _controller.setFlashMode(FlashMode.off);
+                          }
+                        },
+                        icon: ValueListenableBuilder(
+                            valueListenable: flashCount,
+                            builder: (context, value, Widget? c) {
+                              return Icon(
+                                flashCount.value == 0
+                                    ? Icons.flash_off
+                                    : flashCount.value == 1
+                                        ? Icons.flash_on
+                                        : Icons.flash_auto,
+                                color: Colors.white,
+                              );
+                            }),
+                      ),
                       SizedBox(
                         width: 5,
                       ),
@@ -328,25 +336,26 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       SizedBox(
                         width: 5,
                       ),
-
-                      Obx(() {
-                        return IconButton(
-                          icon: Icon(
-                            cameraChange!.value == false
-                                ? Icons.videocam
-                                : Icons.camera,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            if (cameraChange!.value == false) {
-                              cameraChange!(true);
-                              _controller.prepareForVideoRecording();
-                            } else {
-                              cameraChange!(false);
-                            }
-                          },
-                        );
-                      }),
+                      ValueListenableBuilder(
+                          valueListenable: cameraChange,
+                          builder: (context, value, Widget? c) {
+                            return IconButton(
+                              icon: Icon(
+                                cameraChange.value == false
+                                    ? Icons.videocam
+                                    : Icons.camera,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                if (cameraChange.value == false) {
+                                  cameraChange.value = true;
+                                  _controller.prepareForVideoRecording();
+                                } else {
+                                  cameraChange.value = false;
+                                }
+                              },
+                            );
+                          }),
                     ],
                   ),
                 ),

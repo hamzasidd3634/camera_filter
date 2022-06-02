@@ -34,6 +34,22 @@ If editing Info.plist as text, add:
 ```yaml
     minSdkVersion 24
 ```
+Step 1. Ensure the following permission is present in your Android Manifest file, located in <project root>/android/app/src/main/AndroidManifest.xml:
+
+```yaml
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+```
+
+Step 2. Add the JitPack repository to your Android build file, located in <project root>/android/build.gradle:
+
+```yaml
+    allprojects {
+        repositories {
+          maven { url 'https://jitpack.io' }
+        }
+}
+```
 # Usage
 
 
@@ -87,23 +103,24 @@ To use this package:
           Widget build(BuildContext context) {
             return MaterialApp(
               home: Scaffold(
-                appBar: AppBar(
-                  title: const Text('Camera'),
-                ),
-                body: CameraScreenPlugin(
-                  onDone: (value) {
-                    /// value returns the picture path you can save here or navigate to some screen
-                    print(value);
-                  },
+                body: CameraScreenPlugin(onDone: (value) {
+                  /// value returns the picture path you can save here or navigate to some screen
+                  print(value);
+                },
         
-                  /// profileIconWidget: , if you want to add profile icon on camera you can your widget here
+                    /// value returns the video path you can save here or navigate to some screen
+                    onVideoDone: (value) {
+                  print(value);
+                }
         
-                  ///filterColor: ValueNotifier<Color>(Colors.transparent),  your first filter color when you open camera
+                    /// profileIconWidget: , if you want to add profile icon on camera you can your widget here
         
-                  /// filters: [],
-                  ///you can pass your own list of colors like this List<Color> colors = [Colors.blue, Colors.blue, Colors.blue ..... Colors.blue]
-                  ///make sure to pass transparent color to first index so the first index of list has no filter effect
-                ),
+                    ///filterColor: ValueNotifier<Color>(Colors.transparent),  your first filter color when you open camera
+        
+                    /// filters: [],
+                    ///you can pass your own list of colors like this List<Color> colors = [Colors.blue, Colors.blue, Colors.blue ..... Colors.blue]
+                    ///make sure to pass transparent color to first index so the first index of list has no filter effect
+                    ),
               ),
             );
           }
