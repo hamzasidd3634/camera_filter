@@ -75,7 +75,7 @@ To use this package:
 
 
 ![2](https://user-images.githubusercontent.com/64409533/165637109-4a1bdf46-8e09-4dcd-88d5-989f48c4f650.png)
-![3](https://user-images.githubusercontent.com/64409533/171751428-3baf0105-a6ca-4ebf-a5ab-8893f00eaa7d.png)
+![3](https://user-images.githubusercontent.com/64409533/165637989-03d84eb5-2bd8-42c8-8525-9e7553d6d974.png)
 
 
 # Video
