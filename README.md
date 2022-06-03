@@ -88,7 +88,7 @@ To use this package:
 
 * Video Recorder
   
-  ![pack](https://user-images.githubusercontent.com/64409533/171871016-82bf1839-9d8c-4770-ae6a-044ca2ad4387.mp4)
+ https://user-images.githubusercontent.com/64409533/171871016-82bf1839-9d8c-4770-ae6a-044ca2ad4387.mp4
 
 
 
