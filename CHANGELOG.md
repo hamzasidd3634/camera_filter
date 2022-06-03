@@ -13,3 +13,7 @@
 ## [0.0.8] - Minor Bug Fixes
 
 ## [0.0.9] - Minor Bug Fixes
+
+## [0.1.0] - Video Editor
+
+## [0.1.1] - Update Readme

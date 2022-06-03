@@ -31,14 +31,10 @@ class _VideoPlayersState extends State<VideoPlayer> {
   late TextDelegate textDelegate;
   late final ValueNotifier<Controller> _controller;
   final TextEditingController _textEditingController = TextEditingController();
-  double new_x = 0.0;
-  double new_y = 0.0;
   double fontSize = 30;
   ValueNotifier<bool> dragText = ValueNotifier(false);
   ValueNotifier<bool> textFieldBool = ValueNotifier(false);
   Offset offset = Offset.zero;
-  int? x;
-  int? y;
 
   String text = '';
   ValueNotifier<int> colorValue = ValueNotifier(0xFFFFFFFF);
@@ -64,12 +60,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
 
   /// widget will build the filter selector
   Widget _buildFilterSelector() {
-    // return FilterSelector(
-    //   onVideoFilter: true,
-    //   onFilterChanged: _onFilterChanged,
-    //   filters: _filters,
-    //   onTap: () {},
-    // );
     int index = 0;
     return Center(
       child: Container(
@@ -81,7 +71,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
             print("index is " + index.toString());
           },
           physics: NeverScrollableScrollPhysics(),
-          // pageSnapping: ,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, position) {
             return Center(
@@ -251,13 +240,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
 
                         if (text == "" && _filterColor.value.value == 0) {
                           widget.onVideoDone!.call(widget.video);
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => Player(
-                          //             widget.video,
-                          //           )),
-                          // );
                         } else if (text == "" &&
                             _filterColor.value.value != 0) {
                           final tapiocaBalls = [
@@ -318,17 +300,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
       print("finished");
       progressDialog!.hide();
       widget.onVideoDone!.call(path);
-      // GallerySaver.saveVideo(path).then((bool? success) {
-      //   print(success.toString());
-      // });
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => Player(
-      //             path,
-      //           )),
-      // );
-      // widget.onVideoDone!.call(path);
     });
   }
 
@@ -477,7 +448,6 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    //                                             <-- Insert your painting code here.
     textStyle = TextStyle(
       color: color,
       fontSize: fontSize,
