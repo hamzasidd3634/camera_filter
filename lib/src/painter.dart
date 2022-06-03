@@ -12,7 +12,6 @@ import 'package:flutter/material.dart' hide Image;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
@@ -457,8 +456,7 @@ class ImagePainterState extends State<ImagePainter> {
   late final TextEditingController _textController;
   Offset? _start, _end;
   File? capturedFile;
-  RxBool fonts = false.obs;
-
+  ValueNotifier<bool> fonts = ValueNotifier(false);
   final GlobalKey _globalKey = GlobalKey();
   int _strokeMultiplier = 1;
   int index = 0;
@@ -652,46 +650,48 @@ class ImagePainterState extends State<ImagePainter> {
           ),
           Positioned(
               top: 5,
-              child: Obx(() {
-                if (fonts.value == true) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: SizedBox(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                          itemCount: fontTextList.length,
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemBuilder: (context, i) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 3),
-                              child: GestureDetector(
-                                onTap: () {
-                                  index = i;
-                                  setState(() {});
-                                },
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Center(
-                                      child: Text(
-                                    "f",
-                                    style: fontTextList[i],
-                                  )),
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                  );
-                }
-                return Container();
-              })),
+              child: ValueListenableBuilder(
+                  valueListenable: fonts,
+                  builder: (context, value, Widget? c) {
+                    return fonts.value == false
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: SizedBox(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView.builder(
+                                  itemCount: fontTextList.length,
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, i) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 3),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          index = i;
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Center(
+                                              child: Text(
+                                            "f",
+                                            style: fontTextList[i],
+                                          )),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          );
+                  })),
           Positioned(
             bottom: 5,
             right: 25,
@@ -951,7 +951,7 @@ class ImagePainterState extends State<ImagePainter> {
                     icon:
                         Icon(Icons.font_download_rounded, color: Colors.white),
                     onPressed: () {
-                      fonts(!fonts.value);
+                      fonts.value = !fonts.value;
                     },
                   );
                 }),
