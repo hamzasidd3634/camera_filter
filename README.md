@@ -87,7 +87,8 @@ To use this package:
   ![pack](https://user-images.githubusercontent.com/64409533/165578953-cdfa1c9d-fe11-4454-a334-6cef3d85b078.gif)
 
 * Video Recorder
-  ![pack](https://user-images.githubusercontent.com/64409533/171751202-51dca2c6-7eb1-4abc-bdbc-e89336212d58.mp4)
+https://user-images.githubusercontent.com/64409533/171871016-82bf1839-9d8c-4770-ae6a-044ca2ad4387.mp4
+
 
 
 
