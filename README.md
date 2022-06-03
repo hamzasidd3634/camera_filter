@@ -72,22 +72,22 @@ To use this package:
 
 ![1](https://user-images.githubusercontent.com/64409533/171870854-6983d16a-32ef-4840-aec6-7bc779d9a98b.png)
 ![2](https://user-images.githubusercontent.com/64409533/171870864-a2c05ec9-e141-428c-835c-989d6b067b1a.png)
-  
+
 ![3](https://user-images.githubusercontent.com/64409533/171870869-843a7907-e1bd-4cbd-80d8-b81fa92461b8.png)
 ![4](https://user-images.githubusercontent.com/64409533/171870876-91376dc0-9b21-44ac-8b5f-73486e485e79.png)
 
-  
-  
+
+
 
 
 
 # Video
 
 
- ![pack](https://user-images.githubusercontent.com/64409533/165578953-cdfa1c9d-fe11-4454-a334-6cef3d85b078.gif)
+![pack](https://user-images.githubusercontent.com/64409533/165578953-cdfa1c9d-fe11-4454-a334-6cef3d85b078.gif)
 
-  
- https://user-images.githubusercontent.com/64409533/171871016-82bf1839-9d8c-4770-ae6a-044ca2ad4387.mp4
+
+[![Watch the video](https://user-images.githubusercontent.com/64409533/171871016-82bf1839-9d8c-4770-ae6a-044ca2ad4387.mp4)
 
 
 
