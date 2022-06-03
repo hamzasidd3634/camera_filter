@@ -69,13 +69,16 @@ To use this package:
 
 # ScreenShots
 
-![1](https://user-images.githubusercontent.com/64409533/165637956-d82b2ff0-a570-49be-b48d-25e141b8bb37.png)
-![4](https://user-images.githubusercontent.com/64409533/165637976-fb2df8c4-614b-4330-a136-1dc7043d87c0.png)
+![original-5199839c-02ca-4c45-b30e-11741e1582f8](https://user-images.githubusercontent.com/64409533/171870647-8538cf2b-19f6-4c52-bd5d-e2007837fee7.jpeg)
+![original-b1d0c3e5-fa1e-4961-94bc-ad025972b2c9](https://user-images.githubusercontent.com/64409533/171870668-acf037e6-6536-41e8-a112-cb3fbee641a1.jpeg)
+  
+  
+![original-c864b2be-2fcd-45d5-9ad3-212953bf6ca9](https://user-images.githubusercontent.com/64409533/171870679-0756befb-66fd-498b-9ab7-65646c23218a.jpeg)
+![original-f0d403b0-ac51-471d-a971-f86f7358e2df](https://user-images.githubusercontent.com/64409533/171870686-faed6826-b0d3-4650-b8f4-5770bf4ef522.jpeg)
 
+  
+  
 
-
-![2](https://user-images.githubusercontent.com/64409533/165637109-4a1bdf46-8e09-4dcd-88d5-989f48c4f650.png)
-![3](https://user-images.githubusercontent.com/64409533/165637989-03d84eb5-2bd8-42c8-8525-9e7553d6d974.png)
 
 
 # Video
