@@ -69,12 +69,12 @@ To use this package:
 
 # ScreenShots
 
-![original-5199839c-02ca-4c45-b30e-11741e1582f8](https://user-images.githubusercontent.com/64409533/171870647-8538cf2b-19f6-4c52-bd5d-e2007837fee7.jpeg)
-![original-b1d0c3e5-fa1e-4961-94bc-ad025972b2c9](https://user-images.githubusercontent.com/64409533/171870668-acf037e6-6536-41e8-a112-cb3fbee641a1.jpeg)
+
+![1](https://user-images.githubusercontent.com/64409533/171870854-6983d16a-32ef-4840-aec6-7bc779d9a98b.png)
+![2](https://user-images.githubusercontent.com/64409533/171870864-a2c05ec9-e141-428c-835c-989d6b067b1a.png)
   
-  
-![original-c864b2be-2fcd-45d5-9ad3-212953bf6ca9](https://user-images.githubusercontent.com/64409533/171870679-0756befb-66fd-498b-9ab7-65646c23218a.jpeg)
-![original-f0d403b0-ac51-471d-a971-f86f7358e2df](https://user-images.githubusercontent.com/64409533/171870686-faed6826-b0d3-4650-b8f4-5770bf4ef522.jpeg)
+![3](https://user-images.githubusercontent.com/64409533/171870869-843a7907-e1bd-4cbd-80d8-b81fa92461b8.png)
+![4](https://user-images.githubusercontent.com/64409533/171870876-91376dc0-9b21-44ac-8b5f-73486e485e79.png)
 
   
   
