@@ -17,3 +17,5 @@
 ## [0.1.0] - Video Editor
 
 ## [0.1.1] - Update Readme
+
+## [0.1.2] - Update Readme
