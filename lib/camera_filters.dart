@@ -36,6 +36,9 @@ class CameraScreenPlugin extends StatefulWidget {
   /// profile widget if you want to use profile widget on camera
   Widget? profileIconWidget;
 
+  /// profile widget if you want to use profile widget on camera
+  Widget? sendButtonWidget;
+
   CameraScreenPlugin(
       {Key? key,
       this.onDone,
@@ -43,6 +46,7 @@ class CameraScreenPlugin extends StatefulWidget {
       this.filters,
       this.profileIconWidget,
       this.gradientColors,
+      this.sendButtonWidget,
       this.filterColor})
       : super(key: key);
 
@@ -381,6 +385,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
             MaterialPageRoute(
                 builder: (context) => EditImageScreen(
                       path: filePath,
+                      sendButtonWidget: sendButtonWidget,
                       filter: ColorFilter.mode(
                           widget.filterColor == null
                               ? _filterColor.value

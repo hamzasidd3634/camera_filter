@@ -51,6 +51,7 @@ class ImagePainter extends StatefulWidget {
       this.onColorChanged,
       this.onStrokeWidthChanged,
       this.onFontSizeChanged,
+      this.sendButtonWidget,
       this.onPaintModeChanged,
       this.filter,
       this.onDone,
@@ -197,6 +198,9 @@ class ImagePainter extends StatefulWidget {
     ///initial color
     Color? initialColor,
 
+    ///send button widget
+    Widget? sendButtonWidget,
+
     ///paint mode notifier
     ValueChanged<PaintMode>? onPaintModeChanged,
 
@@ -222,6 +226,7 @@ class ImagePainter extends StatefulWidget {
       colors: colors,
       brushIcon: brushIcon,
       undoIcon: undoIcon,
+      sendButtonWidget: sendButtonWidget,
       colorIcon: colorIcon,
       clearAllIcon: clearAllIcon,
       initialPaintMode: initialPaintMode,
@@ -401,6 +406,8 @@ class ImagePainter extends StatefulWidget {
   ///List of colors for color selection
   ///If not provided, default colors are used.
   final List<Color>? colors;
+
+  final Widget? sendButtonWidget;
 
   ///Icon Widget of strokeWidth.
   final Widget? brushIcon;
@@ -695,20 +702,21 @@ class ImagePainterState extends State<ImagePainter> {
           Positioned(
             bottom: 5,
             right: 25,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  convertImage();
-                },
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                child: Icon(
-                  Icons.check,
-                  size: 24.0,
+            child: widget.sendButtonWidget ??
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      convertImage();
+                    },
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    child: Icon(
+                      Icons.check,
+                      size: 24.0,
+                    ),
+                  ),
                 ),
-              ),
-            ),
           ),
         ],
       ),

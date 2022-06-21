@@ -15,7 +15,11 @@ class EditImageScreen extends StatefulWidget {
   ///function return the edited image path
   Function(dynamic)? onDone;
 
-  EditImageScreen({Key? key, this.path, this.filter, this.onDone})
+  ///send button widget
+  Widget? sendButtonWidget;
+
+  EditImageScreen(
+      {Key? key, this.path, this.filter, this.onDone, this.sendButtonWidget})
       : super(key: key);
 
   @override
