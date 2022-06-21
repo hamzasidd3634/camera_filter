@@ -16,9 +16,10 @@ import 'src/tapioca/cup.dart';
 
 class VideoPlayer extends StatefulWidget {
   String? video;
+  Widget? sendButtonWidget;
   Function(dynamic)? onVideoDone;
 
-  VideoPlayer(this.video, {this.onVideoDone});
+  VideoPlayer(this.video, {this.onVideoDone, this.sendButtonWidget});
 
   @override
   State<VideoPlayer> createState() => _VideoPlayersState();
@@ -275,16 +276,17 @@ class _VideoPlayersState extends State<VideoPlayer> {
                         print("error!!!!");
                       }
                     },
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                          color: Color(0xffd51820),
-                          borderRadius: BorderRadius.circular(60)),
-                      child: Center(
-                        child: Icon(Icons.send),
-                      ),
-                    ),
+                    child: widget.sendButtonWidget ??
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Color(0xffd51820),
+                              borderRadius: BorderRadius.circular(60)),
+                          child: Center(
+                            child: Icon(Icons.send),
+                          ),
+                        ),
                   ),
                 ),
               )),

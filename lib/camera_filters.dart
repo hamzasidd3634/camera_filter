@@ -385,7 +385,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
             MaterialPageRoute(
                 builder: (context) => EditImageScreen(
                       path: filePath,
-                      sendButtonWidget: sendButtonWidget,
+                      sendButtonWidget: widget.sendButtonWidget,
                       filter: ColorFilter.mode(
                           widget.filterColor == null
                               ? _filterColor.value
@@ -517,6 +517,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                 builder: (context) => VideoPlayer(
                       file.path,
                       onVideoDone: widget.onVideoDone,
+                      sendButtonWidget: widget.sendButtonWidget,
                     )),
           ).then((value) {
             if (sp.read("flashCount") == 1) {
