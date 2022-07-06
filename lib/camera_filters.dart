@@ -459,7 +459,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
         if (capture == false) {
           capture = true;
           onTakePictureButtonPressed(context);
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(Duration(seconds: 3), () {
             capture = false;
           });
         }
