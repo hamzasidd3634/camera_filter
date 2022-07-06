@@ -464,6 +464,7 @@ class ImagePainterState extends State<ImagePainter> {
   Offset? _start, _end;
   File? capturedFile;
   ValueNotifier<bool> fonts = ValueNotifier(false);
+  ValueNotifier<bool> upAndDown = ValueNotifier(false);
   final GlobalKey _globalKey = GlobalKey();
   int _strokeMultiplier = 1;
   int index = 0;
@@ -718,6 +719,17 @@ class ImagePainterState extends State<ImagePainter> {
                   ),
                 ),
           ),
+          Positioned(
+            top: 0,
+            right: 5,
+            child: ValueListenableBuilder<bool>(
+                valueListenable: upAndDown,
+                builder: (_, controller, __) {
+                  return upAndDown.value == false
+                      ? Container()
+                      : buildIconsColumn();
+                }),
+          )
         ],
       ),
     );
@@ -952,71 +964,105 @@ class ImagePainterState extends State<ImagePainter> {
               },
             ),
             Spacer(),
-            ValueListenableBuilder<Controller>(
-                valueListenable: _controller,
-                builder: (_, controller, __) {
-                  return IconButton(
-                    icon:
-                        Icon(Icons.font_download_rounded, color: Colors.white),
-                    onPressed: () {
-                      fonts.value = !fonts.value;
-                    },
-                  );
-                }),
-            PopupMenuButton(
-              tooltip: textDelegate.changeBrushSize,
-              shape: ContinuousRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              icon: Icon(Icons.format_size, color: Colors.white),
-              itemBuilder: (_) => [_showTextSlider()],
-            ),
-            ValueListenableBuilder<Controller>(
-                valueListenable: _controller,
+            ValueListenableBuilder<bool>(
+                valueListenable: upAndDown,
                 builder: (_, controller, __) {
                   return IconButton(
                     icon: Icon(
-                      Icons.color_lens_rounded,
-                      color: Colors.white,
-                    ),
+                        upAndDown.value == false
+                            ? Icons.keyboard_arrow_down
+                            : Icons.keyboard_arrow_up,
+                        color: Colors.white),
                     onPressed: () {
-                      colorPicker(controller);
+                      if (upAndDown.value == false) {
+                        upAndDown.value = true;
+                      } else {
+                        upAndDown.value = false;
+                      }
                     },
                   );
                 }),
-            PopupMenuButton(
-              tooltip: textDelegate.changeBrushSize,
-              shape: ContinuousRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              icon: widget.brushIcon ?? Icon(Icons.brush, color: Colors.white),
-              itemBuilder: (_) => [_showRangeSlider()],
-            ),
-            IconButton(
-                icon: const Icon(
-                  Icons.text_format,
-                  color: Colors.white,
-                ),
-                onPressed: _openTextDialog),
-            IconButton(
-              icon: Icon(
-                Icons.crop_rotate,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                _cropImage();
-              },
-            ),
-            IconButton(
-              tooltip: textDelegate.clearAllProgress,
-              icon:
-                  widget.clearAllIcon ?? Icon(Icons.clear, color: Colors.white),
-              onPressed: () {
-                setState(_paintHistory.clear);
-              },
-            ),
+            SizedBox(
+              width: 5,
+            )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildIconsColumn() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      decoration: BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(30),
+              bottomLeft: Radius.circular(30))),
+      child: Column(
+        children: [
+          ValueListenableBuilder<Controller>(
+              valueListenable: _controller,
+              builder: (_, controller, __) {
+                return IconButton(
+                  icon: Icon(Icons.font_download_rounded, color: Colors.white),
+                  onPressed: () {
+                    fonts.value = !fonts.value;
+                  },
+                );
+              }),
+          PopupMenuButton(
+            tooltip: textDelegate.changeBrushSize,
+            shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            icon: Icon(Icons.format_size, color: Colors.white),
+            itemBuilder: (_) => [_showTextSlider()],
+          ),
+          ValueListenableBuilder<Controller>(
+              valueListenable: _controller,
+              builder: (_, controller, __) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.color_lens_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    colorPicker(controller);
+                  },
+                );
+              }),
+          PopupMenuButton(
+            tooltip: textDelegate.changeBrushSize,
+            shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            icon: widget.brushIcon ?? Icon(Icons.brush, color: Colors.white),
+            itemBuilder: (_) => [_showRangeSlider()],
+          ),
+          IconButton(
+              icon: const Icon(
+                Icons.text_format,
+                color: Colors.white,
+              ),
+              onPressed: _openTextDialog),
+          IconButton(
+            icon: Icon(
+              Icons.crop_rotate,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              _cropImage();
+            },
+          ),
+          IconButton(
+            tooltip: textDelegate.clearAllProgress,
+            icon: widget.clearAllIcon ?? Icon(Icons.clear, color: Colors.white),
+            onPressed: () {
+              setState(_paintHistory.clear);
+            },
+          ),
+        ],
       ),
     );
   }
