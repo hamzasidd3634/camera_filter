@@ -196,6 +196,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   @override
   void dispose() {
     _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
