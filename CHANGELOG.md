@@ -19,3 +19,8 @@
 ## [0.1.1] - Update Readme
 
 ## [0.1.2] - Update Readme
+
+## [0.1.3] - Bug Fixes
+
+
+## [0.1.4] - Bug Fixes

@@ -736,6 +736,13 @@ class ImagePainterState extends State<ImagePainter> {
   }
 
   convertImage() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
     RenderRepaintBoundary boundary =
         _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
@@ -747,6 +754,7 @@ class ImagePainterState extends State<ImagePainter> {
     String fullPath = '$dir/${DateTime.now().millisecond}.png';
     capturedFile = File(fullPath);
     await capturedFile!.writeAsBytes(pngBytes);
+    Navigator.pop(context);
     widget.onDone!.call(capturedFile!.path);
     print("path is " + capturedFile!.path.toString());
   }

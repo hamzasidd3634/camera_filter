@@ -3,7 +3,6 @@
 library camera_filters;
 
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:camera/camera.dart';
@@ -12,9 +11,7 @@ import 'package:camera_filters/src/filters.dart';
 import 'package:camera_filters/src/widgets/circularProgress.dart';
 import 'package:camera_filters/videoPlayer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:image/image.dart' as imglib;
 import 'package:path_provider/path_provider.dart';
 
 class CameraScreenPlugin extends StatefulWidget {
@@ -188,7 +185,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     _initializeControllerFuture = _controller.initialize();
 
     ///set flash mode off by default
-    _controller.setFlashMode(FlashMode.off);
+    // _controller.setFlashMode(FlashMode.off);
     print(_initializeControllerFuture);
     setState(() {});
   }
@@ -380,7 +377,6 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     takePicture(context).then((String? filePath) async {
       if (_controller.value.isInitialized) {
         if (filePath != null) {
-          flashCheck();
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -399,33 +395,34 @@ class _CameraScreenState extends State<CameraScreenPlugin>
               _controller.setFlashMode(FlashMode.torch);
             }
           });
+          flashCheck();
         }
       }
     });
   }
 
   /// compress the picture from bigger size to smaller
-  Future<String> compressFile(File file, {takePicture = false}) async {
-    final File compressedFile = await FlutterNativeImage.compressImage(
-      file.path,
-      quality: 100,
-    );
-    final List<int> imageBytes = await file.readAsBytes();
-
-    imglib.Image? originalImage = imglib.decodeImage(imageBytes);
-
-    if (_controller.description.lensDirection == CameraLensDirection.front) {
-      originalImage = imglib.flipHorizontal(originalImage!);
-    }
-
-    final File files = File(compressedFile.path);
-
-    final File fixedFile = await files.writeAsBytes(
-      imglib.encodeJpg(originalImage!),
-      flush: true,
-    );
-    return fixedFile.path;
-  }
+  // Future<String> compressFile(File file, {takePicture = false}) async {
+  //   final File compressedFile = await FlutterNativeImage.compressImage(
+  //     file.path,
+  //     quality: 70,
+  //   );
+  //   final List<int> imageBytes = await file.readAsBytes();
+  //
+  //   imglib.Image? originalImage = imglib.decodeImage(imageBytes);
+  //
+  //   if (_controller.description.lensDirection == CameraLensDirection.front) {
+  //     originalImage = imglib.flipHorizontal(originalImage!);
+  //   }
+  //
+  //   final File files = File(compressedFile.path);
+  //
+  //   final File fixedFile = await files.writeAsBytes(
+  //     imglib.encodePng(originalImage!),
+  //     flush: true,
+  //   );
+  //   return fixedFile.path;
+  // }
 
   /// function will call when user take picture
   Future<String> takePicture(context) async {
@@ -438,7 +435,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
 
     try {
       await _controller.takePicture().then((file) async {
-        filePath = await compressFile(File(file.path), takePicture: true);
+        filePath = file.path;
       });
     } on CameraException catch (e) {
       ScaffoldMessenger.of(context)
