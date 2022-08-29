@@ -184,9 +184,10 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     );
     _initializeControllerFuture = _controller.initialize();
 
-    ///set flash mode off by default
-    // _controller.setFlashMode(FlashMode.off);
-    print(_initializeControllerFuture);
+    Future.delayed(Duration(seconds: 2), () {
+      _controller.setFlashMode(FlashMode.off);
+    });
+
     setState(() {});
   }
 

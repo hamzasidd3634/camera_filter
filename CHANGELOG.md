@@ -22,5 +22,12 @@
 
 ## [0.1.3] - Bug Fixes
 
-
 ## [0.1.4] - Bug Fixes
+
+## [0.1.5] - Bug Fixes
+
+## [0.1.6] - Camera Flash Bug Fix
+
+## [0.1.7] - Edit Image Feature UI Changes And IOS Bug Fixes
+
+## [0.1.8] - Peoject Description

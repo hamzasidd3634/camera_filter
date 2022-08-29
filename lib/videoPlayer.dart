@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:better_player/better_player.dart';
+import 'dart:io';
+
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/painter.dart';
 import 'package:camera_filters/src/tapioca/content.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:video_player/video_player.dart' as video;
+import 'package:video_player/video_player.dart';
 
 import 'src/tapioca/cup.dart';
 
@@ -25,8 +28,7 @@ class VideoPlayer extends StatefulWidget {
   State<VideoPlayer> createState() => _VideoPlayersState();
 }
 
-late BetterPlayerController _betterPlayerController;
-late BetterPlayerDataSource _betterPlayerDataSource;
+late VideoPlayerController _videoPlayerController;
 
 class _VideoPlayersState extends State<VideoPlayer> {
   late TextDelegate textDelegate;
@@ -118,34 +120,49 @@ class _VideoPlayersState extends State<VideoPlayer> {
     _controller = ValueNotifier(const Controller().copyWith(
         mode: PaintMode.freeStyle, strokeWidth: 2, color: Colors.white));
     textDelegate = TextDelegate();
-    BetterPlayerConfiguration betterPlayerConfiguration =
-        BetterPlayerConfiguration(
-      aspectRatio: 0.5,
-      fit: BoxFit.fill,
-      autoPlay: true,
-      looping: true,
-      subtitlesConfiguration: //a == null?BetterPlayerSubtitlesConfiguration():
-          BetterPlayerSubtitlesConfiguration(fontColor: Colors.transparent),
-      controlsConfiguration: BetterPlayerControlsConfiguration(
-          iconsColor: Colors.transparent,
-          textColor: Colors.transparent,
-          progressBarPlayedColor: Colors.transparent,
-          progressBarBackgroundColor: Colors.transparent,
-          progressBarBufferedColor: Colors.transparent,
-          progressBarHandleColor: Colors.transparent),
-      expandToFill: true,
-      deviceOrientationsAfterFullScreen: [
-        DeviceOrientation.portraitDown,
-        DeviceOrientation.portraitUp
-      ],
-    );
-    _betterPlayerDataSource = BetterPlayerDataSource(
-      BetterPlayerDataSourceType.file,
-      widget.video!,
-    );
-    _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
-    _betterPlayerController.setupDataSource(_betterPlayerDataSource);
+    _videoPlayerController = VideoPlayerController.file(File(widget.video!));
+
+    _videoPlayerController.addListener(() {
+      // setState(() {});
+    });
+    _videoPlayerController.setLooping(true);
+    _videoPlayerController.initialize().then((_) => setState(() {}));
+    _videoPlayerController.play();
+    // BetterPlayerConfiguration betterPlayerConfiguration =
+    //     BetterPlayerConfiguration(
+    //   aspectRatio: 0.5,
+    //   fit: BoxFit.fill,
+    //   autoPlay: true,
+    //   looping: true,
+    //   subtitlesConfiguration: //a == null?BetterPlayerSubtitlesConfiguration():
+    //       BetterPlayerSubtitlesConfiguration(fontColor: Colors.transparent),
+    //   controlsConfiguration: BetterPlayerControlsConfiguration(
+    //       iconsColor: Colors.transparent,
+    //       textColor: Colors.transparent,
+    //       progressBarPlayedColor: Colors.transparent,
+    //       progressBarBackgroundColor: Colors.transparent,
+    //       progressBarBufferedColor: Colors.transparent,
+    //       progressBarHandleColor: Colors.transparent),
+    //   expandToFill: true,
+    //   deviceOrientationsAfterFullScreen: [
+    //     DeviceOrientation.portraitDown,
+    //     DeviceOrientation.portraitUp
+    //   ],
+    // );
+    // _betterPlayerDataSource = BetterPlayerDataSource(
+    //   BetterPlayerDataSourceType.file,
+    //   widget.video!,
+    // );
+    // _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
+    // _betterPlayerController.setupDataSource(_betterPlayerDataSource);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -163,10 +180,10 @@ class _VideoPlayersState extends State<VideoPlayer> {
                     valueListenable: _filterColor,
                     builder: (context, value, child) {
                       return ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                              _filterColor.value, BlendMode.softLight),
-                          child: BetterPlayer(
-                              controller: _betterPlayerController));
+                        colorFilter: ColorFilter.mode(
+                            _filterColor.value, BlendMode.softLight),
+                        child: video.VideoPlayer(_videoPlayerController),
+                      );
                     })),
           ),
           ValueListenableBuilder(

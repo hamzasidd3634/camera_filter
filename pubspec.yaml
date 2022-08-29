@@ -1,6 +1,6 @@
 name: camera_filters
-description: This package will use camera with dynamic color list of filters, crop your image, text on image , change the text color and you can also use emojis. You can use your own custom color list to change filters. In the end it will provide you an edited image in onDone listener and if you edit your video it will return video path in onVideDone listener.
-version: 0.1.4
+description: This package will use camera with dynamic color list of filters, crop your image, text on image and change the text color.
+version: 0.1.8
 homepage: https://github.com/hamzasidd3634/camera_filter
 
 environment:
@@ -20,7 +20,7 @@ dependencies:
   get_storage: ^2.0.3
   google_fonts: ^3.0.1
   vector_math: ^2.1.1
-  better_player: ^0.0.82
+  video_player: ^2.4.6
 
 
 

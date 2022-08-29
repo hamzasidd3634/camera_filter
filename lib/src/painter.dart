@@ -464,7 +464,7 @@ class ImagePainterState extends State<ImagePainter> {
   Offset? _start, _end;
   File? capturedFile;
   ValueNotifier<bool> fonts = ValueNotifier(false);
-  ValueNotifier<bool> upAndDown = ValueNotifier(false);
+  ValueNotifier<bool> upAndDown = ValueNotifier(true);
   final GlobalKey _globalKey = GlobalKey();
   int _strokeMultiplier = 1;
   int index = 0;
