@@ -24,6 +24,8 @@ class CameraScreenPlugin extends StatefulWidget {
   /// list of filters
   List<Color>? filters;
 
+  bool applyFilters;
+
   /// notify color to change
   ValueNotifier<Color>? filterColor;
 
@@ -42,6 +44,7 @@ class CameraScreenPlugin extends StatefulWidget {
       this.onVideoDone,
       this.filters,
       this.profileIconWidget,
+      this.applyFilters = true,
       this.gradientColors,
       this.sendButtonWidget,
       this.filterColor})
@@ -383,6 +386,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
             MaterialPageRoute(
                 builder: (context) => EditImageScreen(
                       path: filePath,
+                      applyFilters: widget.applyFilters,
                       sendButtonWidget: widget.sendButtonWidget,
                       filter: ColorFilter.mode(
                           widget.filterColor == null
@@ -452,7 +456,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   Widget _buildFilterSelector() {
     return FilterSelector(
       onFilterChanged: _onFilterChanged,
-      filters: widget.filters ?? _filters,
+      filters: widget.applyFilters == false ? [] : widget.filters ?? _filters,
       onTap: () {
         if (capture == false) {
           capture = true;
@@ -515,6 +519,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
             MaterialPageRoute(
                 builder: (context) => VideoPlayer(
                       file.path,
+                      applyFilters: widget.applyFilters,
                       onVideoDone: widget.onVideoDone,
                       sendButtonWidget: widget.sendButtonWidget,
                     )),

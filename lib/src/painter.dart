@@ -54,6 +54,7 @@ class ImagePainter extends StatefulWidget {
       this.sendButtonWidget,
       this.onPaintModeChanged,
       this.filter,
+      this.applyFilters,
       this.onDone,
       this.textDelegate})
       : super(key: key);
@@ -246,6 +247,7 @@ class ImagePainter extends StatefulWidget {
     required Key key,
     double? height,
     double? width,
+    bool? applyFilters,
     ColorFilter? filter,
     Function? onDone,
     bool? scalable,
@@ -270,6 +272,7 @@ class ImagePainter extends StatefulWidget {
       height: height,
       width: width,
       filter: filter,
+      applyFilters: applyFilters,
       placeHolder: placeholderWidget,
       colors: colors,
       onDone: onDone,
@@ -395,6 +398,7 @@ class ImagePainter extends StatefulWidget {
 
   ///Defines whether the widget should be scaled or not. Defaults to [false].
   final bool? isScalable;
+  final bool? applyFilters;
   final ColorFilter? filter;
 
   ///Flag to determine signature or image;
@@ -972,24 +976,26 @@ class ImagePainterState extends State<ImagePainter> {
               },
             ),
             Spacer(),
-            ValueListenableBuilder<bool>(
-                valueListenable: upAndDown,
-                builder: (_, controller, __) {
-                  return IconButton(
-                    icon: Icon(
-                        upAndDown.value == false
-                            ? Icons.keyboard_arrow_down
-                            : Icons.keyboard_arrow_up,
-                        color: Colors.white),
-                    onPressed: () {
-                      if (upAndDown.value == false) {
-                        upAndDown.value = true;
-                      } else {
-                        upAndDown.value = false;
-                      }
-                    },
-                  );
-                }),
+            widget.applyFilters == false
+                ? Container()
+                : ValueListenableBuilder<bool>(
+                    valueListenable: upAndDown,
+                    builder: (_, controller, __) {
+                      return IconButton(
+                        icon: Icon(
+                            upAndDown.value == false
+                                ? Icons.keyboard_arrow_down
+                                : Icons.keyboard_arrow_up,
+                            color: Colors.white),
+                        onPressed: () {
+                          if (upAndDown.value == false) {
+                            upAndDown.value = true;
+                          } else {
+                            upAndDown.value = false;
+                          }
+                        },
+                      );
+                    }),
             SizedBox(
               width: 5,
             )
@@ -1000,79 +1006,84 @@ class ImagePainterState extends State<ImagePainter> {
   }
 
   Widget buildIconsColumn() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      decoration: BoxDecoration(
-          color: Colors.black12,
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30))),
-      child: Column(
-        children: [
-          ValueListenableBuilder<Controller>(
-              valueListenable: _controller,
-              builder: (_, controller, __) {
-                return IconButton(
-                  icon: Icon(Icons.font_download_rounded, color: Colors.white),
-                  onPressed: () {
-                    fonts.value = !fonts.value;
-                  },
-                );
-              }),
-          PopupMenuButton(
-            tooltip: textDelegate.changeBrushSize,
-            shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            icon: Icon(Icons.format_size, color: Colors.white),
-            itemBuilder: (_) => [_showTextSlider()],
-          ),
-          ValueListenableBuilder<Controller>(
-              valueListenable: _controller,
-              builder: (_, controller, __) {
-                return IconButton(
+    return widget.applyFilters == false
+        ? Container()
+        : Container(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+            decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30))),
+            child: Column(
+              children: [
+                ValueListenableBuilder<Controller>(
+                    valueListenable: _controller,
+                    builder: (_, controller, __) {
+                      return IconButton(
+                        icon: Icon(Icons.font_download_rounded,
+                            color: Colors.white),
+                        onPressed: () {
+                          fonts.value = !fonts.value;
+                        },
+                      );
+                    }),
+                PopupMenuButton(
+                  tooltip: textDelegate.changeBrushSize,
+                  shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  icon: Icon(Icons.format_size, color: Colors.white),
+                  itemBuilder: (_) => [_showTextSlider()],
+                ),
+                ValueListenableBuilder<Controller>(
+                    valueListenable: _controller,
+                    builder: (_, controller, __) {
+                      return IconButton(
+                        icon: Icon(
+                          Icons.color_lens_rounded,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          colorPicker(controller);
+                        },
+                      );
+                    }),
+                PopupMenuButton(
+                  tooltip: textDelegate.changeBrushSize,
+                  shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  icon: widget.brushIcon ??
+                      Icon(Icons.brush, color: Colors.white),
+                  itemBuilder: (_) => [_showRangeSlider()],
+                ),
+                IconButton(
+                    icon: const Icon(
+                      Icons.text_format,
+                      color: Colors.white,
+                    ),
+                    onPressed: _openTextDialog),
+                IconButton(
                   icon: Icon(
-                    Icons.color_lens_rounded,
+                    Icons.crop_rotate,
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    colorPicker(controller);
+                    _cropImage();
                   },
-                );
-              }),
-          PopupMenuButton(
-            tooltip: textDelegate.changeBrushSize,
-            shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+                ),
+                IconButton(
+                  tooltip: textDelegate.clearAllProgress,
+                  icon: widget.clearAllIcon ??
+                      Icon(Icons.clear, color: Colors.white),
+                  onPressed: () {
+                    setState(_paintHistory.clear);
+                  },
+                ),
+              ],
             ),
-            icon: widget.brushIcon ?? Icon(Icons.brush, color: Colors.white),
-            itemBuilder: (_) => [_showRangeSlider()],
-          ),
-          IconButton(
-              icon: const Icon(
-                Icons.text_format,
-                color: Colors.white,
-              ),
-              onPressed: _openTextDialog),
-          IconButton(
-            icon: Icon(
-              Icons.crop_rotate,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              _cropImage();
-            },
-          ),
-          IconButton(
-            tooltip: textDelegate.clearAllProgress,
-            icon: widget.clearAllIcon ?? Icon(Icons.clear, color: Colors.white),
-            onPressed: () {
-              setState(_paintHistory.clear);
-            },
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   Future _cropImage() async {

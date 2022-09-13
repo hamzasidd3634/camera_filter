@@ -20,9 +20,11 @@ import 'src/tapioca/cup.dart';
 class VideoPlayer extends StatefulWidget {
   String? video;
   Widget? sendButtonWidget;
+  bool applyFilters;
   Function(dynamic)? onVideoDone;
 
-  VideoPlayer(this.video, {this.onVideoDone, this.sendButtonWidget});
+  VideoPlayer(this.video,
+      {this.onVideoDone, this.sendButtonWidget, this.applyFilters = true});
 
   @override
   State<VideoPlayer> createState() => _VideoPlayersState();
@@ -195,50 +197,52 @@ class _VideoPlayersState extends State<VideoPlayer> {
                   return positionedText();
                 }
               }),
-          _buildFilterSelector(),
-          Positioned(
-              top: 40,
-              right: 10,
-              child: Column(
-                children: [
-                  PopupMenuButton(
-                    tooltip: textDelegate.changeBrushSize,
-                    shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    icon: Icon(Icons.format_size, color: Colors.white),
-                    itemBuilder: (_) => [_showTextSlider()],
-                  ),
-                  ValueListenableBuilder<Controller>(
-                      valueListenable: _controller,
-                      builder: (_, controller, __) {
-                        return IconButton(
-                          icon: Icon(
-                            Icons.color_lens_rounded,
+          widget.applyFilters == false ? Container() : _buildFilterSelector(),
+          widget.applyFilters == false
+              ? Container()
+              : Positioned(
+                  top: 40,
+                  right: 10,
+                  child: Column(
+                    children: [
+                      PopupMenuButton(
+                        tooltip: textDelegate.changeBrushSize,
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        icon: Icon(Icons.format_size, color: Colors.white),
+                        itemBuilder: (_) => [_showTextSlider()],
+                      ),
+                      ValueListenableBuilder<Controller>(
+                          valueListenable: _controller,
+                          builder: (_, controller, __) {
+                            return IconButton(
+                              icon: Icon(
+                                Icons.color_lens_rounded,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                colorPicker(controller);
+                              },
+                            );
+                          }),
+                      IconButton(
+                          icon: const Icon(
+                            Icons.text_format,
                             color: Colors.white,
                           ),
                           onPressed: () {
-                            colorPicker(controller);
-                          },
-                        );
-                      }),
-                  IconButton(
-                      icon: const Icon(
-                        Icons.text_format,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            isDismissible: true,
-                            builder: (builder) {
-                              return textField(context);
-                            });
-                      }),
-                ],
-              )),
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                enableDrag: true,
+                                isDismissible: true,
+                                builder: (builder) {
+                                  return textField(context);
+                                });
+                          }),
+                    ],
+                  )),
           Positioned(
               bottom: 10,
               right: 10,

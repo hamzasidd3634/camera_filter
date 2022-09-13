@@ -31,3 +31,5 @@
 ## [0.1.7] - Edit Image Feature UI Changes And IOS Bug Fixes
 
 ## [0.1.8] - Peoject Description
+
+## [0.1.9] - Update package
