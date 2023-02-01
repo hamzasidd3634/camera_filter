@@ -10,6 +10,7 @@ import 'package:camera_filters/src/edit_image_screen.dart';
 import 'package:camera_filters/src/filters.dart';
 import 'package:camera_filters/src/widgets/circularProgress.dart';
 import 'package:camera_filters/videoPlayer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
@@ -55,12 +56,12 @@ class CameraScreenPlugin extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreenPlugin>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   ///animation controller for circular progress indicator
   late AnimationController controller;
 
   /// Camera Controller
-  late CameraController _controller;
+  CameraController? _controller;
 
   /// initializer of controller
   Future<void>? _initializeControllerFuture;
@@ -123,6 +124,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3500),
@@ -147,6 +149,102 @@ class _CameraScreenState extends State<CameraScreenPlugin>
       widget.filterColor = ValueNotifier<Color>(Colors.transparent);
     }
     initCamera();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _controller!.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final CameraController? cameraController = _controller;
+
+    // App state changed before we got the chance to initialize.
+    if (cameraController == null || !cameraController.value.isInitialized) {
+      return;
+    }
+
+    if (state == AppLifecycleState.inactive) {
+      cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      onNewCameraSelected(cameraController.description);
+    }
+  }
+
+  Future<void> onNewCameraSelected(CameraDescription cameraDescription) async {
+    final CameraController? oldController = _controller;
+    if (oldController != null) {
+      // `controller` needs to be set to null before getting disposed,
+      // to avoid a race condition when we use the controller that is being
+      // disposed. This happens when camera permission dialog shows up,
+      // which triggers `didChangeAppLifecycleState`, which disposes and
+      // re-creates the controller.
+      _controller = null;
+      await oldController.dispose();
+    }
+
+    final CameraController cameraController = CameraController(
+      cameraDescription,
+      kIsWeb ? ResolutionPreset.max : ResolutionPreset.medium,
+      imageFormatGroup: ImageFormatGroup.jpeg,
+    );
+
+    controller = _rotationController!;
+
+    // If the controller is updated then update the UI.
+    cameraController.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+      if (cameraController.value.hasError) {
+        showInSnackBar(
+            'Camera error ${cameraController.value.errorDescription}');
+      }
+    });
+
+    try {
+      await cameraController.initialize();
+    } on CameraException catch (e) {
+      switch (e.code) {
+        case 'CameraAccessDenied':
+          showInSnackBar('You have denied camera access.');
+          break;
+        case 'CameraAccessDeniedWithoutPrompt':
+          // iOS only
+          showInSnackBar('Please go to Settings app to enable camera access.');
+          break;
+        case 'CameraAccessRestricted':
+          // iOS only
+          showInSnackBar('Camera access is restricted.');
+          break;
+        case 'AudioAccessDenied':
+          showInSnackBar('You have denied audio access.');
+          break;
+        case 'AudioAccessDeniedWithoutPrompt':
+          // iOS only
+          showInSnackBar('Please go to Settings app to enable audio access.');
+          break;
+        case 'AudioAccessRestricted':
+          // iOS only
+          showInSnackBar('Audio access is restricted.');
+          break;
+        default:
+          showInSnackBar(e.description!);
+          break;
+      }
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  showInSnackBar(String error) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Error: $error')));
   }
 
   ///timer Widget
@@ -185,20 +283,29 @@ class _CameraScreenState extends State<CameraScreenPlugin>
       cameras[0],
       ResolutionPreset.high,
     );
-    _initializeControllerFuture = _controller.initialize();
+    _initializeControllerFuture = _controller!.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+            // Handle access errors here.
+            break;
+          default:
+            // Handle other errors here.
+            break;
+        }
+      }
+    });
 
     Future.delayed(Duration(seconds: 2), () {
-      _controller.setFlashMode(FlashMode.off);
+      _controller!.setFlashMode(FlashMode.off);
     });
 
     setState(() {});
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -229,10 +336,10 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                                   ? _filterColor.value
                                                   : widget.filterColor!.value,
                                               BlendMode.softLight),
-                                          child: CameraPreview(_controller),
+                                          child: CameraPreview(_controller!),
                                         );
                                       })
-                                  : CameraPreview(_controller);
+                                  : CameraPreview(_controller!);
                             });
                       } else {
                         /// Otherwise, display a loading indicator.
@@ -289,20 +396,20 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                           if (flashCount.value == 0) {
                             flashCount.value = 1;
                             sp.write("flashCount", 1);
-                            _controller.setFlashMode(FlashMode.torch);
+                            _controller!.setFlashMode(FlashMode.torch);
 
                             /// if flash count is one flash will on
                           } else if (flashCount.value == 1) {
                             flashCount.value = 2;
                             sp.write("flashCount", 2);
-                            _controller.setFlashMode(FlashMode.auto);
+                            _controller!.setFlashMode(FlashMode.auto);
                           }
 
                           /// if flash count is two flash will auto
                           else {
                             flashCount.value = 0;
                             sp.write("flashCount", 0);
-                            _controller.setFlashMode(FlashMode.off);
+                            _controller!.setFlashMode(FlashMode.off);
                           }
                         },
                         icon: ValueListenableBuilder(
@@ -329,7 +436,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          if (_controller.description.lensDirection ==
+                          if (_controller!.description.lensDirection ==
                               CameraLensDirection.front) {
                             final CameraDescription selectedCamera = cameras[0];
                             _initCameraController(selectedCamera);
@@ -355,7 +462,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               onPressed: () {
                                 if (cameraChange.value == false) {
                                   cameraChange.value = true;
-                                  _controller.prepareForVideoRecording();
+                                  _controller!.prepareForVideoRecording();
                                 } else {
                                   cameraChange.value = false;
                                 }
@@ -372,14 +479,14 @@ class _CameraScreenState extends State<CameraScreenPlugin>
 
   flashCheck() {
     if (sp.read("flashCount") == 1) {
-      _controller.setFlashMode(FlashMode.off);
+      _controller!.setFlashMode(FlashMode.off);
     }
   }
 
   /// function will call when user tap on picture button
   void onTakePictureButtonPressed(context) {
     takePicture(context).then((String? filePath) async {
-      if (_controller.value.isInitialized) {
+      if (_controller!.value.isInitialized) {
         if (filePath != null) {
           Navigator.push(
             context,
@@ -397,7 +504,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                     )),
           ).then((value) {
             if (sp.read("flashCount") == 1) {
-              _controller.setFlashMode(FlashMode.torch);
+              _controller!.setFlashMode(FlashMode.torch);
             }
           });
           flashCheck();
@@ -416,7 +523,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   //
   //   imglib.Image? originalImage = imglib.decodeImage(imageBytes);
   //
-  //   if (_controller.description.lensDirection == CameraLensDirection.front) {
+  //   if (_controller!.description.lensDirection == CameraLensDirection.front) {
   //     originalImage = imglib.flipHorizontal(originalImage!);
   //   }
   //
@@ -431,17 +538,16 @@ class _CameraScreenState extends State<CameraScreenPlugin>
 
   /// function will call when user take picture
   Future<String> takePicture(context) async {
-    if (!_controller.value.isInitialized) {
+    if (!_controller!.value.isInitialized) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: camera is not initialized')));
     }
-    final String dirPath = getTemporaryDirectory().toString();
-    String filePath = '$dirPath/${timestamp()}.jpg';
+    final dirPath = await getTemporaryDirectory();
+    String filePath = '${dirPath.path}/${timestamp()}.jpg';
 
     try {
-      await _controller.takePicture().then((file) async {
-        filePath = file.path;
-      });
+      final picture = await _controller!.takePicture();
+      filePath = picture.path;
     } on CameraException catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Error: ${e.description}')));
@@ -476,16 +582,16 @@ class _CameraScreenState extends State<CameraScreenPlugin>
 
     /// 2
     /// If the controller is updated then update the UI.
-    _controller.addListener(() {
+    _controller!.addListener(() {
       /// 3
-      if (_controller.value.hasError) {
-        print('Camera error ${_controller.value.errorDescription}');
+      if (_controller!.value.hasError) {
+        print('Camera error ${_controller!.value.errorDescription}');
       }
     });
 
     /// 4
     try {
-      await _controller.initialize();
+      await _controller!.initialize();
     } on CameraException catch (e) {
       print(e);
     }
@@ -500,8 +606,8 @@ class _CameraScreenState extends State<CameraScreenPlugin>
         onLongPress: () async {
           // if(controller.value ){
 
-          await _controller.prepareForVideoRecording();
-          await _controller.startVideoRecording();
+          await _controller!.prepareForVideoRecording();
+          await _controller!.startVideoRecording();
           timer();
           controller.forward();
           _rotationController!.forward();
@@ -512,7 +618,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
           time.value = "";
           controller.reset();
           _rotationController!.reset();
-          final file = await _controller.stopVideoRecording();
+          final file = await _controller!.stopVideoRecording();
           flashCheck();
           Navigator.push(
             context,
@@ -525,7 +631,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                     )),
           ).then((value) {
             if (sp.read("flashCount") == 1) {
-              _controller.setFlashMode(FlashMode.torch);
+              _controller!.setFlashMode(FlashMode.torch);
             }
           });
         },
