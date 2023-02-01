@@ -33,3 +33,5 @@
 ## [0.1.8] - Peoject Description
 
 ## [0.1.9] - Update package
+
+## [0.2.0] - Capturing Image Bug Fixed
