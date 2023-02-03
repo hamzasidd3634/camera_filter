@@ -10,7 +10,6 @@ import 'package:camera_filters/src/edit_image_screen.dart';
 import 'package:camera_filters/src/filters.dart';
 import 'package:camera_filters/src/widgets/circularProgress.dart';
 import 'package:camera_filters/videoPlayer.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
@@ -156,90 +155,6 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     WidgetsBinding.instance.removeObserver(this);
     _controller!.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? cameraController = _controller;
-
-    // App state changed before we got the chance to initialize.
-    if (cameraController == null || !cameraController.value.isInitialized) {
-      return;
-    }
-
-    if (state == AppLifecycleState.inactive) {
-      cameraController.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      onNewCameraSelected(cameraController.description);
-    }
-  }
-
-  Future<void> onNewCameraSelected(CameraDescription cameraDescription) async {
-    final CameraController? oldController = _controller;
-    if (oldController != null) {
-      // `controller` needs to be set to null before getting disposed,
-      // to avoid a race condition when we use the controller that is being
-      // disposed. This happens when camera permission dialog shows up,
-      // which triggers `didChangeAppLifecycleState`, which disposes and
-      // re-creates the controller.
-      _controller = null;
-      await oldController.dispose();
-    }
-
-    final CameraController cameraController = CameraController(
-      cameraDescription,
-      kIsWeb ? ResolutionPreset.max : ResolutionPreset.medium,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
-
-    controller = _rotationController!;
-
-    // If the controller is updated then update the UI.
-    cameraController.addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-      if (cameraController.value.hasError) {
-        showInSnackBar(
-            'Camera error ${cameraController.value.errorDescription}');
-      }
-    });
-
-    try {
-      await cameraController.initialize();
-    } on CameraException catch (e) {
-      switch (e.code) {
-        case 'CameraAccessDenied':
-          showInSnackBar('You have denied camera access.');
-          break;
-        case 'CameraAccessDeniedWithoutPrompt':
-          // iOS only
-          showInSnackBar('Please go to Settings app to enable camera access.');
-          break;
-        case 'CameraAccessRestricted':
-          // iOS only
-          showInSnackBar('Camera access is restricted.');
-          break;
-        case 'AudioAccessDenied':
-          showInSnackBar('You have denied audio access.');
-          break;
-        case 'AudioAccessDeniedWithoutPrompt':
-          // iOS only
-          showInSnackBar('Please go to Settings app to enable audio access.');
-          break;
-        case 'AudioAccessRestricted':
-          // iOS only
-          showInSnackBar('Audio access is restricted.');
-          break;
-        default:
-          showInSnackBar(e.description!);
-          break;
-      }
-    }
-
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   showInSnackBar(String error) {
@@ -503,6 +418,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       onDone: widget.onDone,
                     )),
           ).then((value) {
+            // _controller = CameraController(cameras[0], ResolutionPreset.high);
             if (sp.read("flashCount") == 1) {
               _controller!.setFlashMode(FlashMode.torch);
             }

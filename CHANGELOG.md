@@ -35,3 +35,6 @@
 ## [0.1.9] - Update package
 
 ## [0.2.0] - Capturing Image Bug Fixed
+
+
+## [0.2.1] - Applifecycle State bug fix

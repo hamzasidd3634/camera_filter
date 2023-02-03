@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
-
+import 'package:image_cropper/image_cropper.dart';
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/transformer.dart';
 import 'package:flutter/material.dart' hide Image;
@@ -12,7 +12,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'widgets/_range_slider.dart';
@@ -559,6 +558,7 @@ class ImagePainterState extends State<ImagePainter> {
     if ((_image!.height + _image!.width) > 1000) {
       _strokeMultiplier = (_image!.height + _image!.width) ~/ 1000;
     }
+    setState(() {});
   }
 
   ///Completer function to convert asset or file image to [ui.Image] before drawing on custompainter.
@@ -1068,7 +1068,7 @@ class ImagePainterState extends State<ImagePainter> {
                     Icons.crop_rotate,
                     color: Colors.white,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     _cropImage();
                   },
                 ),
@@ -1085,6 +1085,7 @@ class ImagePainterState extends State<ImagePainter> {
           );
   }
 
+  // final cropKey = GlobalKey<CropState>();
   Future _cropImage() async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: widget.file!.path,
