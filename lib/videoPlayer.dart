@@ -255,6 +255,44 @@ class _VideoPlayersState extends State<VideoPlayer> {
                       var tempDir = await getTemporaryDirectory();
                       final path =
                           '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
+                      // Uint8List? bitmap;
+                      // final String inputWatermark = await rootBundle
+                      //     .loadString('assets/logo.png')
+                      //     .toString();
+
+                      // bitmap = (await rootBundle.load(
+                      //   "assets/logo.png",
+                      // ))
+                      //     .buffer
+                      //     .asUint8List();
+
+                      // String _path = 'assets/logo.png';
+                      // ByteData byteData = await rootBundle.load(_path);
+                      // String appDocDir =
+                      //     await getApplicationDocumentsDirectory()
+                      //         .then((value) => value.path);
+                      // File file = await File('$appDocDir/$_path')
+                      //     .create(recursive: true);
+                      // _path = await file
+                      //     .writeAsBytes(byteData.buffer.asUint8List(
+                      //         byteData.offsetInBytes, byteData.lengthInBytes))
+                      //     .then((value) => value.path);
+                      //
+                      // final arguments =
+                      //     '-i ${widget.video} -i $_path  -s 1280x720 -ar 44100 -async 44100 -r 29.970 -ac 2 -qscale 5 -filter_complex overlay=200:200 -codec:a copy $path';
+                      //
+                      // await FFmpegKit.executeAsync(arguments)
+                      //     .then((value) async {
+                      //   ReturnCode? returnCode = await value.getReturnCode();
+                      //
+                      //   SessionState sessionState = await value.getState();
+                      //
+                      //   debugPrint("Video conversion ${sessionState.name}");
+                      //   makeVideo(path);
+                      // });
+                      // print("outPath $path");
+                      // // makeVideo(path);
+                      // print("outPath $path");
 
                       try {
                         var a = 1.7 * int.parse(xPos.toString().split(".")[0]);
@@ -316,13 +354,45 @@ class _VideoPlayersState extends State<VideoPlayer> {
     );
   }
 
+  // makeVideo(path) {
+  //   // progressDialog!.show();
+  //   // final cup = Cup(Content(widget.video!), tapiocaBalls);
+  //   // cup.suckUp(path).then((_) async {
+  //   //   print("finished");
+  //   //   progressDialog!.hide();
+  //   // widget.onVideoDone!.call(path);
+  //
+  //   _videoPlayerController.dispose();
+  //   _videoPlayerController = VideoPlayerController.file(File(path));
+  //
+  //   _videoPlayerController.addListener(() {
+  //     // setState(() {});
+  //   });
+  //   _videoPlayerController.setLooping(true);
+  //   _videoPlayerController.initialize().then((_) => setState(() {}));
+  //   _videoPlayerController.play();
+  //   setState(() {});
+  //   // });
+  // }
+
   makeVideo(tapiocaBalls, path) {
     progressDialog!.show();
     final cup = Cup(Content(widget.video!), tapiocaBalls);
     cup.suckUp(path).then((_) async {
       print("finished");
       progressDialog!.hide();
-      widget.onVideoDone!.call(path);
+      // widget.onVideoDone!.call(path);
+
+      _videoPlayerController.dispose();
+      _videoPlayerController = VideoPlayerController.file(File(widget.video!));
+
+      _videoPlayerController.addListener(() {
+        // setState(() {});
+      });
+      _videoPlayerController.setLooping(true);
+      _videoPlayerController.initialize().then((_) => setState(() {}));
+      _videoPlayerController.play();
+      setState(() {});
     });
   }
 
@@ -494,5 +564,15 @@ class MyPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter old) {
     return true;
+  }
+}
+
+
+class VideoPla extends StatelessWidget {
+  const VideoPla({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

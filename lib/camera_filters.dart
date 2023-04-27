@@ -11,6 +11,7 @@ import 'package:camera_filters/src/filters.dart';
 import 'package:camera_filters/src/widgets/circularProgress.dart';
 import 'package:camera_filters/videoPlayer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -198,7 +199,9 @@ class _CameraScreenState extends State<CameraScreenPlugin>
       cameras[0],
       ResolutionPreset.high,
     );
-    _initializeControllerFuture = _controller!.initialize().then((_) {
+    _initializeControllerFuture = _controller!.initialize().then((_) async{
+      await _controller!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+
       if (!mounted) {
         return;
       }

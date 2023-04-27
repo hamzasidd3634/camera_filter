@@ -30,11 +30,14 @@
 
 ## [0.1.7] - Edit Image Feature UI Changes And IOS Bug Fixes
 
-## [0.1.8] - Peoject Description
+## [0.1.8] - Project Description
 
 ## [0.1.9] - Update package
 
 ## [0.2.0] - Capturing Image Bug Fixed
 
 
-## [0.2.1] - Applifecycle State bug fix
+## [0.2.1] - AppLifeCycle State bug fix
+
+
+## [0.2.2] - Camera Orientation fix
