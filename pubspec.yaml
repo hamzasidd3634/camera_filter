@@ -11,12 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  camera: ^0.10.4
+  camera: ^0.10.5+2
   flutter_native_image: ^0.0.6+1
-  path_provider: ^2.0.14
-  image_cropper: ^3.0.3
+  path_provider: ^2.0.15
+  image_cropper: ^4.0.1
   flutter_colorpicker: ^1.0.3
-  image: ^4.0.15
+  image: ^4.0.17
   get_storage: ^2.1.1
   google_fonts: ^4.0.3
   vector_math: ^2.1.4
