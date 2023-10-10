@@ -43,3 +43,5 @@
 ## [0.2.3] - 3.10 support
 
 ## [0.2.4] - Video edit upload bug fix
+
+## [0.2.5] - Package Update
