@@ -36,8 +36,10 @@
 
 ## [0.2.0] - Capturing Image Bug Fixed
 
-
 ## [0.2.1] - AppLifeCycle State bug fix
 
-
 ## [0.2.2] - Camera Orientation fix
+
+## [0.2.3] - 3.10 support
+
+## [0.2.4] - Video edit upload bug fix

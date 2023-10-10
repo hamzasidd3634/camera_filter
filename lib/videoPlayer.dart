@@ -381,7 +381,7 @@ class _VideoPlayersState extends State<VideoPlayer> {
     cup.suckUp(path).then((_) async {
       print("finished");
       progressDialog!.hide();
-      // widget.onVideoDone!.call(path);
+      widget.onVideoDone!.call(path);
 
       _videoPlayerController.dispose();
       _videoPlayerController = VideoPlayerController.file(File(widget.video!));
