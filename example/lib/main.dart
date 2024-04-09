@@ -24,6 +24,10 @@ class _MyAppState extends State<MyApp> {
           print(value);
         },
 
+            /// time limit for video in seconds
+            videoTimeLimit: 10,
+
+
             /// value returns the video path you can save here or navigate to some screen
             onVideoDone: (value) {
           print(value);

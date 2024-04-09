@@ -25,6 +25,8 @@ class CameraScreenPlugin extends StatefulWidget {
   /// list of filters
   List<Color>? filters;
 
+  int? videoTimeLimit;
+
   bool applyFilters;
 
   /// notify color to change
@@ -44,6 +46,7 @@ class CameraScreenPlugin extends StatefulWidget {
       this.onDone,
       this.onVideoDone,
       this.filters,
+      this.videoTimeLimit,
       this.profileIconWidget,
       this.applyFilters = true,
       this.gradientColors,
@@ -163,10 +166,38 @@ class _CameraScreenState extends State<CameraScreenPlugin>
         .showSnackBar(SnackBar(content: Text('Error: $error')));
   }
 
+  bool longPressEnd = false;
   ///timer Widget
   timer() {
-    t = Timer.periodic(Duration(seconds: 1), (timer) {
+    t = Timer.periodic(Duration(seconds: 1), (timer)async {
       time.value = timer.tick.toString();
+      print("time is ${time.value}");
+      if(widget.videoTimeLimit != null){
+        longPressEnd = true;
+        if(int.parse(time.value) >= widget.videoTimeLimit!){
+          t!.cancel();
+          time.value = "";
+          controller.reset();
+          _rotationController!.reset();
+          final file = await _controller!.stopVideoRecording();
+          flashCheck();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => VideoPlayer(
+                  file.path,
+                  applyFilters: widget.applyFilters,
+                  onVideoDone: widget.onVideoDone,
+                  sendButtonWidget: widget.sendButtonWidget,
+                )),
+          ).then((value) {
+            longPressEnd = false;
+            if (sp.read("flashCount") == 1) {
+              _controller!.setFlashMode(FlashMode.torch);
+            }
+          });
+        }
+      }
     });
   }
 
@@ -533,26 +564,28 @@ class _CameraScreenState extends State<CameraScreenPlugin>
           // }
         },
         onLongPressEnd: (v) async {
-          t!.cancel();
-          time.value = "";
-          controller.reset();
-          _rotationController!.reset();
-          final file = await _controller!.stopVideoRecording();
-          flashCheck();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => VideoPlayer(
-                      file.path,
-                      applyFilters: widget.applyFilters,
-                      onVideoDone: widget.onVideoDone,
-                      sendButtonWidget: widget.sendButtonWidget,
-                    )),
-          ).then((value) {
-            if (sp.read("flashCount") == 1) {
-              _controller!.setFlashMode(FlashMode.torch);
-            }
-          });
+          if(longPressEnd == false){
+            t!.cancel();
+            time.value = "";
+            controller.reset();
+            _rotationController!.reset();
+            final file = await _controller!.stopVideoRecording();
+            flashCheck();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => VideoPlayer(
+                        file.path,
+                        applyFilters: widget.applyFilters,
+                        onVideoDone: widget.onVideoDone,
+                        sendButtonWidget: widget.sendButtonWidget,
+                      )),
+            ).then((value) {
+              if (sp.read("flashCount") == 1) {
+                _controller!.setFlashMode(FlashMode.torch);
+              }
+            });
+          }
         },
         child: Container(
           width: 70,

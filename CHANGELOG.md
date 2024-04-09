@@ -45,3 +45,5 @@
 ## [0.2.4] - Video edit upload bug fix
 
 ## [0.2.5] - Package Update
+
+## [0.2.6] - Video Time Limit
