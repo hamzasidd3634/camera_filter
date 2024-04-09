@@ -153,7 +153,14 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     }
     initCamera();
   }
-
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _controller != null
+          ? _initializeControllerFuture = _controller!.initialize()
+          : null; //on pause camera is disposed, so we need to call again "issue is only for android"
+    }
+  }
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
@@ -250,7 +257,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
       }
     });
 
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 3), () {
       _controller!.setFlashMode(FlashMode.off);
     });
 

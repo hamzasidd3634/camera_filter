@@ -49,3 +49,5 @@
 ## [0.2.6] - Video Time Limit
 
 ## [0.2.7] - Update Readme
+
+## [0.2.8] - Camera Flash Bug Fixed
