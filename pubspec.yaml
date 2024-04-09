@@ -1,6 +1,6 @@
 name: camera_filters
 description: This package will use camera with dynamic color list of filters, crop your image, text on image and change the text color.
-version: 0.2.6
+version: 0.2.7
 homepage: https://github.com/hamzasidd3634/camera_filter
 
 environment:

@@ -47,3 +47,5 @@
 ## [0.2.5] - Package Update
 
 ## [0.2.6] - Video Time Limit
+
+## [0.2.7] - Update Readme
