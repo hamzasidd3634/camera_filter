@@ -273,7 +273,6 @@ class PaintInfo {
   PaintInfo({this.offset, this.painter, this.text, this.mode, this.fontSize});
 }
 
-@immutable
 
 ///Records realtime updates of ongoing [PaintInfo] when inDrag.
 class UpdatePoints {
