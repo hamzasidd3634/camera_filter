@@ -1,6 +1,5 @@
 import 'package:camera_filters/camera_filters.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +12,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late VideoPlayerController _videoPlayerController;
 
   @override
   Widget build(BuildContext context) {
