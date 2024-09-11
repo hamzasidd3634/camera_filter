@@ -51,3 +51,8 @@
 ## [0.2.7] - Update Readme
 
 ## [0.2.8] - Camera Flash Bug Fixed
+
+## [0.2.9] - All Package Update
+
+## [0.3.1] - Fixed Minor Bugs
+
