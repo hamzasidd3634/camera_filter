@@ -19,7 +19,7 @@ class CounterText extends StatelessWidget {
         children: <Widget>[
           Text(
             'You have pushed the button this many times:',
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   foreground: Paint()
                     ..blendMode = BlendMode.difference
                     ..color = Colors.white,
@@ -27,7 +27,7 @@ class CounterText extends StatelessWidget {
           ),
           Text(
             '$counter',
-            style: Theme.of(context).textTheme.headline2!.copyWith(
+            style: Theme.of(context).textTheme.displayMedium!.copyWith(
                   // Comment on web.
                   foreground: Paint()
                     ..blendMode = BlendMode.difference

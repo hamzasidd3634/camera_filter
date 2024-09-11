@@ -3,18 +3,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
-
+import 'package:image_cropper/image_cropper.dart';
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/transformer.dart';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'widgets/_range_slider.dart';
@@ -52,8 +49,10 @@ class ImagePainter extends StatefulWidget {
       this.onColorChanged,
       this.onStrokeWidthChanged,
       this.onFontSizeChanged,
+      this.sendButtonWidget,
       this.onPaintModeChanged,
       this.filter,
+      this.applyFilters,
       this.onDone,
       this.textDelegate})
       : super(key: key);
@@ -198,6 +197,9 @@ class ImagePainter extends StatefulWidget {
     ///initial color
     Color? initialColor,
 
+    ///send button widget
+    Widget? sendButtonWidget,
+
     ///paint mode notifier
     ValueChanged<PaintMode>? onPaintModeChanged,
 
@@ -223,6 +225,7 @@ class ImagePainter extends StatefulWidget {
       colors: colors,
       brushIcon: brushIcon,
       undoIcon: undoIcon,
+      sendButtonWidget: sendButtonWidget,
       colorIcon: colorIcon,
       clearAllIcon: clearAllIcon,
       initialPaintMode: initialPaintMode,
@@ -242,6 +245,7 @@ class ImagePainter extends StatefulWidget {
     required Key key,
     double? height,
     double? width,
+    bool? applyFilters,
     ColorFilter? filter,
     Function? onDone,
     bool? scalable,
@@ -266,6 +270,7 @@ class ImagePainter extends StatefulWidget {
       height: height,
       width: width,
       filter: filter,
+      applyFilters: applyFilters,
       placeHolder: placeholderWidget,
       colors: colors,
       onDone: onDone,
@@ -391,6 +396,7 @@ class ImagePainter extends StatefulWidget {
 
   ///Defines whether the widget should be scaled or not. Defaults to [false].
   final bool? isScalable;
+  final bool? applyFilters;
   final ColorFilter? filter;
 
   ///Flag to determine signature or image;
@@ -402,6 +408,8 @@ class ImagePainter extends StatefulWidget {
   ///List of colors for color selection
   ///If not provided, default colors are used.
   final List<Color>? colors;
+
+  final Widget? sendButtonWidget;
 
   ///Icon Widget of strokeWidth.
   final Widget? brushIcon;
@@ -457,8 +465,8 @@ class ImagePainterState extends State<ImagePainter> {
   late final TextEditingController _textController;
   Offset? _start, _end;
   File? capturedFile;
-  RxBool fonts = false.obs;
-
+  ValueNotifier<bool> fonts = ValueNotifier(false);
+  ValueNotifier<bool> upAndDown = ValueNotifier(true);
   final GlobalKey _globalKey = GlobalKey();
   int _strokeMultiplier = 1;
   int index = 0;
@@ -550,6 +558,7 @@ class ImagePainterState extends State<ImagePainter> {
     if ((_image!.height + _image!.width) > 1000) {
       _strokeMultiplier = (_image!.height + _image!.width) ~/ 1000;
     }
+    setState(() {});
   }
 
   ///Completer function to convert asset or file image to [ui.Image] before drawing on custompainter.
@@ -652,70 +661,91 @@ class ImagePainterState extends State<ImagePainter> {
           ),
           Positioned(
               top: 5,
-              child: Obx(() {
-                if (fonts.value == true) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: SizedBox(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                          itemCount: fontTextList.length,
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemBuilder: (context, i) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 3),
-                              child: GestureDetector(
-                                onTap: () {
-                                  index = i;
-                                  setState(() {});
-                                },
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Center(
-                                      child: Text(
-                                    "f",
-                                    style: fontTextList[i],
-                                  )),
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                  );
-                }
-                return Container();
-              })),
+              child: ValueListenableBuilder(
+                  valueListenable: fonts,
+                  builder: (context, value, Widget? c) {
+                    return fonts.value == false
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: SizedBox(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView.builder(
+                                  itemCount: fontTextList.length,
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, i) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 3),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          index = i;
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Center(
+                                              child: Text(
+                                            "f",
+                                            style: fontTextList[i],
+                                          )),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          );
+                  })),
           Positioned(
             bottom: 5,
             right: 25,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  convertImage();
-                },
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                child: Icon(
-                  Icons.check,
-                  size: 24.0,
+            child: widget.sendButtonWidget ??
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      convertImage();
+                    },
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    child: Icon(
+                      Icons.check,
+                      size: 24.0,
+                    ),
+                  ),
                 ),
-              ),
-            ),
           ),
+          Positioned(
+            top: 0,
+            right: 5,
+            child: ValueListenableBuilder<bool>(
+                valueListenable: upAndDown,
+                builder: (_, controller, __) {
+                  return upAndDown.value == false
+                      ? Container()
+                      : buildIconsColumn();
+                }),
+          )
         ],
       ),
     );
   }
 
   convertImage() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
     RenderRepaintBoundary boundary =
         _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
@@ -727,6 +757,7 @@ class ImagePainterState extends State<ImagePainter> {
     String fullPath = '$dir/${DateTime.now().millisecond}.png';
     capturedFile = File(fullPath);
     await capturedFile!.writeAsBytes(pngBytes);
+    Navigator.pop(context);
     widget.onDone!.call(capturedFile!.path);
     print("path is " + capturedFile!.path.toString());
   }
@@ -944,75 +975,117 @@ class ImagePainterState extends State<ImagePainter> {
               },
             ),
             Spacer(),
-            ValueListenableBuilder<Controller>(
-                valueListenable: _controller,
-                builder: (_, controller, __) {
-                  return IconButton(
-                    icon:
-                        Icon(Icons.font_download_rounded, color: Colors.white),
-                    onPressed: () {
-                      fonts(!fonts.value);
-                    },
-                  );
-                }),
-            PopupMenuButton(
-              tooltip: textDelegate.changeBrushSize,
-              shape: ContinuousRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              icon: Icon(Icons.format_size, color: Colors.white),
-              itemBuilder: (_) => [_showTextSlider()],
-            ),
-            ValueListenableBuilder<Controller>(
-                valueListenable: _controller,
-                builder: (_, controller, __) {
-                  return IconButton(
-                    icon: Icon(
-                      Icons.color_lens_rounded,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      colorPicker(controller);
-                    },
-                  );
-                }),
-            PopupMenuButton(
-              tooltip: textDelegate.changeBrushSize,
-              shape: ContinuousRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              icon: widget.brushIcon ?? Icon(Icons.brush, color: Colors.white),
-              itemBuilder: (_) => [_showRangeSlider()],
-            ),
-            IconButton(
-                icon: const Icon(
-                  Icons.text_format,
-                  color: Colors.white,
-                ),
-                onPressed: _openTextDialog),
-            IconButton(
-              icon: Icon(
-                Icons.crop_rotate,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                _cropImage();
-              },
-            ),
-            IconButton(
-              tooltip: textDelegate.clearAllProgress,
-              icon:
-                  widget.clearAllIcon ?? Icon(Icons.clear, color: Colors.white),
-              onPressed: () {
-                setState(_paintHistory.clear);
-              },
-            ),
+            widget.applyFilters == false
+                ? Container()
+                : ValueListenableBuilder<bool>(
+                    valueListenable: upAndDown,
+                    builder: (_, controller, __) {
+                      return IconButton(
+                        icon: Icon(
+                            upAndDown.value == false
+                                ? Icons.keyboard_arrow_down
+                                : Icons.keyboard_arrow_up,
+                            color: Colors.white),
+                        onPressed: () {
+                          if (upAndDown.value == false) {
+                            upAndDown.value = true;
+                          } else {
+                            upAndDown.value = false;
+                          }
+                        },
+                      );
+                    }),
+            SizedBox(
+              width: 5,
+            )
           ],
         ),
       ),
     );
   }
 
+  Widget buildIconsColumn() {
+    return widget.applyFilters == false
+        ? Container()
+        : Container(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+            decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30))),
+            child: Column(
+              children: [
+                ValueListenableBuilder<Controller>(
+                    valueListenable: _controller,
+                    builder: (_, controller, __) {
+                      return IconButton(
+                        icon: Icon(Icons.font_download_rounded,
+                            color: Colors.white),
+                        onPressed: () {
+                          fonts.value = !fonts.value;
+                        },
+                      );
+                    }),
+                PopupMenuButton(
+                  tooltip: textDelegate.changeBrushSize,
+                  shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  icon: Icon(Icons.format_size, color: Colors.white),
+                  itemBuilder: (_) => [_showTextSlider()],
+                ),
+                ValueListenableBuilder<Controller>(
+                    valueListenable: _controller,
+                    builder: (_, controller, __) {
+                      return IconButton(
+                        icon: Icon(
+                          Icons.color_lens_rounded,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          colorPicker(controller);
+                        },
+                      );
+                    }),
+                PopupMenuButton(
+                  tooltip: textDelegate.changeBrushSize,
+                  shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  icon: widget.brushIcon ??
+                      Icon(Icons.brush, color: Colors.white),
+                  itemBuilder: (_) => [_showRangeSlider()],
+                ),
+                IconButton(
+                    icon: const Icon(
+                      Icons.text_format,
+                      color: Colors.white,
+                    ),
+                    onPressed: _openTextDialog),
+                IconButton(
+                  icon: Icon(
+                    Icons.crop_rotate,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    _cropImage();
+                  },
+                ),
+                IconButton(
+                  tooltip: textDelegate.clearAllProgress,
+                  icon: widget.clearAllIcon ??
+                      Icon(Icons.clear, color: Colors.white),
+                  onPressed: () {
+                    setState(_paintHistory.clear);
+                  },
+                ),
+              ],
+            ),
+          );
+  }
+
+  // final cropKey = GlobalKey<CropState>();
   Future _cropImage() async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: widget.file!.path,

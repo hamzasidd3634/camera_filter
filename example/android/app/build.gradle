@@ -25,11 +25,8 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-<<<<<<< Updated upstream
-    compileSdkVersion 32
-=======
+
     compileSdkVersion 34
->>>>>>> Stashed changes
 
     lintOptions {
         disable 'InvalidPackage'

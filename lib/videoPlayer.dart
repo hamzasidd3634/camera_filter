@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:better_player/better_player.dart';
+import 'dart:io';
+
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/painter.dart';
 import 'package:camera_filters/src/tapioca/content.dart';
@@ -11,34 +12,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:video_player/video_player.dart' as video;
+import 'package:video_player/video_player.dart';
 
 import 'src/tapioca/cup.dart';
 
 class VideoPlayer extends StatefulWidget {
   String? video;
+  Widget? sendButtonWidget;
+  bool applyFilters;
   Function(dynamic)? onVideoDone;
 
-  VideoPlayer(this.video, {this.onVideoDone});
+  VideoPlayer(this.video,
+      {this.onVideoDone, this.sendButtonWidget, this.applyFilters = true});
 
   @override
   State<VideoPlayer> createState() => _VideoPlayersState();
 }
 
-late BetterPlayerController _betterPlayerController;
-late BetterPlayerDataSource _betterPlayerDataSource;
+late VideoPlayerController _videoPlayerController;
 
 class _VideoPlayersState extends State<VideoPlayer> {
   late TextDelegate textDelegate;
   late final ValueNotifier<Controller> _controller;
   final TextEditingController _textEditingController = TextEditingController();
-  double new_x = 0.0;
-  double new_y = 0.0;
   double fontSize = 30;
   ValueNotifier<bool> dragText = ValueNotifier(false);
   ValueNotifier<bool> textFieldBool = ValueNotifier(false);
   Offset offset = Offset.zero;
-  int? x;
-  int? y;
 
   String text = '';
   ValueNotifier<int> colorValue = ValueNotifier(0xFFFFFFFF);
@@ -64,12 +65,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
 
   /// widget will build the filter selector
   Widget _buildFilterSelector() {
-    // return FilterSelector(
-    //   onVideoFilter: true,
-    //   onFilterChanged: _onFilterChanged,
-    //   filters: _filters,
-    //   onTap: () {},
-    // );
     int index = 0;
     return Center(
       child: Container(
@@ -81,7 +76,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
             print("index is " + index.toString());
           },
           physics: NeverScrollableScrollPhysics(),
-          // pageSnapping: ,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, position) {
             return Center(
@@ -128,34 +122,49 @@ class _VideoPlayersState extends State<VideoPlayer> {
     _controller = ValueNotifier(const Controller().copyWith(
         mode: PaintMode.freeStyle, strokeWidth: 2, color: Colors.white));
     textDelegate = TextDelegate();
-    BetterPlayerConfiguration betterPlayerConfiguration =
-        BetterPlayerConfiguration(
-      aspectRatio: 0.5,
-      fit: BoxFit.fill,
-      autoPlay: true,
-      looping: true,
-      subtitlesConfiguration: //a == null?BetterPlayerSubtitlesConfiguration():
-          BetterPlayerSubtitlesConfiguration(fontColor: Colors.transparent),
-      controlsConfiguration: BetterPlayerControlsConfiguration(
-          iconsColor: Colors.transparent,
-          textColor: Colors.transparent,
-          progressBarPlayedColor: Colors.transparent,
-          progressBarBackgroundColor: Colors.transparent,
-          progressBarBufferedColor: Colors.transparent,
-          progressBarHandleColor: Colors.transparent),
-      expandToFill: true,
-      deviceOrientationsAfterFullScreen: [
-        DeviceOrientation.portraitDown,
-        DeviceOrientation.portraitUp
-      ],
-    );
-    _betterPlayerDataSource = BetterPlayerDataSource(
-      BetterPlayerDataSourceType.file,
-      widget.video!,
-    );
-    _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
-    _betterPlayerController.setupDataSource(_betterPlayerDataSource);
+    _videoPlayerController = VideoPlayerController.file(File(widget.video!));
+
+    _videoPlayerController.addListener(() {
+      // setState(() {});
+    });
+    _videoPlayerController.setLooping(true);
+    _videoPlayerController.initialize().then((_) => setState(() {}));
+    _videoPlayerController.play();
+    // BetterPlayerConfiguration betterPlayerConfiguration =
+    //     BetterPlayerConfiguration(
+    //   aspectRatio: 0.5,
+    //   fit: BoxFit.fill,
+    //   autoPlay: true,
+    //   looping: true,
+    //   subtitlesConfiguration: //a == null?BetterPlayerSubtitlesConfiguration():
+    //       BetterPlayerSubtitlesConfiguration(fontColor: Colors.transparent),
+    //   controlsConfiguration: BetterPlayerControlsConfiguration(
+    //       iconsColor: Colors.transparent,
+    //       textColor: Colors.transparent,
+    //       progressBarPlayedColor: Colors.transparent,
+    //       progressBarBackgroundColor: Colors.transparent,
+    //       progressBarBufferedColor: Colors.transparent,
+    //       progressBarHandleColor: Colors.transparent),
+    //   expandToFill: true,
+    //   deviceOrientationsAfterFullScreen: [
+    //     DeviceOrientation.portraitDown,
+    //     DeviceOrientation.portraitUp
+    //   ],
+    // );
+    // _betterPlayerDataSource = BetterPlayerDataSource(
+    //   BetterPlayerDataSourceType.file,
+    //   widget.video!,
+    // );
+    // _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
+    // _betterPlayerController.setupDataSource(_betterPlayerDataSource);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -173,10 +182,10 @@ class _VideoPlayersState extends State<VideoPlayer> {
                     valueListenable: _filterColor,
                     builder: (context, value, child) {
                       return ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                              _filterColor.value, BlendMode.softLight),
-                          child: BetterPlayer(
-                              controller: _betterPlayerController));
+                        colorFilter: ColorFilter.mode(
+                            _filterColor.value, BlendMode.softLight),
+                        child: video.VideoPlayer(_videoPlayerController),
+                      );
                     })),
           ),
           ValueListenableBuilder(
@@ -188,50 +197,52 @@ class _VideoPlayersState extends State<VideoPlayer> {
                   return positionedText();
                 }
               }),
-          _buildFilterSelector(),
-          Positioned(
-              top: 40,
-              right: 10,
-              child: Column(
-                children: [
-                  PopupMenuButton(
-                    tooltip: textDelegate.changeBrushSize,
-                    shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    icon: Icon(Icons.format_size, color: Colors.white),
-                    itemBuilder: (_) => [_showTextSlider()],
-                  ),
-                  ValueListenableBuilder<Controller>(
-                      valueListenable: _controller,
-                      builder: (_, controller, __) {
-                        return IconButton(
-                          icon: Icon(
-                            Icons.color_lens_rounded,
+          widget.applyFilters == false ? Container() : _buildFilterSelector(),
+          widget.applyFilters == false
+              ? Container()
+              : Positioned(
+                  top: 40,
+                  right: 10,
+                  child: Column(
+                    children: [
+                      PopupMenuButton(
+                        tooltip: textDelegate.changeBrushSize,
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        icon: Icon(Icons.format_size, color: Colors.white),
+                        itemBuilder: (_) => [_showTextSlider()],
+                      ),
+                      ValueListenableBuilder<Controller>(
+                          valueListenable: _controller,
+                          builder: (_, controller, __) {
+                            return IconButton(
+                              icon: Icon(
+                                Icons.color_lens_rounded,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                colorPicker(controller);
+                              },
+                            );
+                          }),
+                      IconButton(
+                          icon: const Icon(
+                            Icons.text_format,
                             color: Colors.white,
                           ),
                           onPressed: () {
-                            colorPicker(controller);
-                          },
-                        );
-                      }),
-                  IconButton(
-                      icon: const Icon(
-                        Icons.text_format,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            isDismissible: true,
-                            builder: (builder) {
-                              return textField(context);
-                            });
-                      }),
-                ],
-              )),
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                enableDrag: true,
+                                isDismissible: true,
+                                builder: (builder) {
+                                  return textField(context);
+                                });
+                          }),
+                    ],
+                  )),
           Positioned(
               bottom: 10,
               right: 10,
@@ -244,6 +255,44 @@ class _VideoPlayersState extends State<VideoPlayer> {
                       var tempDir = await getTemporaryDirectory();
                       final path =
                           '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
+                      // Uint8List? bitmap;
+                      // final String inputWatermark = await rootBundle
+                      //     .loadString('assets/logo.png')
+                      //     .toString();
+
+                      // bitmap = (await rootBundle.load(
+                      //   "assets/logo.png",
+                      // ))
+                      //     .buffer
+                      //     .asUint8List();
+
+                      // String _path = 'assets/logo.png';
+                      // ByteData byteData = await rootBundle.load(_path);
+                      // String appDocDir =
+                      //     await getApplicationDocumentsDirectory()
+                      //         .then((value) => value.path);
+                      // File file = await File('$appDocDir/$_path')
+                      //     .create(recursive: true);
+                      // _path = await file
+                      //     .writeAsBytes(byteData.buffer.asUint8List(
+                      //         byteData.offsetInBytes, byteData.lengthInBytes))
+                      //     .then((value) => value.path);
+                      //
+                      // final arguments =
+                      //     '-i ${widget.video} -i $_path  -s 1280x720 -ar 44100 -async 44100 -r 29.970 -ac 2 -qscale 5 -filter_complex overlay=200:200 -codec:a copy $path';
+                      //
+                      // await FFmpegKit.executeAsync(arguments)
+                      //     .then((value) async {
+                      //   ReturnCode? returnCode = await value.getReturnCode();
+                      //
+                      //   SessionState sessionState = await value.getState();
+                      //
+                      //   debugPrint("Video conversion ${sessionState.name}");
+                      //   makeVideo(path);
+                      // });
+                      // print("outPath $path");
+                      // // makeVideo(path);
+                      // print("outPath $path");
 
                       try {
                         var a = 1.7 * int.parse(xPos.toString().split(".")[0]);
@@ -251,13 +300,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
 
                         if (text == "" && _filterColor.value.value == 0) {
                           widget.onVideoDone!.call(widget.video);
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => Player(
-                          //             widget.video,
-                          //           )),
-                          // );
                         } else if (text == "" &&
                             _filterColor.value.value != 0) {
                           final tapiocaBalls = [
@@ -293,16 +335,17 @@ class _VideoPlayersState extends State<VideoPlayer> {
                         print("error!!!!");
                       }
                     },
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                          color: Color(0xffd51820),
-                          borderRadius: BorderRadius.circular(60)),
-                      child: Center(
-                        child: Icon(Icons.send),
-                      ),
-                    ),
+                    child: widget.sendButtonWidget ??
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Color(0xffd51820),
+                              borderRadius: BorderRadius.circular(60)),
+                          child: Center(
+                            child: Icon(Icons.send),
+                          ),
+                        ),
                   ),
                 ),
               )),
@@ -311,6 +354,27 @@ class _VideoPlayersState extends State<VideoPlayer> {
     );
   }
 
+  // makeVideo(path) {
+  //   // progressDialog!.show();
+  //   // final cup = Cup(Content(widget.video!), tapiocaBalls);
+  //   // cup.suckUp(path).then((_) async {
+  //   //   print("finished");
+  //   //   progressDialog!.hide();
+  //   // widget.onVideoDone!.call(path);
+  //
+  //   _videoPlayerController.dispose();
+  //   _videoPlayerController = VideoPlayerController.file(File(path));
+  //
+  //   _videoPlayerController.addListener(() {
+  //     // setState(() {});
+  //   });
+  //   _videoPlayerController.setLooping(true);
+  //   _videoPlayerController.initialize().then((_) => setState(() {}));
+  //   _videoPlayerController.play();
+  //   setState(() {});
+  //   // });
+  // }
+
   makeVideo(tapiocaBalls, path) {
     progressDialog!.show();
     final cup = Cup(Content(widget.video!), tapiocaBalls);
@@ -318,17 +382,17 @@ class _VideoPlayersState extends State<VideoPlayer> {
       print("finished");
       progressDialog!.hide();
       widget.onVideoDone!.call(path);
-      // GallerySaver.saveVideo(path).then((bool? success) {
-      //   print(success.toString());
-      // });
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => Player(
-      //             path,
-      //           )),
-      // );
-      // widget.onVideoDone!.call(path);
+
+      _videoPlayerController.dispose();
+      _videoPlayerController = VideoPlayerController.file(File(widget.video!));
+
+      _videoPlayerController.addListener(() {
+        // setState(() {});
+      });
+      _videoPlayerController.setLooping(true);
+      _videoPlayerController.initialize().then((_) => setState(() {}));
+      _videoPlayerController.play();
+      setState(() {});
     });
   }
 
@@ -477,7 +541,6 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    //                                             <-- Insert your painting code here.
     textStyle = TextStyle(
       color: color,
       fontSize: fontSize,
@@ -501,5 +564,15 @@ class MyPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter old) {
     return true;
+  }
+}
+
+
+class VideoPla extends StatelessWidget {
+  const VideoPla({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

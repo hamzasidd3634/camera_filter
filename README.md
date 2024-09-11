@@ -22,7 +22,7 @@ Add two rows to the ios/Runner/Info.plist:
 
 * one with the key Privacy - Camera Usage Description and a usage description.
 * and one with the key Privacy - Microphone Usage Description and a usage description.
-If editing Info.plist as text, add:
+  If editing Info.plist as text, add:
 ```yaml
     <key>NSCameraUsageDescription</key>
     <string>your usage description here</string>
@@ -45,9 +45,9 @@ Step 2. Add the JitPack repository to your Android build file, located in <proje
 
 ```yaml
     allprojects {
-        repositories {
-          maven { url 'https://jitpack.io' }
-        }
+    repositories {
+    maven { url 'https://jitpack.io' }
+    }
 }
 ```
 # Usage
@@ -62,24 +62,34 @@ To use this package:
 
 ```yaml
     dependencies:
-        flutter:
-          sdk: flutter
-        camera_filters: <latest-version>
+      flutter:
+        sdk: flutter
+      camera_filters: <latest-version>
 ```
 
 # ScreenShots
 
-![1](https://user-images.githubusercontent.com/64409533/165637956-d82b2ff0-a570-49be-b48d-25e141b8bb37.png)
-![4](https://user-images.githubusercontent.com/64409533/165637976-fb2df8c4-614b-4330-a136-1dc7043d87c0.png)
+
+![1](https://user-images.githubusercontent.com/64409533/171870854-6983d16a-32ef-4840-aec6-7bc779d9a98b.png)
+![2](https://user-images.githubusercontent.com/64409533/171870864-a2c05ec9-e141-428c-835c-989d6b067b1a.png)
+
+![3](https://user-images.githubusercontent.com/64409533/171870869-843a7907-e1bd-4cbd-80d8-b81fa92461b8.png)
+![4](https://user-images.githubusercontent.com/64409533/171870876-91376dc0-9b21-44ac-8b5f-73486e485e79.png)
 
 
-![2](https://user-images.githubusercontent.com/64409533/165637109-4a1bdf46-8e09-4dcd-88d5-989f48c4f650.png)
-![3](https://user-images.githubusercontent.com/64409533/165637989-03d84eb5-2bd8-42c8-8525-9e7553d6d974.png)
+
+
 
 
 # Video
 
+
 ![pack](https://user-images.githubusercontent.com/64409533/165578953-cdfa1c9d-fe11-4454-a334-6cef3d85b078.gif)
+
+
+[!](https://user-images.githubusercontent.com/64409533/171871016-82bf1839-9d8c-4770-ae6a-044ca2ad4387.mp4)
+
+
 
 
 # How to use
@@ -107,7 +117,12 @@ To use this package:
                   /// value returns the picture path you can save here or navigate to some screen
                   print(value);
                 },
-        
+
+
+                    /// time limit for video in seconds
+                    videoTimeLimit: 10,
+
+
                     /// value returns the video path you can save here or navigate to some screen
                     onVideoDone: (value) {
                   print(value);
@@ -125,5 +140,4 @@ To use this package:
             );
           }
         }
-
 

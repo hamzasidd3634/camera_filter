@@ -1,5 +1,6 @@
 import 'package:camera_filters/camera_filters.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +13,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late VideoPlayerController _videoPlayerController;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,12 +25,6 @@ class _MyAppState extends State<MyApp> {
             print(value);
           },
 
-<<<<<<< Updated upstream
-            /// value returns the video path you can save here or navigate to some screen
-            onVideoDone: (value) {
-          print(value);
-        }
-=======
           /// time limit for video in seconds
           videoTimeLimit: 10,
 
@@ -37,7 +34,7 @@ class _MyAppState extends State<MyApp> {
           },
 
           /// profileIconWidget: , if you want to add profile icon on camera you can your widget here
->>>>>>> Stashed changes
+
 
           ///filterColor: ValueNotifier<Color>(Colors.transparent),  your first filter color when you open camera
 

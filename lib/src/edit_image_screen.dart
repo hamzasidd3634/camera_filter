@@ -15,7 +15,18 @@ class EditImageScreen extends StatefulWidget {
   ///function return the edited image path
   Function(dynamic)? onDone;
 
-  EditImageScreen({Key? key, this.path, this.filter, this.onDone})
+  ///send button widget
+  Widget? sendButtonWidget;
+
+  bool applyFilters;
+
+  EditImageScreen(
+      {Key? key,
+      this.path,
+      this.filter,
+      this.onDone,
+      this.sendButtonWidget,
+      this.applyFilters = true})
       : super(key: key);
 
   @override
@@ -36,10 +47,12 @@ class _EditImageScreenState extends State<EditImageScreen> {
           key: _imageKey,
           scalable: true,
           filter: widget.filter,
+          applyFilters: widget.applyFilters,
           initialStrokeWidth: 2,
           onDone: widget.onDone,
           width: MediaQuery.of(context).size.width,
-          initialColor: Colors.green,
+          initialColor:
+              widget.applyFilters == false ? Colors.transparent : Colors.green,
           initialPaintMode: PaintMode.freeStyle,
         ),
       ),
